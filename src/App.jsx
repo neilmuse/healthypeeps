@@ -1,14 +1,17 @@
 import React from "react";
 import { Outlet } from 'react-router-dom';
+import { ThemeProvider } from "@mui/material/styles";
 
-// import AppBar from 'src/components/appbar.jsx'
+import TopNavBar from "./components/appbar.jsx";
+
+import RECIPE_THEME from "./themes/recipe-theme";
 
 const App = () => {
     return (
         <>
-          {/* <AppBar/> */}
-          <h1> App </h1>
-          {/* <Outlet/> */}
+          <ThemeProvider theme={RECIPE_THEME}>
+            <TopNavBar/>
+          </ThemeProvider>
         </>
     );
 }

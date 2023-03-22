@@ -1,10 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;1,400;1,500&display=swap");
-
-html,
-body,
-#root,
-.app {
-    height: 100%;
-    width: 100%;
-    font-family: "Rubik", sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:ital,wght@0,400;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300&family=Roboto&family=Rubik:ital,wght@0,400;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300&family=Quicksand&family=Roboto&family=Rubik:ital,wght@0,400;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
