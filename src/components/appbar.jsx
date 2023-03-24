@@ -11,19 +11,30 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Link from "../components/link.jsx";
 
 // import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuIcon, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material'
 
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import APPBAR_THEME from "../themes/appbar-theme";
-import COLORS from '../constants/colors.js';
 
 import AppBarText from './appbar-text.jsx';
 import SimpleText from './simple-text.jsx';
 
-const pages = ['Feed', 'Recipe', 'About'];
+const pages = [
+  {
+    name: "Feed",
+    url: "recipe"
+  },
+  {
+    name: "Login",
+    url: "login"
+  },
+  {
+    name: "About",
+    url: "about"
+  },
+];
 const settings = ['Profile', 'Dashboard', 'Logout'];
 
 const TopNavBar = () => {
@@ -47,17 +58,13 @@ const TopNavBar = () => {
 
   return (
     <>
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
 
-                <AppBarText
-                    variant="h6"
-                    text="Healthy Peeps"
-                    href="/"
-                />
-
-                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                <Box
+              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            >
                     <IconButton
                     size="large"
                     aria-label="account of current user"
@@ -86,10 +93,9 @@ const TopNavBar = () => {
                         display: { xs: 'block', md: 'none' },
                     }}
                     >
-                    {pages.map((page) => (
-                        <MenuItem key={page} value={page} onClick={handleCloseNavMenu} component="a" href="/${page}">
-                        <SimpleText text={page} />
-                        {/* <a href="/"> {page} </a> */}
+                    {pages.map(({name, url}) => (
+                        <MenuItem key={url} value={url} onClick={handleCloseNavMenu} component="a" href={`/${url}`}>
+                        <SimpleText text={name} />
                         </MenuItem>
                     ))}
                     </Menu>
@@ -101,15 +107,12 @@ const TopNavBar = () => {
                     href="/"
                 />
 
+
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                    {pages.map((page) => (
-                    <Button
-                        key={page}
-                        onClick={handleCloseNavMenu}
-                        sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                        {page}
-                    </Button>
+                    {pages.map(({name, url}) => (
+                      <Box m={2}>
+                        <Link variant="darkBackground" href={url}>{name}</Link>
+                      </Box>
                     ))}
                 </Box>
 

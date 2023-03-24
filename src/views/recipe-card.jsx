@@ -3,6 +3,7 @@ import * as React from "react";
 import { Avatar, Card, CardHeader, CardContent, CardActions, Collapse, IconButton } from '@mui/material';
 
 import { red } from "@mui/material/colors";
+import COLORS from '../constants/colors.js';
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -37,10 +38,11 @@ const RecipeCard = ({ title, image, author, createdAt }) => {
 
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: COLORS.GREEN}} >
             {author?.name?.substr(0, 1)}
           </Avatar>
         }
+        
         
         title={<SimpleText variant="cardtitle" text={title} />}
         subheader={<SimpleText variant="cardsubheader" text={ConvertTime(createdAt)} />}

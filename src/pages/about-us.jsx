@@ -14,31 +14,36 @@ import SimpleText from "../components/simple-text.jsx";
 import LinkComponent from "../components/link.jsx";
 import GridContainer from '../components/grid-container.jsx';
 import CardComponent from '../components/card-component.jsx';
+import PageLayout from '../components/page-box-layout.jsx';
 
 const AboutUs = () => {
   return (
     <>
-      <Grid container direction="row" justifyContent="space-evenly" spacing={10}>
-        <Grid item xs={12} md={6} lg={4}>
-            <PictureCard
-              height="140"
-              image={logo}
-              alt="temporary logo"
-            />
-            <SimpleText variant="title" text="About Us"/>
-            <SimpleText variant="body1" text="HealthyPeeps aims to address the issue of health concerns by focusing on health and nutrition. Our goal is to provide content tailored for Filipinos, encourage people to start a healthy lifestyle, and provide a platform for fruitful discussions and collaborations." />
+      <PageLayout>
+        <Grid container direction="row" justifyContent="space-evenly" spacing={10}>
+          <Grid item xs={12} sm={6} lg={4}>
+              <PictureCard
+                height="140"
+                image={logo}
+                alt="temporary logo"
+                fixed
+              />
+              <SimpleText variant="title" text="About Us"/>
+              <SimpleText variant="body1" text="HealthyPeeps aims to address the issue of health concerns by focusing on health and nutrition. Our goal is to provide content tailored for Filipinos, encourage people to start a healthy lifestyle, and provide a platform for fruitful discussions and collaborations." />
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+              <PictureCard
+                height="140"
+                image={developer}
+                alt="temporary logo"
+                fixed
+              />
+              <SimpleText variant="title" text="About the Developer"/>
+              <SimpleText variant="body1" text="Crisneil Musa is a senior student studying BS Computer Science
+              at the University of the Philippines - Los Banos."/>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-            <PictureCard
-              height="140"
-              image={developer}
-              alt="temporary logo"
-            />
-            <SimpleText variant="title" text="About the Developer"/>
-            <SimpleText variant="body1" text="Crisneil Musa is a senior student studying BS Computer Science
-            at the University of the Philippines - Los Banos."/>
-        </Grid>
-      </Grid>
+      </PageLayout>
       <Outlet/>
     </>
   );

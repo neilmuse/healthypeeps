@@ -1,12 +1,12 @@
 import { Card, CardContent } from "@mui/material";
 
 const CardComponent = ({
-    props
+    children
 }) => (
   
-    <Card style={{ margin: '20px' }}>
-        <CardContent>   
-            {props}
+    <Card sx={{ display: 'flex', justifyContent: 'center'}}>
+        <CardContent sx={{maxWidth: "md"}}>   
+            {children}
         </CardContent>
     </Card>
 );

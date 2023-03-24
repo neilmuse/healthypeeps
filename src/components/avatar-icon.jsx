@@ -1,11 +1,11 @@
 import { Avatar } from "@mui/material";
 
 const AvatarIcon = ({
-    props
+    children
 }) => (
   
     <Avatar>
-        {props}
+        {children}
     </Avatar>
 );
 

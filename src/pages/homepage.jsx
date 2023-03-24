@@ -6,21 +6,24 @@ import FilterCategory from "../components/filter-category.jsx";
 import RecipeLayout from "./recipe-feed.jsx";
 import GridContainer from '../components/grid-container.jsx';
 import SimpleText from '../components/simple-text.jsx';
+import PageLayout from '../components/page-box-layout.jsx';
 
 import Arrow from '@mui/icons-material/ArrowForwardIosTwoTone';
 
 const Homepage = () => {
   return (
     <>
-      <Grid container direction="row" alignItems="center" spacing={2}>
-        <Grid item xs={12} md={6} lg={4}>
-          <SearchField />
-          <FilterCategory />
+      <PageLayout>
+        <Grid container direction="row" alignItems="center" spacing={2}>
+          <Grid item xs={12} md={6} lg={4}>
+            <SearchField />
+            <FilterCategory />
+          </Grid>
+          <SimpleText variant="hero_title" text="What's New" />
+          <Arrow/>
+          <RecipeLayout/>
         </Grid>
-        <SimpleText variant="homepagetitle" text="What's New" />
-        <Arrow/>
-        <RecipeLayout/>
-      </Grid>
+      </PageLayout>
       <Outlet />
     </>
   );

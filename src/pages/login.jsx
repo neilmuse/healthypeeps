@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Avatar, Box, Button, Container, CssBaseline, Grid } from '@mui/material';
+import { Avatar, Box, Container, Grid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 import COLORS from '../constants/colors.js'
@@ -7,11 +7,11 @@ import COLORS from '../constants/colors.js'
 import logo from "../assets/logo-temp.png"
 
 import FormTextField from "../components/text-field.jsx";
-import OutlinedButton from "../components/button.jsx";
-import PictureCard from "../components/picture-card.jsx";
+import Button from "../components/button.jsx";
 import SimpleText from "../components/simple-text.jsx";
 import LinkComponent from "../components/link.jsx";
 import GridContainer from '../components/grid-container.jsx';
+import PageLayout from '../components/page-box-layout.jsx';
 
 const Login = () => {
   const handleSubmit = (event) => {
@@ -25,44 +25,43 @@ const Login = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="xs">
-          <PictureCard
-            height="140"
-            image={logo}
-            alt="temporary logo"
-          />
+      <PageLayout>
+        <Container maxWidth="sm">
 
-          <SimpleText variant="title" text="Welcome Back!"/>
+            <img src={logo} />
 
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <SimpleText variant="title" text="Welcome Back!"/>
 
-            <FormTextField
-              required
-              name="email"
-              label="Email Address"
-              autoFocus
-            />
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
-            <FormTextField
-              required
-              name="password"
-              label="Password"
-              autoFocus
-              type="password"
-            />
+              <FormTextField
+                required
+                name="email"
+                label="Email Address"
+                autoFocus
+              />
 
-            <OutlinedButton text="Sign In"/>
+              <FormTextField
+                required
+                name="password"
+                label="Password"
+                autoFocus
+                type="password"
+              />
 
-            <Grid container>
-              <Grid item xs>
-                <LinkComponent href="#" variant="body2" text="Forgot Password?" />
+              <Button text="Sign In" primary submit/>
+
+              <Grid container>
+                <Grid item xs>
+                  <LinkComponent href="#" variant="body2" text="Forgot Password?" />
+                </Grid>
+                <Grid item>
+                  <LinkComponent href="/signup" variant="body2" text="Don't have an account? Sign Up" />
+                </Grid>
               </Grid>
-              <Grid item>
-                <LinkComponent href="/signup" variant="body2" text="Don't have an account? Sign Up" />
-              </Grid>
-            </Grid>
-          </Box>
-      </Container>
+            </Box>
+        </Container>
+      </PageLayout>
       <Outlet/>
     </>
   );

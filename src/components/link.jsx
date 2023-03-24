@@ -3,16 +3,16 @@ import { Link } from "@mui/material";
 const LinkComponent = ({
     variant,
     href,
-    text
+    text, 
+    children
 }) => (
-
   <Link
     type="submit"
     fullWidth 
     variant={variant}
     href={href}
   >
-    {text}
+    {text || children}
   </Link>
 );
 

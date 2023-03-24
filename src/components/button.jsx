@@ -1,16 +1,18 @@
-import { Button } from "@mui/material";
+import { Button as MUIButton } from "@mui/material";
 
-const OutlinedButton = ({
-    text
-}) => (
+const Button = ({ text, submit, primary = false, ...props }) => {
+  const options = {
+    type: submit ? submit : undefined,
+    color: "primary",
+    variant: primary ? "contained" : "outlined",
+    sx: { height: primary ? "4em" : undefined },
+    fullWidth: true,
+    ...props
+  }
 
-  <Button
-    type="submit"
-    fullWidth 
-    variant="outlined"
-  >
+  return <MUIButton {...options}>
     {text}
-  </Button>
-);
+  </MUIButton>
+};
 
-export default OutlinedButton;
+export default Button;

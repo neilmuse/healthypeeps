@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import {StyledEngineProvider} from '@mui/material/styles';
+import RECIPE_THEME from "./themes/recipe-theme";
 import App from "./App";
 import TopNavBar from "./components/appbar.jsx";
 import AddDiscussion from "./components/add-discussion.jsx";
@@ -22,10 +23,12 @@ import { ThemeProvider } from "@mui/material/styles";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* <ThemeProvider theme={RECIPE_THEME}> */}
+    <StyledEngineProvider>
+
+    <ThemeProvider theme={RECIPE_THEME}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />}>
+          <Route path="/" element={<TopNavBar />}>
             <Route path="login" element={<LoginPage />} />
             <Route path="signup" element={<SignupPage />} />
             <Route path="recipe" element={<RecipeLayout />} />
@@ -38,7 +41,8 @@ root.render(
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
-    {/* </ThemeProvider> */}
+    </ThemeProvider>
+    </StyledEngineProvider>
   </React.StrictMode>
 );
 

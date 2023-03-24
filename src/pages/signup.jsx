@@ -3,9 +3,6 @@ import { Avatar, Box, CardMedia, Container, CssBaseline, Grid, TextField } from 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 
-import LOGIN_THEME from "../themes/login-theme";
-import COLORS from '../constants/colors.js';
-
 import logo from "../assets/logo-temp.png";
 
 import FormTextField from "../components/text-field.jsx";
@@ -13,6 +10,7 @@ import OutlinedButton from "../components/button.jsx";
 import PictureCard from "../components/picture-card.jsx";
 import SimpleText from "../components/simple-text.jsx";
 import LinkComponent from "../components/link.jsx";
+import PageLayout from '../components/page-box-layout.jsx';
 
 const Signup = () => {
   const handleSubmit = (event) => {
@@ -26,63 +24,62 @@ const Signup = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="xs">
-        <PictureCard
-          height="140"
-          image={logo}
-          alt="temporary logo"
-        />
+      <PageLayout>
+        <Container component="main" maxWidth="sm">
 
-        <SimpleText variant="title" text="Create An Account" />
+          <img src={logo} />
 
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            
-          <FormTextField
-            required
-            name="first_name"
-            label="First Name"
-            autoFocus
-          />
+          <SimpleText variant="title" text="Create An Account" />
 
-          <FormTextField
-            required
-            name="last_name"
-            label="Last Name"
-            autoFocus
-          />
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              
+            <FormTextField
+              required
+              name="first_name"
+              label="First Name"
+              autoFocus
+            />
 
-          <FormTextField
-            required
-            name="email"
-            label="Email Address"
-            autoFocus
-          />
+            <FormTextField
+              required
+              name="last_name"
+              label="Last Name"
+              autoFocus
+            />
 
-          <FormTextField
-            required
-            name="password"
-            label="Password"
-            autoFocus
-            type="password"
-          />
+            <FormTextField
+              required
+              name="email"
+              label="Email Address"
+              autoFocus
+            />
 
-          <FormTextField
-            required
-            name="repeat-password"
-            label="Repeat Password"
-            autoFocus
-            type="password"
-          />
+            <FormTextField
+              required
+              name="password"
+              label="Password"
+              autoFocus
+              type="password"
+            />
 
-          <OutlinedButton text="Submit"/>
+            <FormTextField
+              required
+              name="repeat-password"
+              label="Repeat Password"
+              autoFocus
+              type="password"
+            />
 
-          <Grid container>
-            <Grid item>
-              <LinkComponent href="/login" variant="body2" text="Already have an account? Sign In" />
+            <OutlinedButton text="Submit"/>
+
+            <Grid container>
+              <Grid item>
+                <LinkComponent href="/login" variant="body2" text="Already have an account? Sign In" />
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </Container>
+          </Box>
+        </Container>
+      </PageLayout>
       <Outlet/>
     </>
   );
