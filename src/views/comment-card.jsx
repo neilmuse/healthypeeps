@@ -1,11 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import { Divider, Avatar, Grid, Paper } from "@mui/material";
+import { Divider, Avatar, Grid, Paper } from '@mui/material';
 
 import comments from '../data/comments.json';
 
-import PictureCard from "../components/picture-card.jsx";
+import PictureCard from '../components/picture-card.jsx';
 import SimpleText from '../components/simple-text.jsx';
 import CommentBox from '../components/comment-box.jsx';
 

@@ -19,7 +19,6 @@
       { "name": "Carbohydrates", "value": 120 },
       { "name": "Fat", "value": 30 }
     ],
-
     "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
   },
   {
@@ -41,7 +40,7 @@
       { "name": "Fat", "value": 30 }
     ],
 
-    "preparation": "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes.\n Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil."
+    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
   },
   {
     "title": "Sinigang",
@@ -62,7 +61,7 @@
       { "name": "Fat", "value": 30 }
     ],
 
-    "preparation": "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes.\n Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil."
+    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
   },
   {
     "title": "Menudo",
@@ -83,7 +82,7 @@
       { "name": "Fat", "value": 30 }
     ],
 
-    "preparation": "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes.\n Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil."
+    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
   },
   {
     "title": "Another Recipe",
@@ -98,8 +97,7 @@
       { "name": "carbs", "value": 120 },
       { "name": "fat", "value": 30 }
     ],
-
-    "preparation": "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes.\n Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil."
+    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
   }
 ]
 

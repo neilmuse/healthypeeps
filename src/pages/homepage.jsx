@@ -1,9 +1,9 @@
-import React from "react";
-import { Grid } from "@mui/material";
-import { Outlet } from "react-router-dom";
-import SearchField from "../components/search-field.jsx";
-import FilterCategory from "../components/filter-category.jsx";
-import RecipeLayout from "./recipe-feed.jsx";
+import React from 'react';
+import { Grid } from '@mui/material';
+import { Outlet } from 'react-router-dom';
+import SearchField from '../components/search-field.jsx';
+import FilterCategory from '../components/filter-category.jsx';
+import RecipeLayout from './recipe-feed.jsx';
 import GridContainer from '../components/grid-container.jsx';
 import SimpleText from '../components/simple-text.jsx';
 import PageLayout from '../components/page-box-layout.jsx';

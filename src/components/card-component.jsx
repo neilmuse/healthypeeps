@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent } from '@mui/material';
 
 const CardComponent = ({
     children

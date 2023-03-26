@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
-import OutlinedButton from "../components/button.jsx";
+import OutlinedButton from '../components/button.jsx';
 
 const DialogBox = () => {
   const [open, setOpen] = React.useState(false);

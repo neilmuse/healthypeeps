@@ -1,30 +1,29 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {StyledEngineProvider} from '@mui/material/styles';
-import RECIPE_THEME from "./themes/recipe-theme";
-import App from "./App";
-import TopNavBar from "./components/appbar.jsx";
-import AddDiscussion from "./components/add-discussion.jsx";
-import SignupPage from "./pages/signup.jsx";
-import LoginPage from "./pages/login.jsx";
-import PageNotFound from "./pages/not-found.jsx";
-import RecipeLayout from "./pages/recipe-feed.jsx";
-import RecipePage from "./pages/recipe.jsx";
-import Homepage from "./pages/homepage.jsx";
-import AboutUs from "./pages/about-us.jsx";
-import AdminPage from "./pages/admin-pages/accept-delete-posts.jsx";
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from "@mui/material/styles";
+import {StyledEngineProvider} from '@mui/material/styles';
 
-// import RECIPE_THEME from "./themes/recipe-theme";
+import RECIPE_THEME from './themes/recipe-theme';
+
+import App from './App';
+import TopNavBar from './components/appbar.jsx';
+import AddDiscussion from './components/add-discussion.jsx';
+import SignupPage from './pages/signup.jsx';
+import LoginPage from './pages/login.jsx';
+import PageNotFound from './pages/not-found.jsx';
+import RecipeLayout from './pages/recipe-feed.jsx';
+import RecipePage from './pages/recipe.jsx';
+import Homepage from './pages/homepage.jsx';
+import AboutUs from './pages/about-us.jsx';
+import ProfilePage from './pages/profile.jsx';
+import AdminPage from './pages/admin-pages/accept-delete-posts.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <StyledEngineProvider>
-
     <ThemeProvider theme={RECIPE_THEME}>
       <BrowserRouter>
         <Routes>
@@ -37,6 +36,7 @@ root.render(
             <Route path="add-discussion" element={<AddDiscussion />} />
             <Route path="admin" element={<AdminPage />} />
             <Route path="about" element={<AboutUs />} />
+            <Route path="profile/:id" element={<ProfilePage />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

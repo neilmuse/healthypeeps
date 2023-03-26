@@ -4,12 +4,12 @@ import { Outlet } from 'react-router-dom';
 
 import COLORS from '../constants/colors.js'
 
-import logo from "../assets/logo-temp.png"
+import logo from '../assets/logo-temp.png'
 
-import FormTextField from "../components/text-field.jsx";
-import Button from "../components/button.jsx";
-import SimpleText from "../components/simple-text.jsx";
-import LinkComponent from "../components/link.jsx";
+import FormTextField from '../components/text-field.jsx';
+import Button from '../components/button.jsx';
+import SimpleText from '../components/simple-text.jsx';
+import LinkComponent from '../components/link.jsx';
 import GridContainer from '../components/grid-container.jsx';
 import PageLayout from '../components/page-box-layout.jsx';
 

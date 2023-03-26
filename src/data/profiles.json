@@ -1,0 +1,23 @@
+[
+    {
+        "first_name": "Mae",
+        "last_name": "Mae",
+        "email": ["email1@gmail.com"],
+        "phone_number": ["012345678"],
+        "profile_picture": "https://picsum.photos/200"
+    },
+    {
+        "first_name": "Nelly",
+        "last_name": "Bebe",
+        "email": ["email2@gmail.com"],
+        "phone_number": ["12345678"],
+        "profile_picture": "https://picsum.photos/200"
+    },
+    {
+        "first_name": "Ar",
+        "last_name": "Dy",
+        "email": ["email3@gmail.com"],
+        "phone_number": ["22345678"],
+        "profile_picture": "https://picsum.photos/200"
+    }
+]

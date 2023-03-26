@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Avatar,
   Box,
@@ -9,11 +9,11 @@ import {
   Grid,
   Paper,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import FormTextField from "../components/text-field";
-import OutlinedButton from "./button.jsx";
-import SimpleText from "../components/simple-text.jsx";
+import FormTextField from '../components/text-field';
+import OutlinedButton from './button.jsx';
+import SimpleText from '../components/simple-text.jsx';
 
 const Discussion = () => {
   const handleSubmit = (event) => {

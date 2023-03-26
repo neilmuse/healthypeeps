@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Divider,
@@ -9,20 +9,20 @@ import {
   ListItemText,
   ListItemAvatar,
   useMediaQuery,
-} from "@mui/material";
-import { Outlet, useParams } from "react-router-dom";
+} from '@mui/material';
+import { Outlet, useParams } from 'react-router-dom';
 
 import COLORS from '../constants/colors.js';
 
-import recipePic from "../assets/recipe-pic.jpg";
-import nutriFacts from "../assets/nutrifacts.png";
+import recipePic from '../assets/recipe-pic.jpg';
+import nutriFacts from '../assets/nutrifacts.png';
 
 import CaloriesIcon from '@mui/icons-material/LocalDiningTwoTone';
 import ProteinIcon from '@mui/icons-material/EggTwoTone';
 import CarbohydratesIcon from '@mui/icons-material/BakeryDiningTwoTone';
 import FatIcon from '@mui/icons-material/LocalPizzaTwoTone';
 
-import "./recipe.css";
+import './recipe.css';
 
 import recipes from '../data/recipes.json';
 import comments from '../data/comments.json';
@@ -39,7 +39,7 @@ import ContentDivider from '../components/divider-content.jsx';
 
 const Recipe = () => {
   const { id } = useParams();
-  const recipe = recipes[id];
+  const recipe = recipes[id] ?? {};
 
   const icons = [CaloriesIcon, ProteinIcon, CarbohydratesIcon, FatIcon];
 
@@ -48,14 +48,14 @@ const Recipe = () => {
       <PageLayout sx={{border: 1}}>
         <CardComponent>
           <Grid item>
-            <SimpleText variant="hero_title" text={recipe.title} />
+            <SimpleText variant="hero_title" text={recipe.title ?? "N/A"} />
 
-            <PictureCard image={recipe.image} />
+            <PictureCard image={recipe.image ?? ""} />
 
             <ContentDivider/>
 
             <SimpleText variant="title" text="Brief Description" />
-            <SimpleText variant="body1" text={recipe.description} />
+            <SimpleText variant="body1" text={recipe.description ?? "N/A"} />
 
             <ContentDivider/>
 
@@ -69,9 +69,9 @@ const Recipe = () => {
                 display: 'list-item',
               },
               }} >
-              {recipe?.ingredients?.map(({ quantity, units, name }, index) => (
+              {(recipe.ingredients ?? []).map(({ quantity, units, name }) => (
                 <ListItem>
-                  <SimpleText variant="body1" text={quantity + " " + units + " " +  name} />
+                  <SimpleText variant="body1" text={`${quantity ?? "N/A"} ${units ?? "N/A"} ${name ?? "N/A"}`} />
                 </ListItem>
               ))}
 
@@ -94,34 +94,34 @@ const Recipe = () => {
               }}
             >
 
-            <Grid container spacing={2} p={3}>
-              {
-              recipe?.macros?.map(({name, value}, index) =>
-                <Grid item xs={6} sm={3}>
-                  <Grid container direction="column" alignItems="center">
-                    <Grid item>
-                      <AvatarIcon/>
+              <Grid container spacing={2} p={3}>
+                {
+                (recipe.macros ?? []).map(({name, value}, index) =>
+                  <Grid item xs={6} sm={3}>
+                    <Grid container direction="column" alignItems="center">
+                      <Grid item>
+                        <AvatarIcon/>
+                      </Grid>
+                      <Grid item>
+                        <SimpleText variant="body_bold" text={value ?? "N/A"} />
+                      </Grid>
+                      <Grid item>
+                        <SimpleText variant="body1" text={name ?? "N/A"} />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <SimpleText variant="body_bold" text={value} />
                     </Grid>
-                    <Grid item>
-                      <SimpleText variant="body1" text={name} />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              )
-              }
-            </Grid>
+                )
+                }
+              </Grid>
             </Box>
 
             <ContentDivider/>
 
             <SimpleText variant="title" text="Preparation" />
-            {recipe?.preparation.map((prep, index) => (
+            {(recipe.preparation ?? []).map((prep, index) => (
               <List>
                 <SimpleText variant="body_bold" text={"Step " + (index + 1)} />
-                <SimpleText variant="body1" text={prep} />
+                <SimpleText variant="body1" text={prep ?? "N/A"} />
               </List>
             ))}
 

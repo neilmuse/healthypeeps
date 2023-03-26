@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import SimpleText from '../components/simple-text.jsx';
 import Arrow from '@mui/icons-material/ArrowForwardIosTwoTone';
 

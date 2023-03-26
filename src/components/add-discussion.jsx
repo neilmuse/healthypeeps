@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Avatar,
   Box,
@@ -8,19 +8,19 @@ import {
   CssBaseline,
   Grid,
   Typography,
-} from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Outlet } from "react-router-dom";
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Outlet } from 'react-router-dom';
 
-import COLORS from "../constants/colors.js";
+import COLORS from '../constants/colors.js';
 
-import logo from "../assets/logo-temp.png";
+import logo from '../assets/logo-temp.png';
 
-import DialogBox from "../components/dialog-box.jsx";
-import FormTextField from "../components/text-field";
-import OutlinedButton from "../components/button.jsx";
-import SimpleText from "../components/simple-text.jsx";
-import PictureCard from "../components/picture-card.jsx";
+import DialogBox from '../components/dialog-box.jsx';
+import FormTextField from '../components/text-field';
+import OutlinedButton from '../components/button.jsx';
+import SimpleText from '../components/simple-text.jsx';
+import PictureCard from '../components/picture-card.jsx';
 
 const Discussion = () => {
   const handleSubmit = (event) => {

@@ -3,7 +3,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
@@ -12,8 +11,6 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from "../components/link.jsx";
-
-// import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuIcon, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material'
 
 import { Outlet } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -27,19 +24,21 @@ const pages = [
     url: "recipe"
   },
   {
-    name: "Login",
-    url: "login"
+    name: "Recipe",
+    url: "recipe"
   },
   {
     name: "About",
     url: "about"
   },
 ];
+
 const settings = ['Profile', 'Dashboard', 'Logout'];
 
 const TopNavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [loggedIn, setLoggedIn] = React.useState(true);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -55,7 +54,7 @@ const TopNavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  
   return (
     <>
         <AppBar position="fixed">
@@ -107,7 +106,6 @@ const TopNavBar = () => {
                     href="/"
                 />
 
-
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                     {pages.map(({name, url}) => (
                       <Box m={2}>
@@ -118,11 +116,19 @@ const TopNavBar = () => {
 
                 <Box sx={{ flexGrow: 0 }}>
                     
+                {loggedIn ? (
+                  <>
                     <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                    </IconButton>
+                      </IconButton>
                     </Tooltip>
+                  </>
+                ) : (
+                  <Box m={2}>
+                    <Link variant="darkBackground" href="login">Login</Link>
+                  </Box>
+                )}
 
                     <Menu
                         sx={{ mt: '45px' }}

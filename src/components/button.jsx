@@ -1,4 +1,4 @@
-import { Button as MUIButton } from "@mui/material";
+import { Button as MUIButton } from '@mui/material';
 
 const Button = ({ text, submit, primary = false, ...props }) => {
   const options = {
