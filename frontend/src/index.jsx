@@ -19,6 +19,8 @@ import Homepage from './pages/homepage.jsx';
 import AboutUs from './pages/about-us.jsx';
 import ProfilePage from './pages/profile.jsx';
 import AdminPage from './pages/admin-pages/accept-delete-posts.jsx';
+// import ImageSlider from './pages/image-slider.jsx';
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -37,6 +39,7 @@ root.render(
             <Route path="admin" element={<AdminPage />} />
             <Route path="about" element={<AboutUs />} />
             <Route path="profile/:id" element={<ProfilePage />} />
+            {/* <Route path="images" element={<ImageSlider />} /> */}
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
