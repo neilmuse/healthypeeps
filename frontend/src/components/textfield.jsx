@@ -1,6 +1,6 @@
-import { TextField } from '@mui/material';
+import { TextField as MUITextField } from '@mui/material';
 
-const FormTextField = ({
+const TextField = ({
   autoFocus,
   required,
   name,
@@ -10,7 +10,7 @@ const FormTextField = ({
   maxRows
 }) => (
   
-  <TextField
+  <MUITextField
     margin="normal"
     required={required}
     multiline
@@ -25,4 +25,4 @@ const FormTextField = ({
   />
 );
 
-export default FormTextField;
+export default TextField;

@@ -16,7 +16,7 @@ import { Outlet } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import AppBarText from './appbar-text.jsx';
-import SimpleText from './simple-text.jsx';
+import Typography from './typography.jsx';
 
 const pages = [
   {
@@ -94,7 +94,7 @@ const TopNavBar = () => {
                     >
                     {pages.map(({name, url}) => (
                         <MenuItem key={url} value={url} onClick={handleCloseNavMenu} component="a" href={`/${url}`}>
-                        <SimpleText text={name} />
+                        <Typography text={name} />
                         </MenuItem>
                     ))}
                     </Menu>
@@ -149,7 +149,7 @@ const TopNavBar = () => {
                         
                     {settings.map((setting) => (
                         <MenuItem key={setting} component="a" href="/${setting}" onClick={handleCloseUserMenu}>
-                            <SimpleText text={setting} />
+                            <Typography text={setting} />
                             {/* <a href="/">{setting}</a> */}
                         </MenuItem>
                     ))}

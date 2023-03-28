@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { Avatar, Box, Container, Grid } from '@mui/material';
+import { Box as MUIBox, Container, Grid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-
-import COLORS from '../constants/colors.js'
 
 import logo from '../assets/logo-temp.png'
 
-import FormTextField from '../components/text-field.jsx';
+import TextField from '../components/textfield.jsx';
 import Button from '../components/button.jsx';
-import SimpleText from '../components/simple-text.jsx';
+import Typography from '../components/typography.jsx';
 import LinkComponent from '../components/link.jsx';
-import GridContainer from '../components/grid-container.jsx';
-import PageLayout from '../components/page-box-layout.jsx';
+import Box from '../components/box.jsx';
 
 const Login = () => {
   const handleSubmit = (event) => {
@@ -25,23 +22,23 @@ const Login = () => {
 
   return (
     <>
-      <PageLayout>
+      <Box>
         <Container maxWidth="sm">
 
             <img src={logo} />
 
-            <SimpleText variant="title" text="Welcome Back!"/>
+            <Typography variant="title" text="Welcome Back!"/>
 
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
-              <FormTextField
+              <TextField
                 required
                 name="email"
                 label="Email Address"
                 autoFocus
               />
 
-              <FormTextField
+              <TextField
                 required
                 name="password"
                 label="Password"
@@ -59,9 +56,9 @@ const Login = () => {
                   <LinkComponent href="/signup" variant="body2" text="Don't have an account? Sign Up" />
                 </Grid>
               </Grid>
-            </Box>
+            </MUIBox>
         </Container>
-      </PageLayout>
+      </Box>
       <Outlet/>
     </>
   );

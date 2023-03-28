@@ -1,41 +1,29 @@
 import React from 'react';
 import {
-  Box,
-  Divider,
+  Box as MUIBox,
   Grid,
   List,
   ListItem,
-  ListItemButton,
-  ListItemText,
-  ListItemAvatar,
-  useMediaQuery,
 } from '@mui/material';
 import { Outlet, useParams } from 'react-router-dom';
 
 import COLORS from '../constants/colors.js';
-
-import recipePic from '../assets/recipe-pic.jpg';
-import nutriFacts from '../assets/nutrifacts.png';
 
 import CaloriesIcon from '@mui/icons-material/LocalDiningTwoTone';
 import ProteinIcon from '@mui/icons-material/EggTwoTone';
 import CarbohydratesIcon from '@mui/icons-material/BakeryDiningTwoTone';
 import FatIcon from '@mui/icons-material/LocalPizzaTwoTone';
 
-import './recipe.css';
-
 import recipes from '../data/recipes.json';
-import comments from '../data/comments.json';
 
-import SimpleText from '../components/simple-text.jsx';
-import GridContainer from '../components/grid-container.jsx';
-import PictureCard from '../components/picture-card.jsx';
-import AvatarIcon from '../components/avatar-icon.jsx';
+import Typography from '../components/typography.jsx';
+import CardMedia from '../components/cardmedia.jsx';
+import Avatar from '../components/avatar.jsx';
 
-import CardComponent from '../components/card-component.jsx';
+import Card from '../components/card.jsx';
 import CommentCard from '../views/comment-card.jsx';
-import PageLayout from '../components/page-box-layout.jsx';
-import ContentDivider from '../components/divider-content.jsx';
+import Box from '../components/box.jsx';
+import Divider from '../components/divider.jsx';
 
 const Recipe = () => {
   const { id } = useParams();
@@ -45,21 +33,21 @@ const Recipe = () => {
 
   return (
     <>
-      <PageLayout sx={{border: 1}}>
-        <CardComponent>
+      <Box sx={{border: 1}}>
+        <Card>
           <Grid item>
-            <SimpleText variant="hero_title" text={recipe.title ?? "N/A"} />
+            <Typography variant="hero_title" text={recipe.title ?? "N/A"} />
 
-            <PictureCard image={recipe.image ?? ""} />
+            <CardMedia image={recipe.image ?? ""} />
 
-            <ContentDivider/>
+            <Divider/>
 
-            <SimpleText variant="title" text="Brief Description" />
-            <SimpleText variant="body1" text={recipe.description ?? "N/A"} />
+            <Typography variant="title" text="Brief Description" />
+            <Typography variant="body1" text={recipe.description ?? "N/A"} />
 
-            <ContentDivider/>
+            <Divider/>
 
-            <SimpleText variant="title" text="Ingredients" />
+            <Typography variant="title" text="Ingredients" />
 
             <List
               sx = {{
@@ -71,24 +59,24 @@ const Recipe = () => {
               }} >
               {(recipe.ingredients ?? []).map(({ quantity, units, name }) => (
                 <ListItem>
-                  <SimpleText variant="body1" text={`${quantity ?? "N/A"} ${units ?? "N/A"} ${name ?? "N/A"}`} />
+                  <Typography variant="body1" text={`${quantity ?? "N/A"} ${units ?? "N/A"} ${name ?? "N/A"}`} />
                 </ListItem>
               ))}
 
             </List>
 
-            <ContentDivider/>
+            <Divider/>
 
-            <Box>
-              <Box display="inline-block">
-              <SimpleText variant="title" text="Nutrition Facts" />
-              </Box>
-              <Box display="inline-block" mx={1}>
-                <SimpleText variant="small" text="(per serving)" />
-              </Box>
-            </Box>
+            <MUIBox>
+              <MUIBox display="inline-block">
+              <Typography variant="title" text="Nutrition Facts" />
+              </MUIBox>
+              <MUIBox display="inline-block" mx={1}>
+                <Typography variant="small" text="(per serving)" />
+              </MUIBox>
+            </MUIBox>
 
-            <Box
+            <MUIBox
               sx={{
                 backgroundColor: COLORS.LIGHT_GREEN,
               }}
@@ -100,37 +88,37 @@ const Recipe = () => {
                   <Grid item xs={6} sm={3}>
                     <Grid container direction="column" alignItems="center">
                       <Grid item>
-                        <AvatarIcon/>
+                        <Avatar/>
                       </Grid>
                       <Grid item>
-                        <SimpleText variant="body_bold" text={value ?? "N/A"} />
+                        <Typography variant="body_bold" text={value ?? "N/A"} />
                       </Grid>
                       <Grid item>
-                        <SimpleText variant="body1" text={name ?? "N/A"} />
+                        <Typography variant="body1" text={name ?? "N/A"} />
                       </Grid>
                     </Grid>
                     </Grid>
                 )
                 }
               </Grid>
-            </Box>
+            </MUIBox>
 
-            <ContentDivider/>
+            <Divider/>
 
-            <SimpleText variant="title" text="Preparation" />
+            <Typography variant="title" text="Preparation" />
             {(recipe.preparation ?? []).map((prep, index) => (
               <List>
-                <SimpleText variant="body_bold" text={"Step " + (index + 1)} />
-                <SimpleText variant="body1" text={prep ?? "N/A"} />
+                <Typography variant="body_bold" text={"Step " + (index + 1)} />
+                <Typography variant="body1" text={prep ?? "N/A"} />
               </List>
             ))}
 
-            <ContentDivider/>
+            <Divider/>
 
             <CommentCard />
           </Grid>
-        </CardComponent>
-      </PageLayout>
+        </Card>
+      </Box>
       <Outlet />
     </>
   );

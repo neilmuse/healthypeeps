@@ -1,19 +1,19 @@
-import { Link } from '@mui/material';
+import { Link as MUILink } from '@mui/material';
 
-const LinkComponent = ({
+const Link = ({
     variant,
     href,
     text, 
     children
 }) => (
-  <Link
+  <MUILink
     type="submit"
     fullWidth 
     variant={variant}
     href={href}
   >
     {text || children}
-  </Link>
+  </MUILink>
 );
 
-export default LinkComponent;
+export default Link;

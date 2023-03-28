@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { Avatar, Box, CardMedia, Container, CssBaseline, Grid, TextField } from '@mui/material';
+import { Avatar, Box as MUIBox, Container, CssBaseline, Grid } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 
 import logo from '../assets/logo-temp.png';
 
-import FormTextField from '../components/text-field.jsx';
-import OutlinedButton from '../components/button.jsx';
-import PictureCard from '../components/picture-card.jsx';
-import SimpleText from '../components/simple-text.jsx';
-import LinkComponent from '../components/link.jsx';
-import PageLayout from '../components/page-box-layout.jsx';
+import TextField from '../components/textfield.jsx';
+import Button from '../components/button.jsx';
+import CardMedia from '../components/cardmedia.jsx';
+import Typography from '../components/typography.jsx';
+import Link from '../components/link.jsx';
+import Box from '../components/box.jsx';
 
 const Signup = () => {
   const handleSubmit = (event) => {
@@ -24,37 +24,37 @@ const Signup = () => {
 
   return (
     <>
-      <PageLayout>
+      <Box>
         <Container component="main" maxWidth="sm">
 
           <img src={logo} />
 
-          <SimpleText variant="title" text="Create An Account" />
+          <Typography variant="title" text="Create An Account" />
 
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               
-            <FormTextField
+            <TextField
               required
               name="first_name"
               label="First Name"
               autoFocus
             />
 
-            <FormTextField
+            <TextField
               required
               name="last_name"
               label="Last Name"
               autoFocus
             />
 
-            <FormTextField
+            <TextField
               required
               name="email"
               label="Email Address"
               autoFocus
             />
 
-            <FormTextField
+            <TextField
               required
               name="password"
               label="Password"
@@ -62,7 +62,7 @@ const Signup = () => {
               type="password"
             />
 
-            <FormTextField
+            <TextField
               required
               name="repeat-password"
               label="Repeat Password"
@@ -70,16 +70,16 @@ const Signup = () => {
               type="password"
             />
 
-            <OutlinedButton text="Submit"/>
+            <Button text="Submit"/>
 
             <Grid container>
               <Grid item>
-                <LinkComponent href="/login" variant="body2" text="Already have an account? Sign In" />
+                <Link href="/login" variant="body2" text="Already have an account? Sign In" />
               </Grid>
             </Grid>
-          </Box>
+          </MUIBox>
         </Container>
-      </PageLayout>
+      </Box>
       <Outlet/>
     </>
   );

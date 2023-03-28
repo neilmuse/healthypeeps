@@ -1,19 +1,12 @@
 import * as React from 'react';
 import {
-  Avatar,
-  Box,
-  Button,
-  CardMedia,
-  Container,
-  Divider,
   Grid,
   Paper,
-  Typography,
 } from '@mui/material';
 
-import FormTextField from '../components/text-field';
-import OutlinedButton from './button.jsx';
-import SimpleText from '../components/simple-text.jsx';
+import TextField from '../components/textfield';
+import Button from './button.jsx';
+import Divider from '../components/divider.jsx';
 
 const Discussion = () => {
   const handleSubmit = (event) => {
@@ -29,7 +22,7 @@ const Discussion = () => {
     <>
         <Paper style={{ padding: "40px" }}>
             <Grid container spacing={2}>
-            <FormTextField
+            <TextField
                 required
                 name="comment"
                 label="Comment"
@@ -38,9 +31,10 @@ const Discussion = () => {
                 maxRows="15"
             />
 
-            <OutlinedButton text="Comment"/>
+            <Button text="Comment"/>
             </Grid>
-            <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+
+            <Divider/>
 
         </Paper>
     </>

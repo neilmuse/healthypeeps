@@ -1,12 +1,7 @@
 import * as React from 'react';
-import {
-    Grid
-  } from '@mui/material';
-
-import GridContainer from '../../components/grid-container.jsx';
 import AdminPagination from '../../components/admin-pagination.jsx';
-import OutlinedButton from '../../components/button.jsx';
-import PageLayout from '../../components/page-box-layout.jsx';
+import Button from '../../components/button.jsx';
+import Box from '../../components/box.jsx';
 
 import PostCard from '../../views/post-card.jsx';
 
@@ -15,12 +10,12 @@ import recipes from '../../data/recipes.json';
 const AdminPosts = () => {
     return (
         <>  
-            <PageLayout>
+            <Box>
                 <AdminPagination />
                 <PostCard/>
-                <OutlinedButton text="Accept"/>
-                <OutlinedButton text="Decline"/>
-            </PageLayout>
+                <Button text="Accept"/>
+                <Button text="Decline"/>
+            </Box>
         </>
     );
 }

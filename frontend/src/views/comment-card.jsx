@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Divider, Avatar, Grid, Paper } from '@mui/material';
+import { Avatar, Grid, Paper } from '@mui/material';
 
 import comments from '../data/comments.json';
 
-import PictureCard from '../components/picture-card.jsx';
-import SimpleText from '../components/simple-text.jsx';
+import Typography from '../components/typography.jsx';
 import CommentBox from '../components/comment-box.jsx';
+import Divider from '../components/divider.jsx';
 
 const CommentCard = () => {
   return (
     <>
-      <SimpleText text="Comments" variant="title" />
+      <Typography text="Comments" variant="title" />
       <CommentBox />
 
       {comments.map((comment) => (
@@ -22,12 +22,12 @@ const CommentCard = () => {
               <Avatar alt="image" src={comment?.image} />
             </Grid>
             <Grid justifyContent="left" item xs zeroMinWidth>
-              <SimpleText text={comment?.author.name} />
-              <SimpleText text={comment?.content} />
-              <SimpleText text={comment?.createdAt} />
+              <Typography text={comment?.author.name} />
+              <Typography text={comment?.content} />
+              <Typography text={comment?.createdAt} />
             </Grid>
           </Grid>
-          <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+          <Divider/>
 
         </Paper>))}
     </>

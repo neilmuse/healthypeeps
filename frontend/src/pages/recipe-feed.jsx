@@ -2,7 +2,7 @@ import * as React from 'react';
 import RecipeCard from '../views/recipe-card';
 import recipes from '../data/recipes.json';
 import ImageSlider from '../views/image-slider';
-import PageLayout from '../components/page-box-layout.jsx';
+import Box from '../components/box.jsx';
 import Link from '../components/link.jsx';
 
 const Recipe = (props) => {
@@ -14,9 +14,9 @@ const Recipe = (props) => {
 
   return (
     <>
-      <PageLayout>
+      <Box>
         <ImageSlider images={recipeCards} itemsPerSlide={3} />
-      </PageLayout>
+      </Box>
     </>
   );
 };

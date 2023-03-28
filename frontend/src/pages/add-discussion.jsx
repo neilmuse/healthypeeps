@@ -1,26 +1,17 @@
 import * as React from 'react';
 import {
-  Avatar,
   Box,
-  Button,
-  CardMedia,
   Container,
-  CssBaseline,
-  Grid,
-  Typography,
 } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 
-import COLORS from '../constants/colors.js';
 
 import logo from '../assets/logo-temp.png';
 
 import DialogBox from '../components/dialog-box.jsx';
-import FormTextField from '../components/text-field';
-import OutlinedButton from '../components/button.jsx';
-import SimpleText from '../components/simple-text.jsx';
-import PictureCard from '../components/picture-card.jsx';
+import TextField from '../components/textfield';
+import Typography from '../components/typography.jsx';
+import CardMedia from '../components/cardmedia.jsx';
 
 const Discussion = () => {
   const handleSubmit = (event) => {
@@ -35,7 +26,6 @@ const Discussion = () => {
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -45,13 +35,13 @@ const Discussion = () => {
           }}
         >
 
-          <PictureCard
+          <CardMedia
             height="140"
             image={logo}
             alt="temporary logo"
           />
 
-          <SimpleText variant="title" text="Add Discussion" />
+          <Typography variant="title" text="Add Discussion" />
 
           <Box
             component="form"
@@ -60,14 +50,14 @@ const Discussion = () => {
             sx={{ mt: 1 }}
           >
 
-            <FormTextField
+            <TextField
               required
               name="title"
               label="Title"
               autoFocus
             />
 
-            <FormTextField
+            <TextField
               required
               name="content"
               label="Content"

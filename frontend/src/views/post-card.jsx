@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Divider, Avatar, Grid, Paper, Checkbox, FormControlLabel } from '@mui/material';
+import { Avatar, Grid, Paper, Checkbox, FormControlLabel } from '@mui/material';
 import recipes from '../data/recipes.json';
-import SimpleText from '../components/simple-text.jsx';
+import Typography from '../components/typography.jsx';
+import Divider from '../components/divider.jsx';
 
 const PostCard = () => {
   const [checkedItems, setCheckedItems] = useState(recipes.map(() => false));
@@ -21,7 +22,7 @@ const PostCard = () => {
 
   return (
     <>
-      <SimpleText text="Pending Posts" variant="title" />
+      <Typography text="Pending Posts" variant="title" />
       <FormControlLabel
         control={
           <Checkbox
@@ -46,12 +47,12 @@ const PostCard = () => {
               <Avatar alt="image" src={post?.image} />
             </Grid>
             <Grid justifyContent="left" item xs zeroMinWidth>
-              <SimpleText variant="cardtitle" text={post?.author.name} />
-              <SimpleText text={post?.title} />
-              <SimpleText variant="body1" text={post?.description} />
+              <Typography variant="cardtitle" text={post?.author.name} />
+              <Typography text={post?.title} />
+              <Typography variant="body1" text={post?.description} />
             </Grid>
           </Grid>
-          <Divider variant="fullWidth" style={{ margin: "10px 0" }} />
+          <Divider/>
         </Paper>
       ))}
     </>

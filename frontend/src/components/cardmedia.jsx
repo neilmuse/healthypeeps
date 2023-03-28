@@ -1,6 +1,6 @@
-import { CardMedia } from '@mui/material';
+import { CardMedia as MUICardMedia } from '@mui/material';
 
-const PictureCard = ({
+const CardMedia = ({
     height,
     image,
     text,
@@ -13,11 +13,11 @@ const PictureCard = ({
     sx: {maxHeight: fixed ? "20em" : undefined},
     ...props
   };
-  return <CardMedia
+  return <MUICardMedia
     component="img"
     image={image}
     alt={text}
   />
 };
 
-export default PictureCard;
+export default CardMedia;

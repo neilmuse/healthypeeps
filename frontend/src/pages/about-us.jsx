@@ -1,49 +1,42 @@
 import * as React from 'react';
-import { Avatar, Box, Button, Container, CssBaseline, Grid } from '@mui/material';
+import { Grid as MUIGrid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-
-import COLORS from '../constants/colors.js'
 
 import developer from '../assets/mae.jpg'
 import logo from '../assets/logo-temp.png'
 
-import FormTextField from '../components/text-field.jsx';
-import OutlinedButton from '../components/button.jsx';
-import PictureCard from '../components/picture-card.jsx';
-import SimpleText from '../components/simple-text.jsx';
-import LinkComponent from '../components/link.jsx';
-import GridContainer from '../components/grid-container.jsx';
-import CardComponent from '../components/card-component.jsx';
-import PageLayout from '../components/page-box-layout.jsx';
+import CardMedia from '../components/cardmedia.jsx';
+import Typography from '../components/typography.jsx';
+import Box from '../components/box.jsx';
 
 const AboutUs = () => {
   return (
     <>
-      <PageLayout>
-        <Grid container direction="row" justifyContent="space-evenly" spacing={10}>
-          <Grid item xs={12} sm={6} lg={4}>
-              <PictureCard
+      <Box>
+        <MUIGrid container direction="row" justifyContent="space-evenly" spacing={10}>
+          <MUIGrid item xs={12} sm={6} lg={4}>
+              <CardMedia
                 height="140"
                 image={logo}
                 alt="temporary logo"
                 fixed
               />
-              <SimpleText variant="title" text="About Us"/>
-              <SimpleText variant="body1" text="HealthyPeeps aims to address the issue of health concerns by focusing on health and nutrition. Our goal is to provide content tailored for Filipinos, encourage people to start a healthy lifestyle, and provide a platform for fruitful discussions and collaborations." />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-              <PictureCard
+              <Typography variant="title" text="About Us"/>
+              <Typography variant="body1" text="HealthyPeeps aims to address the issue of health concerns by focusing on health and nutrition. Our goal is to provide content tailored for Filipinos, encourage people to start a healthy lifestyle, and provide a platform for fruitful discussions and collaborations." />
+          </MUIGrid>
+          <MUIGrid item xs={12} sm={6} lg={4}>
+              <CardMedia
                 height="140"
                 image={developer}
                 alt="temporary logo"
                 fixed
               />
-              <SimpleText variant="title" text="About the Developer"/>
-              <SimpleText variant="body1" text="Crisneil Musa is a senior student studying BS Computer Science
+              <Typography variant="title" text="About the Developer"/>
+              <Typography variant="body1" text="Crisneil Musa is a senior student studying BS Computer Science
               at the University of the Philippines - Los Banos."/>
-          </Grid>
-        </Grid>
-      </PageLayout>
+          </MUIGrid>
+        </MUIGrid>
+      </Box>
       <Outlet/>
     </>
   );

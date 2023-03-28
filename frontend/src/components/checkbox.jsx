@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Checkbox from '@mui/material/Checkbox';
+import { Checkbox as MUICheckbox } from '@mui/material';
 
-const ControlledCheckbox = () => {
+const Checkbox = () => {
   const [checked, setChecked] = React.useState(false);
 
   const handleChange = (event) => {
@@ -9,7 +9,7 @@ const ControlledCheckbox = () => {
   };
 
   return (
-    <Checkbox
+    <MUICheckbox
       checked={checked}
       onChange={handleChange}
       inputProps={{ 'aria-label': 'controlled' }}
@@ -17,4 +17,4 @@ const ControlledCheckbox = () => {
   );
 }
 
-export default ControlledCheckbox;
+export default Checkbox;

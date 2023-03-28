@@ -1,16 +1,16 @@
-import { Grid } from '@mui/material';
+import { Grid as MUIGrid } from '@mui/material';
 
-const GridContainer = ({
+const Grid = ({
     props
 }) => (
-    <Grid
+    <MUIGrid
         container
         direction="row"
         justifyContent="space-evenly"
         alignItems="baseline"
     >
         {...props}
-    </Grid>
+    </MUIGrid>
 );
 
-export default GridContainer;
+export default Grid;

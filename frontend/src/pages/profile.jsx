@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box,
   Button,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  ListItemAvatar,
-  useMediaQuery,
   TextField,
 } from '@mui/material';
 import { Outlet, useParams } from 'react-router-dom';
@@ -18,15 +9,11 @@ import COLORS from '../constants/colors.js';
 
 import profiles from '../data/profiles.json';
 
-import SimpleText from '../components/simple-text.jsx';
-import GridContainer from '../components/grid-container.jsx';
-import PictureCard from '../components/picture-card.jsx';
-import AvatarIcon from '../components/avatar-icon.jsx';
-
-import CardComponent from '../components/card-component.jsx';
-import CommentCard from '../views/comment-card.jsx';
-import PageLayout from '../components/page-box-layout.jsx';
-import ContentDivider from '../components/divider-content.jsx';
+import Typography from '../components/typography.jsx';
+import CardMedia from '../components/cardmedia.jsx';
+import Card from '../components/card.jsx';
+import Box from '../components/box.jsx';
+import Divider from '../components/divider.jsx';
 
 const Profile = () => {
   const { id } = useParams();
@@ -65,8 +52,8 @@ const Profile = () => {
 
   return (
     <>
-      <PageLayout sx={{ border: 1 }}>
-        <CardComponent>
+      <Box sx={{ border: 1 }}>
+        <Card>
           {isEditing ? (
             <>
               <TextField
@@ -81,7 +68,7 @@ const Profile = () => {
                 value={formValues.lastName}
                 onChange={handleInputChange}
               />
-              <ContentDivider />
+              <Divider />
               <TextField
                 label="Email"
                 name="email"
@@ -94,31 +81,31 @@ const Profile = () => {
                 value={formValues.phoneNumber}
                 onChange={handleInputChange}
               />
-              <ContentDivider />
+              <Divider />
               <Button onClick={handleSaveButtonClick}>Save</Button>
               <Button onClick={handleCancelButtonClick}>Cancel</Button>
             </>
           ) : (
             <>
-              <SimpleText
+              <Typography
                 variant="hero_title"
                 text={
                   profile?.first_name + " " + profile?.last_name ?? "N/A"
                 }
               />
-              <PictureCard image={profile?.profile_picture ?? ""} />
-              <ContentDivider />
-              <SimpleText variant="title" text={profile?.email ?? "N/A"} />
-              <SimpleText
+              <CardMedia image={profile?.profile_picture ?? ""} />
+              <Divider />
+              <Typography variant="title" text={profile?.email ?? "N/A"} />
+              <Typography
                 variant="body1"
                 text={profile.phone_number ?? "N/A"}
               />
-              <ContentDivider />
+              <Divider />
               <Button onClick={handleEditButtonClick}>Edit Profile</Button>
             </>
           )}
-        </CardComponent>
-      </PageLayout>
+        </Card>
+      </Box>
       <Outlet />
     </>
   );
