@@ -1,0 +1,27 @@
+[
+    {
+        "title": "Longganisa for Sale",
+        "price": 250,
+        "currency": "PHP",
+        "location": "New York, NY",
+        "postedBy": "John Doe",
+        "createdAt": "2018-01-01T06:21:00.000",
+        "email": ["email2@gmail.com"],
+        "phone_number": ["12345678"],
+        "imageUrl": "https://picsum.photos/202",
+        "description": "Healthy."
+    },
+    {
+        "title": "Menudo for Sale",
+        "price": 100,
+        "currency": "PHP",
+        "location": "Olongapo City",
+        "postedBy": "Johnny",
+        "createdAt": "2018-01-01T06:21:00.000",
+        "email": ["email2@gmail.com"],
+        "phone_number": ["12345678"],
+        "imageUrl": "https://picsum.photos/200",
+        "description": "Food."
+    }
+]
+  

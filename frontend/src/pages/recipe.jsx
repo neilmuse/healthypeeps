@@ -97,7 +97,7 @@ const Recipe = () => {
                         <Typography variant="body1" text={name ?? "N/A"} />
                       </Grid>
                     </Grid>
-                    </Grid>
+                  </Grid>
                 )
                 }
               </Grid>
@@ -125,68 +125,3 @@ const Recipe = () => {
 };
 
 export default Recipe;
-
-// import React from 'react';
-// import {
-//   Box,
-//   Chip,
-//   List,
-//   ListItem,
-//   ListItemText,
-//   Typography,
-// } from '@mui/material';
-// import recipes from '../data/recipes.json';
-
-// const RecipeDisplay = () => {
-//   const { id } = useParams();
-//   const recipe = recipes[id] ?? {};
-//   return (
-//     <Box sx={{ mt: 3 }}>
-//       <Typography variant="h6" text="Recipe Details" />
-
-//       <Typography variant="subtitle1" text="Title" sx={{ mt: 2 }} />
-//       <Typography>{recipe.title}</Typography>
-
-//       <Typography variant="subtitle1" text="Image URL" sx={{ mt: 2 }} />
-//       <Typography>{recipe.image}</Typography>
-
-//       <Typography variant="subtitle1" text="Preparation Steps" sx={{ mt: 2 }} />
-//       <List>
-//         {recipe.preparation.map((step, index) => (
-//           <ListItem key={index}>
-//             <ListItemText primary={`Step ${index + 1}`} secondary={step} />
-//           </ListItem>
-//         ))}
-//       </List>
-
-//       <Typography variant="subtitle1" text="Nutrition" sx={{ mt: 2 }} />
-//       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-//         {Object.entries(recipe.nutrition).map(([key, value]) => (
-//           <Typography key={key}>
-//             {key}: {value}
-//           </Typography>
-//         ))}
-//       </Box>
-
-//       <Typography variant="subtitle1" text="Ingredients" sx={{ mt: 2 }} />
-//       <List>
-//         {recipe.ingredients.map((ingredient, index) => (
-//           <ListItem key={index}>
-//             <ListItemText
-//               primary={`${ingredient.value} ${ingredient.unit} ${ingredient.name}`}
-//             />
-//           </ListItem>
-//         ))}
-//       </List>
-
-//       <Typography variant="subtitle1" text="Tags" sx={{ mt: 2 }} />
-//       <Box sx={{ mt: 1, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-//         {recipe.tags.map((tag, index) => (
-//           <Chip key={index} label={tag} />
-//         ))}
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default RecipeDisplay;

@@ -14,6 +14,8 @@ import LoginPage from './pages/login.jsx';
 import PageNotFound from './pages/not-found.jsx';
 import RecipeLayout from './pages/recipe-feed.jsx';
 import RecipePage from './pages/recipe.jsx';
+import ListingLayout from './pages/listing.jsx';
+import ListingPage from './views/listing.jsx';
 import Homepage from './pages/homepage.jsx';
 import AboutUs from './pages/about-us.jsx';
 import ProfilePage from './pages/profile.jsx';
@@ -31,6 +33,8 @@ root.render(
             <Route path="signup" element={<SignupPage />} />
             <Route path="recipe" element={<RecipeLayout />} />
             <Route path="recipe/:id" element={<RecipePage />} />
+            <Route path="listing" element={<ListingLayout />} />
+            <Route path="listing/:id" element={<ListingPage />} />
             <Route path="home" element={<Homepage />} />
             <Route path="admin" element={<AdminPage />} />
             <Route path="about" element={<AboutUs />} />
