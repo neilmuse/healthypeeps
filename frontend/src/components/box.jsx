@@ -1,9 +1,12 @@
 import React from 'react';
 import { Box as MUIBox} from '@mui/material';
 
-const Box = ({ children }) => {
+const Box = ({ 
+  children,
+  value
+}) => {
   return (
-    <MUIBox my={10}>
+    <MUIBox my={value ? value : 10 }>
       {children}
     </MUIBox>
   );

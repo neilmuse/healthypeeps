@@ -1,11 +1,8 @@
-import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { Avatar, Card, CardHeader, CardContent, CardActions, Collapse } from '@mui/material';
-
-import { red } from '@mui/material/colors';
+import { styled } from '@mui/material/styles';
 import COLORS from '../constants/colors.js';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Typography from '../components/typography.jsx';
@@ -24,7 +21,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const RecipeCard = ({ title, author, createdAt }) => {
+const RecipeCard = ({ title, image, author, createdAt }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -33,7 +30,7 @@ const RecipeCard = ({ title, author, createdAt }) => {
   return (
     <Card>
 
-      {/* <img src={image} /> */}
+      <img src={image} />
 
       <CardHeader
         avatar={
@@ -41,7 +38,6 @@ const RecipeCard = ({ title, author, createdAt }) => {
             {author?.name?.substr(0, 1)}
           </Avatar>
         }
-        
         
         title={<Typography variant="cardtitle" text={title} />}
         subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
@@ -66,8 +62,6 @@ const RecipeCard = ({ title, author, createdAt }) => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography variant="body1" text="Method:" />
-          <Typography variant="body1" text="Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes." />
-          <Typography variant="body1" text="Set aside off of the heat to let rest for 10 minutes, and then serve." />
         </CardContent>
       </Collapse>
     </Card>

@@ -9,7 +9,6 @@ const HeroSection = () => {
         height: '50vh',
         backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

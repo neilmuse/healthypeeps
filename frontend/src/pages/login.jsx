@@ -50,7 +50,7 @@ const Login = () => {
 
               <Grid container>
                 <Grid item xs>
-                  <LinkComponent href="#" variant="body2" text="Forgot Password?" />
+                  <LinkComponent href="/reset-password" variant="body2" text="Forgot Password?" />
                 </Grid>
                 <Grid item>
                   <LinkComponent href="/signup" variant="body2" text="Don't have an account? Sign Up" />

@@ -21,7 +21,7 @@ import Typography from './typography.jsx';
 const pages = [
   {
     name: "Feed",
-    url: "recipe"
+    url: "home"
   },
   {
     name: "Recipe",
@@ -103,7 +103,7 @@ const TopNavBar = () => {
                 <AppBarText
                     variant="h5"
                     text="Healthy Peeps"
-                    href="/"
+                    href="/home"
                 />
 
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

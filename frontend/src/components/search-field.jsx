@@ -6,7 +6,8 @@ import { Button } from '@mui/material';
 
 export default function SearchField() {
   return (
-    <Stack spacing={2} sx={{ width: 500 }}>
+    <Stack spacing={1} justifyContent="center"
+    maxWidth="xl">
       <Autocomplete
         id="free-solo-demo"
         freeSolo

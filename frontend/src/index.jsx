@@ -9,7 +9,6 @@ import RECIPE_THEME from './themes/recipe-theme';
 
 import App from './App';
 import TopNavBar from './components/appbar.jsx';
-import AddDiscussion from './pages/add-discussion.jsx';
 import SignupPage from './pages/signup.jsx';
 import LoginPage from './pages/login.jsx';
 import PageNotFound from './pages/not-found.jsx';
@@ -31,9 +30,8 @@ root.render(
             <Route path="login" element={<LoginPage />} />
             <Route path="signup" element={<SignupPage />} />
             <Route path="recipe" element={<RecipeLayout />} />
-            <Route path="recipepage/:id" element={<RecipePage />} />
+            <Route path="recipe/:id" element={<RecipePage />} />
             <Route path="home" element={<Homepage />} />
-            <Route path="add-discussion" element={<AddDiscussion />} />
             <Route path="admin" element={<AdminPage />} />
             <Route path="about" element={<AboutUs />} />
             <Route path="profile/:id" element={<ProfilePage />} />
