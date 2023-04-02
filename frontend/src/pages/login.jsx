@@ -1,23 +1,44 @@
 import * as React from 'react';
-import { Box as MUIBox, Container, Grid } from '@mui/material';
+import {
+  Box as MUIBox,
+  Container,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField as MUITextField,
+} from '@mui/material';
 import { Outlet } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-import logo from '../assets/logo-temp.png'
+import logo from '../assets/logo-temp.png';
 
-import TextField from '../components/textfield.jsx';
 import Button from '../components/button.jsx';
 import Typography from '../components/typography.jsx';
 import LinkComponent from '../components/link.jsx';
 import Box from '../components/box.jsx';
 
 const Login = () => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [emailError, setEmailError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    setEmailError(!email);
+    setPasswordError(!password);
+
+    if (!email || !password) {
+      return;
+    }
+
+    console.log({ email, password });
+  };
+
+  const handleBlur = (fieldValue, setError) => {
+    setError(!fieldValue);
   };
 
   return (
@@ -41,21 +62,44 @@ const Login = () => {
 
             <Grid item>
               <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
-                <TextField
+                <MUITextField
                   required
                   name="email"
                   label="Email Address"
                   autoFocus
                   fullWidth
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => handleBlur(email, setEmailError)}
+                  error={emailError}
+                  helperText={emailError && 'Email is required.'}
                 />
 
-                <TextField
+                <MUITextField
                   required
                   name="password"
                   label="Password"
-                  autoFocus
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onBlur={() => handleBlur(password, setPasswordError)}
                   fullWidth
+                  sx={{ mt: 1 }}
+                  error={passwordError}
+                  helperText={passwordError && 'Password is required.'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
 
                 <Button text="Sign In" primary submit fullWidth />
