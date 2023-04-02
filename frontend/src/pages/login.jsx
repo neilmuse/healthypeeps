@@ -24,42 +24,56 @@ const Login = () => {
     <>
       <Box>
         <Container maxWidth="sm">
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            style={{ minHeight: '100vh' }}
+          >
+            <Grid item>
+              <img src={logo} />
+            </Grid>
 
-            <img src={logo} />
+            <Grid item>
+              <Typography variant="title" text="Welcome Back!" />
+            </Grid>
 
-            <Typography variant="title" text="Welcome Back!"/>
+            <Grid item>
+              <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+                <TextField
+                  required
+                  name="email"
+                  label="Email Address"
+                  autoFocus
+                  fullWidth
+                />
 
-            <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <TextField
+                  required
+                  name="password"
+                  label="Password"
+                  autoFocus
+                  type="password"
+                  fullWidth
+                />
 
-              <TextField
-                required
-                name="email"
-                label="Email Address"
-                autoFocus
-              />
+                <Button text="Sign In" primary submit fullWidth />
 
-              <TextField
-                required
-                name="password"
-                label="Password"
-                autoFocus
-                type="password"
-              />
-
-              <Button text="Sign In" primary submit/>
-
-              <Grid container>
-                <Grid item xs>
-                  <LinkComponent href="/reset-password" variant="body2" text="Forgot Password?" />
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ marginTop: 2 }}>
+                    <LinkComponent href="/reset-password" variant="body2" text="Forgot Password?" />
+                  </Grid>
+                  <Grid item xs={6} sx={{ marginTop: 2 }}>
+                    <LinkComponent href="/signup" variant="body2" text="Don't have an account? Sign Up" />
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <LinkComponent href="/signup" variant="body2" text="Don't have an account? Sign Up" />
-                </Grid>
-              </Grid>
-            </MUIBox>
+              </MUIBox>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
-      <Outlet/>
+      <Outlet />
     </>
   );
 };

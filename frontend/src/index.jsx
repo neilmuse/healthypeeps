@@ -11,6 +11,7 @@ import App from './App';
 import TopNavBar from './components/appbar.jsx';
 import SignupPage from './pages/signup.jsx';
 import LoginPage from './pages/login.jsx';
+import ResetPasswordPage from './pages/reset-password.jsx';
 import PageNotFound from './pages/not-found.jsx';
 import RecipeLayout from './pages/recipe-feed.jsx';
 import RecipePage from './pages/recipe.jsx';
@@ -31,6 +32,7 @@ root.render(
           <Route path="/" element={<TopNavBar />}>
             <Route path="login" element={<LoginPage />} />
             <Route path="signup" element={<SignupPage />} />
+            <Route path="reset-password" element={<ResetPasswordPage />} />
             <Route path="recipe" element={<RecipeLayout />} />
             <Route path="recipe/:id" element={<RecipePage />} />
             <Route path="listing" element={<ListingLayout />} />
