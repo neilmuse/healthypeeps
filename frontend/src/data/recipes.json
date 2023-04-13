@@ -4,85 +4,186 @@
     "image": "https://picsum.photos/200",
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     "ingredients": [
-      { "quantity": 1, "units": "cup", "name": "rice" },
-      { "quantity": 1.5, "units": "cup", "name": "water" },
-      { "quantity": 1.5, "units": "cup", "name": "water" },
-      { "quantity": 1.5, "units": "cup", "name": "water" }
+      {
+        "quantity": 1,
+        "units": "cup",
+        "name": "rice"
+      },
+      {
+        "quantity": 1.5,
+        "units": "cup",
+        "name": "water"
+      },
+      {
+        "quantity": 1.5,
+        "units": "cup",
+        "name": "water"
+      },
+      {
+        "quantity": 1.5,
+        "units": "cup",
+        "name": "water"
+      }
     ],
     "createdAt": "2016-01-01T06:21:00.000",
     "author": {
       "name": "Luffy"
     },
     "macros": [
-      { "name": "Calories", "value": 32 },
-      { "name": "Protein", "value": 42 },
-      { "name": "Carbohydrates", "value": 120 },
-      { "name": "Fat", "value": 30 }
+      {
+        "name": "Calories",
+        "value": 32
+      },
+      {
+        "name": "Protein",
+        "value": 42
+      },
+      {
+        "name": "Carbohydrates",
+        "value": 120
+      },
+      {
+        "name": "Fat",
+        "value": 30
+      }
     ],
-    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
+    "preparation": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    ]
   },
   {
     "title": "Monggo",
     "image": "https://picsum.photos/200",
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     "ingredients": [
-      { "quantity": 1, "units": "cup", "name": "rice" },
-      { "quantity": 1.5, "units": "cup", "name": "water" }
+      {
+        "quantity": 1,
+        "units": "cup",
+        "name": "rice"
+      },
+      {
+        "quantity": 1.5,
+        "units": "cup",
+        "name": "water"
+      }
     ],
     "createdAt": "2016-01-01T06:21:00.000",
     "author": {
       "name": "Luffy"
     },
     "macros": [
-      { "name": "Calories", "value": 32 },
-      { "name": "Protein", "value": 42 },
-      { "name": "Carbohydrates", "value": 120 },
-      { "name": "Fat", "value": 30 }
+      {
+        "name": "Calories",
+        "value": 32
+      },
+      {
+        "name": "Protein",
+        "value": 42
+      },
+      {
+        "name": "Carbohydrates",
+        "value": 120
+      },
+      {
+        "name": "Fat",
+        "value": 30
+      }
     ],
-
-    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
+    "preparation": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    ]
   },
   {
     "title": "Sinigang",
     "image": "https://picsum.photos/200",
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     "ingredients": [
-      { "quantity": 1, "units": "cup", "name": "rice" },
-      { "quantity": 1.5, "units": "cup", "name": "water" }
+      {
+        "quantity": 1,
+        "units": "cup",
+        "name": "rice"
+      },
+      {
+        "quantity": 1.5,
+        "units": "cup",
+        "name": "water"
+      }
     ],
     "createdAt": "2016-01-01T06:21:00.000",
     "author": {
       "name": "Luffy"
     },
     "macros": [
-      { "name": "Calories", "value": 32 },
-      { "name": "Protein", "value": 42 },
-      { "name": "Carbohydrates", "value": 120 },
-      { "name": "Fat", "value": 30 }
+      {
+        "name": "Calories",
+        "value": 32
+      },
+      {
+        "name": "Protein",
+        "value": 42
+      },
+      {
+        "name": "Carbohydrates",
+        "value": 120
+      },
+      {
+        "name": "Fat",
+        "value": 30
+      }
     ],
-
-    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
+    "preparation": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    ]
   },
   {
     "title": "Menudo",
     "image": "https://picsum.photos/200",
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     "ingredients": [
-      { "quantity": 1, "units": "cup", "name": "rice" },
-      { "quantity": 1.5, "units": "cup", "name": "water" }
+      {
+        "quantity": 1,
+        "units": "cup",
+        "name": "rice"
+      },
+      {
+        "quantity": 1.5,
+        "units": "cup",
+        "name": "water"
+      }
     ],
     "createdAt": "2016-01-01T06:21:00.000",
     "author": {
       "name": "Luffy"
     },
     "macros": [
-      { "name": "Calories", "value": 32 },
-      { "name": "Protein", "value": 42 },
-      { "name": "Carbohydrates", "value": 120 },
-      { "name": "Fat", "value": 30 }
+      {
+        "name": "Calories",
+        "value": 32
+      },
+      {
+        "name": "Protein",
+        "value": 42
+      },
+      {
+        "name": "Carbohydrates",
+        "value": 120
+      },
+      {
+        "name": "Fat",
+        "value": 30
+      }
     ],
-
-    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
+    "preparation": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    ]
   },
   {
     "title": "Another Recipe",
@@ -93,11 +194,49 @@
       "name": "Luffy"
     },
     "macros": [
-      { "name": "protein", "value": 42 },
-      { "name": "carbs", "value": 120 },
-      { "name": "fat", "value": 30 }
+      {
+        "name": "protein",
+        "value": 42
+      },
+      {
+        "name": "carbs",
+        "value": 120
+      },
+      {
+        "name": "fat",
+        "value": 30
+      }
     ],
-    "preparation": ["Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry."]
+    "preparation": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    ],
+    "comments": [
+      {
+        "createdAt": "2017-01-01T06:21:00.000",
+        "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+        "image": "https://picsum.photos/200",
+        "author": {
+          "name": "Luffy"
+        }
+      },
+      {
+        "createdAt": "2018-01-01T06:21:00.000",
+        "image": "https://picsum.photos/200",
+        "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+        "author": {
+          "name": "Nami"
+        }
+      },
+      {
+        "createdAt": "2019-01-01T06:21:00.000",
+        "image": "https://picsum.photos/200",
+        "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+        "author": {
+          "name": "Mami"
+        }
+      }
+    ]
   }
 ]
-

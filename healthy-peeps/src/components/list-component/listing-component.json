@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_list_component_listing_components",
+  "info": {
+    "displayName": "Listing Component"
+  },
+  "options": {},
+  "attributes": {
+    "price": {
+      "type": "decimal"
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone_number": {
+      "type": "biginteger",
+      "required": false
+    }
+  }
+}

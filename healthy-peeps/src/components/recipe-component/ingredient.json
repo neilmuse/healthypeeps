@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_recipe_component_ingredients",
+  "info": {
+    "displayName": "ingredient"
+  },
+  "options": {},
+  "attributes": {
+    "quantity": {
+      "type": "decimal"
+    },
+    "units": {
+      "type": "enumeration",
+      "enum": [
+        "grams",
+        "milligrams",
+        "cups",
+        "spoons",
+        "onzes"
+      ]
+    },
+    "name": {
+      "type": "string"
+    }
+  }
+}

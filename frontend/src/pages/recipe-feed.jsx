@@ -1,19 +1,25 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import RecipeCard from '../views/recipe-card';
-import recipes from '../data/recipes.json';
+// import recipes from '../data/recipes.json';
 import ImageSlider from '../views/image-slider';
 import Box from '../components/box.jsx';
 import Grid from '../components/grid.jsx';
+import { getPosts } from "../api/index.js";
 
 const Recipe = (props) => {
+  const [recipes, setRecipes] = useState();
+
+  useEffect(() => {
+    getPosts().then(data => setRecipes(data));
+  }, [])
+
+
   return (
-    <>
-      <Grid 
-        props = {recipes.map((recipe, index) => (
-          <RecipeCard {...recipe} />
-        ))}
-      />
-    </>
+    <Grid>
+      {recipes?.map((recipe, index) => (
+        <RecipeCard {...recipe} />
+      ))}
+    </Grid>
   );
 };
 

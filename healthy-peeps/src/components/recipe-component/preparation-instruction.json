@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_recipe_component_preparation_instructions",
+  "info": {
+    "displayName": "preparationInstruction"
+  },
+  "options": {},
+  "attributes": {
+    "instruction": {
+      "type": "text"
+    }
+  }
+}

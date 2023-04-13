@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from "@mui/material/styles";
-import {StyledEngineProvider} from '@mui/material/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 import RECIPE_THEME from './themes/recipe-theme';
 
@@ -26,26 +26,26 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <StyledEngineProvider>
-    <ThemeProvider theme={RECIPE_THEME}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<TopNavBar />}>
-            <Route path="login" element={<LoginPage />} />
-            <Route path="signup" element={<SignupPage />} />
-            <Route path="reset-password" element={<ResetPasswordPage />} />
-            <Route path="recipe" element={<RecipeLayout />} />
-            <Route path="recipe/:id" element={<RecipePage />} />
-            <Route path="listing" element={<ListingLayout />} />
-            <Route path="listing/:id" element={<ListingPage />} />
-            <Route path="home" element={<Homepage />} />
-            <Route path="admin" element={<AdminPage />} />
-            <Route path="about" element={<AboutUs />} />
-            <Route path="profile/:id" element={<ProfilePage />} />
-          </Route>
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+      <ThemeProvider theme={RECIPE_THEME}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<TopNavBar />}>
+              <Route path="login" element={<LoginPage />} />
+              <Route path="signup" element={<SignupPage />} />
+              <Route path="reset-password" element={<ResetPasswordPage />} />
+              <Route path="recipes" element={<RecipeLayout />} />
+              <Route path="recipe/:id" element={<RecipePage />} />
+              <Route path="listing" element={<ListingLayout />} />
+              <Route path="listing/:id" element={<ListingPage />} />
+              <Route path="home" element={<Homepage />} />
+              <Route path="admin" element={<AdminPage />} />
+              <Route path="about" element={<AboutUs />} />
+              <Route path="profile/:id" element={<ProfilePage />} />
+            </Route>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </StyledEngineProvider>
   </React.StrictMode>
 );

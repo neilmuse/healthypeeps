@@ -1,17 +1,76 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require("body-parser");
+const router = require('./routes/userRoutes');
+const { MongoMemoryServer } = require("mongodb-memory-server");
 
-const PORT = process.env.PORT || 5000;
+const USER_ROUTES = require("./routes/userRoutes");
+// const POST_ROUTES = require("./routes/postRoutes");
+// const REGISTER_ROUTES = require("./register-routes");
+// const userRoutes = require("./routes/userRoutes");
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  bodyParser.json({
+    limit: "5mb",
+    verify: (req, _, buff, __) => {
+      req.bodyPlainText = buff.toString();
+      return true;
+    },
+  })
+);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+router(app);
+
+// REGISTER_ROUTES(app, [USER_ROUTES, POST_ROUTES], "/api");
+// app.use("/api/users", USER_ROUTES);
+
+let server;
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
+
+// if (NODE_ENV === "test") {
+//   const mongoServer = new MongoMemoryServer();
+//   console.log("Initializing test environment");
+
+//   mongoServer.start().then(() => {
+//     const mongoUri = mongoServer.getUri();
+
+//     mongoose.connect(process.env.MONGODB_URI, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+
+//     mongoose.connection.on("error", (err) => {
+//       console.log(err);
+//     });
+
+//     mongoose.connection.once("open", () => {
+//       console.log(`Test enviroment initialized | Connected @ ${mongoUri}`);
+//     });
+//   });
+// }
+
+const connection = mongoose.connection;
+
+connection.once('open', () => {
+  console.log('MongoDB database connection established successfully');
+});
+
+server = app.listen(process.env.PORT || 5000, (err) => {
+  if (err) throw err;
+
+  console.log(`Server is running on port: ${process.env.PORT || 5000}`);
+});
+
+module.exports = server;

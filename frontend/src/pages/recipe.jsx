@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box as MUIBox,
   Grid,
@@ -14,7 +14,7 @@ import ProteinIcon from '@mui/icons-material/EggTwoTone';
 import CarbohydratesIcon from '@mui/icons-material/BakeryDiningTwoTone';
 import FatIcon from '@mui/icons-material/LocalPizzaTwoTone';
 
-import recipes from '../data/recipes.json';
+// import recipes from '../data/recipes.json';
 
 import Typography from '../components/typography.jsx';
 import CardMedia from '../components/cardmedia.jsx';
@@ -24,38 +24,44 @@ import Card from '../components/card.jsx';
 import CommentCard from '../views/comment-card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
+import { getPost } from '../api/index.js';
 
 const Recipe = () => {
   const { id } = useParams();
-  const recipe = recipes[id] ?? {};
+  const [recipe, setRecipe] = useState();
+  // const recipe = recipes[id] ?? {};
 
   const icons = [CaloriesIcon, ProteinIcon, CarbohydratesIcon, FatIcon];
 
-  return (
+  useEffect(() => {
+    getPost(id).then(data => setRecipe(data));
+  }, [])
+
+  return (recipe &&
     <>
-      <Box sx={{border: 1}}>
+      <Box sx={{ border: 1 }}>
         <Card>
           <Grid item>
             <Typography variant="hero_title" text={recipe.title ?? "N/A"} />
 
             <CardMedia image={recipe.image ?? ""} />
 
-            <Divider/>
+            <Divider />
 
             <Typography variant="title" text="Brief Description" />
             <Typography variant="body1" text={recipe.description ?? "N/A"} />
 
-            <Divider/>
+            <Divider />
 
             <Typography variant="title" text="Ingredients" />
 
             <List
-              sx = {{
-              listStyleType: 'disc',
-              pl: 2,
-              '& .MuiListItem-root': {
-                display: 'list-item',
-              },
+              sx={{
+                listStyleType: 'disc',
+                pl: 2,
+                '& .MuiListItem-root': {
+                  display: 'list-item',
+                },
               }} >
               {(recipe.ingredients ?? []).map(({ quantity, units, name }) => (
                 <ListItem>
@@ -65,11 +71,11 @@ const Recipe = () => {
 
             </List>
 
-            <Divider/>
+            <Divider />
 
             <MUIBox>
               <MUIBox display="inline-block">
-              <Typography variant="title" text="Nutrition Facts" />
+                <Typography variant="title" text="Nutrition Facts" />
               </MUIBox>
               <MUIBox display="inline-block" mx={1}>
                 <Typography variant="small" text="(per serving)" />
@@ -84,36 +90,36 @@ const Recipe = () => {
 
               <Grid container spacing={2} p={3}>
                 {
-                (recipe.macros ?? []).map(({name, value}, index) =>
-                  <Grid item xs={6} sm={3}>
-                    <Grid container direction="column" alignItems="center">
-                      <Grid item>
-                        <Avatar/>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="body_bold" text={value ?? "N/A"} />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="body1" text={name ?? "N/A"} />
+                  (recipe.macros ?? []).map(({ name, quantity }, index) =>
+                    <Grid item xs={6} sm={3}>
+                      <Grid container direction="column" alignItems="center">
+                        <Grid item>
+                          <Avatar />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="body_bold" text={quantity ?? "N/A"} />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="body1" text={name ?? "N/A"} />
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                )
+                  )
                 }
               </Grid>
             </MUIBox>
 
-            <Divider/>
+            <Divider />
 
             <Typography variant="title" text="Preparation" />
-            {(recipe.preparation ?? []).map((prep, index) => (
+            {(recipe.preparation ?? []).map(({ instruction }, index) => (
               <List>
                 <Typography variant="body_bold" text={"Step " + (index + 1)} />
-                <Typography variant="body1" text={prep ?? "N/A"} />
+                <Typography variant="body1" text={instruction ?? "N/A"} />
               </List>
             ))}
 
-            <Divider/>
+            <Divider />
 
             <CommentCard />
           </Grid>

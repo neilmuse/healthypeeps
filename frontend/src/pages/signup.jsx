@@ -1,7 +1,17 @@
 import * as React from 'react';
-import { Avatar, Box as MUIBox, Container, CssBaseline, Grid } from '@mui/material';
+import {
+  Avatar,
+  Box as MUIBox,
+  Container,
+  CssBaseline,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField as MUITextField,
+} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import logo from '../assets/logo-temp.png';
 
@@ -13,13 +23,58 @@ import Link from '../components/link.jsx';
 import Box from '../components/box.jsx';
 
 const Signup = () => {
-  const handleSubmit = (event) => {
+  const [fieldErrors, setFieldErrors] = React.useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    repeatPassword: false,
+  });
+
+  const [formData, setFormData] = React.useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+    userType: "normal",
+  });
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = React.useState(false);
+
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
+  const handleBlur = (field, value) => {
+    setFieldErrors((prevErrors) => ({ ...prevErrors, [field]: !value }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = new FormData(event.currentTarget);
+
+    const newErrors = {
+      firstName: !formData.firstName,
+      lastName: !formData.lastName,
+      email: !formData.email,
+      password: !formData.password,
+      repeatPassword: !formData.repeatPassword,
+    };
+
+    setFieldErrors(newErrors);
+
+    if (Object.values(newErrors).some((error) => error)) {
+      return;
+    }
+
+    try {
+      const result = await signup(formData);
+      console.log(result);
+    } catch (error) {
+      console.error("Signup failed", error);
+    }
   };
 
   return (
@@ -27,57 +82,97 @@ const Signup = () => {
       <Box>
         <Container component="main" maxWidth="sm">
           <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              style={{ minHeight: '100vh' }}
-            >
-
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            style={{ minHeight: '100vh' }}
+          >
             <img src={logo} />
 
             <Typography variant="title" text="Create An Account" />
 
             <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
-                
               <TextField
                 required
-                name="first_name"
+                name="firstName"
                 label="First Name"
                 autoFocus
+                error={fieldErrors.firstName}
+                onBlur={(e) => handleBlur('firstName', e.target.value)}
+                helperText={fieldErrors.firstName && 'First name is required.'}
+                onChange={handleChange}
               />
 
               <TextField
                 required
-                name="last_name"
+                name="lastName"
                 label="Last Name"
-                autoFocus
+                error={fieldErrors.lastName}
+                onBlur={(e) => handleBlur('lastName', e.target.value)}
+                helperText={fieldErrors.lastName && 'Last name is required.'}
+                onChange={handleChange}
               />
 
               <TextField
                 required
                 name="email"
                 label="Email Address"
-                autoFocus
+                error={fieldErrors.email}
+                onBlur={(e) => handleBlur('email', e.target.value)}
+                helperText={fieldErrors.email && 'Email is required.'}
+                onChange={handleChange}
               />
 
-              <TextField
+              <MUITextField
                 required
                 name="password"
                 label="Password"
-                autoFocus
-                type="password"
+                type={showPassword ? 'text' : 'password'}
+                error={fieldErrors.password}
+                onBlur={(e) => handleBlur('password', e.target.value)}
+                helperText={fieldErrors.password && 'Password is required.'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        onMouseDown={(e) => e.preventDefault()}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={handleChange}
               />
 
-              <TextField
+              <MUITextField
                 required
-                name="repeat-password"
+                name="repeatPassword"
                 label="Repeat Password"
-                autoFocus
-                type="password"
+                type={showRepeatPassword ? 'text' : 'password'}
+                error={fieldErrors.repeatPassword}
+                onBlur={(e) => handleBlur('repeatPassword', e.target.value)}
+                helperText={fieldErrors.repeatPassword && 'Repeat password is required.'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                        onMouseDown={(e) => e.preventDefault()}
+                        edge="end"
+                      >
+                        {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={handleChange}
               />
 
-              <Button text="Submit" primary submit fullWidth/>
+              <Button text="submit" primary submit fullWidth />
 
               <Grid container spacing={2}>
                 <Grid item xs={6} alignItem="left" sx={{ marginTop: 2 }}>
@@ -88,7 +183,7 @@ const Signup = () => {
           </Grid>
         </Container>
       </Box>
-      <Outlet/>
+      <Outlet />
     </>
   );
 };
