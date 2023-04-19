@@ -35,7 +35,7 @@ root.render(
               <Route path="reset-password" element={<ResetPasswordPage />} />
               <Route path="recipes" element={<RecipeLayout />} />
               <Route path="recipe/:id" element={<RecipePage />} />
-              <Route path="listing" element={<ListingLayout />} />
+              <Route path="listings" element={<ListingLayout />} />
               <Route path="listing/:id" element={<ListingPage />} />
               <Route path="home" element={<Homepage />} />
               <Route path="admin" element={<AdminPage />} />

@@ -21,7 +21,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const RecipeCard = ({ title, image, author, createdAt }) => {
+const RecipeCard = ({ title, image, author, date_created }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -40,7 +40,7 @@ const RecipeCard = ({ title, image, author, createdAt }) => {
         }
         
         title={<Typography variant="cardtitle" text={title} />}
-        subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
+        subheader={<Typography variant="cardsubheader" text={ConvertTime(date_created)} />}
       />
 
       <CardContent>

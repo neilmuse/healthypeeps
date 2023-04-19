@@ -8,7 +8,7 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
   const [current, setCurrent] = useState(0);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const itemsToShow = isSmallScreen ? 1 : itemsPerSlide;
+  const itemsToShow = isSmallScreen ? 2 : itemsPerSlide;
 
   const handlePrev = () => {
     setCurrent((prev) => (prev === 0 ? images.length - itemsToShow : prev - itemsToShow));

@@ -12,6 +12,7 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 import logo from '../assets/logo-temp.png';
 
@@ -22,22 +23,27 @@ import Typography from '../components/typography.jsx';
 import Link from '../components/link.jsx';
 import Box from '../components/box.jsx';
 
+import { signup } from '../api/index.js';
+
 const Signup = () => {
+  const NAVIGATE = useNavigate();
+
   const [fieldErrors, setFieldErrors] = React.useState({
-    firstName: false,
-    lastName: false,
+    first_name: false,
+    last_name: false,
     email: false,
+    phone_number: false,
     password: false,
     repeatPassword: false,
   });
 
   const [formData, setFormData] = React.useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
-    phoneNumber: "",
-    userType: "normal",
+    phone_number: "",
+    user_type: "normal",
   });
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -56,11 +62,12 @@ const Signup = () => {
     const formData = new FormData(event.currentTarget);
 
     const newErrors = {
-      firstName: !formData.firstName,
-      lastName: !formData.lastName,
-      email: !formData.email,
-      password: !formData.password,
-      repeatPassword: !formData.repeatPassword,
+      first_name: !formData.get("first_name"),
+      last_name: !formData.get("last_name"),
+      email: !formData.get("email"),
+      phone_number: !formData.get("phone_number"),
+      password: !formData.get("password"),
+      repeatPassword: !formData.get("repeatPassword"),
     };
 
     setFieldErrors(newErrors);
@@ -69,13 +76,25 @@ const Signup = () => {
       return;
     }
 
+    const user = {
+      username: formData.get("email"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      user_type: "normal",
+      first_name: formData.get("first_name"),
+      last_name: formData.get("last_name"),
+      phone_number: formData.get("phone_number"),
+    };
+
     try {
-      const result = await signup(formData);
+      const result = await signup(user);
       console.log(result);
+      NAVIGATE('login');
     } catch (error) {
       console.error("Signup failed", error);
     }
   };
+
 
   return (
     <>
@@ -95,22 +114,22 @@ const Signup = () => {
             <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
               <TextField
                 required
-                name="firstName"
+                name="first_name"
                 label="First Name"
                 autoFocus
-                error={fieldErrors.firstName}
-                onBlur={(e) => handleBlur('firstName', e.target.value)}
-                helperText={fieldErrors.firstName && 'First name is required.'}
+                error={fieldErrors.first_name}
+                onBlur={(e) => handleBlur('first_name', e.target.value)}
+                helperText={fieldErrors.first_name && 'First name is required.'}
                 onChange={handleChange}
               />
 
               <TextField
                 required
-                name="lastName"
+                name="last_name"
                 label="Last Name"
-                error={fieldErrors.lastName}
-                onBlur={(e) => handleBlur('lastName', e.target.value)}
-                helperText={fieldErrors.lastName && 'Last name is required.'}
+                error={fieldErrors.last_name}
+                onBlur={(e) => handleBlur('last_name', e.target.value)}
+                helperText={fieldErrors.last_name && 'Last name is required.'}
                 onChange={handleChange}
               />
 
@@ -121,6 +140,16 @@ const Signup = () => {
                 error={fieldErrors.email}
                 onBlur={(e) => handleBlur('email', e.target.value)}
                 helperText={fieldErrors.email && 'Email is required.'}
+                onChange={handleChange}
+              />
+
+              <TextField
+                required
+                name="phone_number"
+                label="Phone Number"
+                error={fieldErrors.email}
+                onBlur={(e) => handleBlur('phone_number', e.target.value)}
+                helperText={fieldErrors.phone_number && 'Phone number is required.'}
                 onChange={handleChange}
               />
 

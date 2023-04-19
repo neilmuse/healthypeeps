@@ -119,8 +119,6 @@ const Homepage = () => {
               <>
                 <TextField fullWidth label="Title" style={{ marginTop: '1rem' }} />
                 <TextField fullWidth label="Content" multiline rows={4} style={{ marginTop: '1rem' }} />
-                <TextField fullWidth label="Image URL" style={{ marginTop: '1rem'
-                }} />
                 <input type="file" style={{ marginTop: '1rem' }} />
 
                 <MuiBox display="flex" flexWrap="wrap" style={{ marginTop: '1rem' }}>
@@ -207,12 +205,12 @@ const Homepage = () => {
             <Typography variant="title" text="New Recipes" />
           </Grid>
           <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
-            <Button component={Link} to="/recipe" color="primary" variant="text">
+            <Button component={Link} to="/recipes" color="primary" variant="text">
               View All
             </Button>
           </Grid>
         </Grid>
-        <RecipeFeed />
+        {/* <RecipeFeed /> */}
 
         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -224,7 +222,6 @@ const Homepage = () => {
             </Button>
           </Grid>
         </Grid>
-        <RecipeFeed />
 
         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -236,7 +233,6 @@ const Homepage = () => {
             </Button>
           </Grid>
         </Grid>
-        <RecipeFeed />
 
         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -248,7 +244,6 @@ const Homepage = () => {
             </Button>
           </Grid>
         </Grid>
-        <RecipeFeed />
 
       </Box>
       <Outlet />

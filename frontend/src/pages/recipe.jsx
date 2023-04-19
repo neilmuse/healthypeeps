@@ -6,6 +6,7 @@ import {
   ListItem,
 } from '@mui/material';
 import { Outlet, useParams } from 'react-router-dom';
+import { getPost } from '../api/index.js';
 
 import COLORS from '../constants/colors.js';
 
@@ -14,27 +15,23 @@ import ProteinIcon from '@mui/icons-material/EggTwoTone';
 import CarbohydratesIcon from '@mui/icons-material/BakeryDiningTwoTone';
 import FatIcon from '@mui/icons-material/LocalPizzaTwoTone';
 
-// import recipes from '../data/recipes.json';
-
 import Typography from '../components/typography.jsx';
 import CardMedia from '../components/cardmedia.jsx';
 import Avatar from '../components/avatar.jsx';
-
 import Card from '../components/card.jsx';
 import CommentCard from '../views/comment-card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
-import { getPost } from '../api/index.js';
 
 const Recipe = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState();
-  // const recipe = recipes[id] ?? {};
-
   const icons = [CaloriesIcon, ProteinIcon, CarbohydratesIcon, FatIcon];
 
   useEffect(() => {
-    getPost(id).then(data => setRecipe(data));
+    getPost(id).then(data =>
+      console.log(data),
+      setRecipe(data));
   }, [])
 
   return (recipe &&

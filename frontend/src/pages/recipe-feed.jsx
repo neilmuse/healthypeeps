@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import RecipeCard from '../views/recipe-card';
-// import recipes from '../data/recipes.json';
 import ImageSlider from '../views/image-slider';
 import Box from '../components/box.jsx';
 import Grid from '../components/grid.jsx';
@@ -10,7 +9,8 @@ const Recipe = (props) => {
   const [recipes, setRecipes] = useState();
 
   useEffect(() => {
-    getPosts().then(data => setRecipes(data));
+    getPosts().then(data =>
+      setRecipes(data));
   }, [])
 
 
