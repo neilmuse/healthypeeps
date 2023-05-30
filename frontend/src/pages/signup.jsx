@@ -23,7 +23,7 @@ import Typography from '../components/typography.jsx';
 import Link from '../components/link.jsx';
 import Box from '../components/box.jsx';
 
-import { signup } from '../api/index.js';
+import { signup } from "../auth";
 
 const Signup = () => {
   const NAVIGATE = useNavigate();
@@ -34,7 +34,7 @@ const Signup = () => {
     email: false,
     phone_number: false,
     password: false,
-    repeatPassword: false,
+    repeat_password: false,
   });
 
   const [formData, setFormData] = React.useState({
@@ -46,12 +46,35 @@ const Signup = () => {
     user_type: "normal",
   });
 
+  const [errorMessages, setErrorMessages] = React.useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    password: "",
+    repeat_password: "",
+  });
+
   const [showPassword, setShowPassword] = React.useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = React.useState(false);
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
+    const { name, value } = event.target;
+    let errorMessage = '';
+  
+    // validate each field
+    if (name === 'first_name' || name === 'last_name' || name === 'email' || name === 'phone_number') {
+      errorMessage = value ? '' : `${name.replace('_', ' ').charAt(0).toUpperCase() + name.replace('_', ' ').slice(1)} is required.`;
+    } else if (name === 'password') {
+      errorMessage = value ? '' : 'Password is required.';
+    } else if (name === 'repeat_password') {
+      errorMessage = value ? '' : 'Repeat password is required.';
+    }
+  
+    setFormData({ ...formData, [name]: value });
+    setErrorMessages({ ...errorMessages, [name]: errorMessage });
+    setFieldErrors({ ...fieldErrors, [name]: !!errorMessage });
+};
 
   const handleBlur = (field, value) => {
     setFieldErrors((prevErrors) => ({ ...prevErrors, [field]: !value }));
@@ -61,40 +84,24 @@ const Signup = () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    const newErrors = {
-      first_name: !formData.get("first_name"),
-      last_name: !formData.get("last_name"),
-      email: !formData.get("email"),
-      phone_number: !formData.get("phone_number"),
-      password: !formData.get("password"),
-      repeatPassword: !formData.get("repeatPassword"),
-    };
-
-    setFieldErrors(newErrors);
-
-    if (Object.values(newErrors).some((error) => error)) {
-      return;
-    }
-
     const user = {
-      username: formData.get("email"),
+      firstName: formData.get("first_name"),
+      lastName: formData.get("last_name"),
       email: formData.get("email"),
+      phoneNumber: formData.get("phone_number"),
       password: formData.get("password"),
-      user_type: "normal",
-      first_name: formData.get("first_name"),
-      last_name: formData.get("last_name"),
-      phone_number: formData.get("phone_number"),
+      repeatPassword: formData.get("repeat_password"),
+      userType: "normal",
     };
 
     try {
       const result = await signup(user);
       console.log(result);
-      NAVIGATE('login');
+      NAVIGATE('/login');
     } catch (error) {
       console.error("Signup failed", error);
     }
   };
-
 
   return (
     <>
@@ -112,15 +119,16 @@ const Signup = () => {
             <Typography variant="title" text="Create An Account" />
 
             <MUIBox component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+              
               <TextField
                 required
                 name="first_name"
                 label="First Name"
                 autoFocus
                 error={fieldErrors.first_name}
-                onBlur={(e) => handleBlur('first_name', e.target.value)}
-                helperText={fieldErrors.first_name && 'First name is required.'}
+                helperText={errorMessages.first_name}
                 onChange={handleChange}
+                onBlur={(e) => handleBlur('first_name', e.target.value)}
               />
 
               <TextField
@@ -128,9 +136,9 @@ const Signup = () => {
                 name="last_name"
                 label="Last Name"
                 error={fieldErrors.last_name}
-                onBlur={(e) => handleBlur('last_name', e.target.value)}
-                helperText={fieldErrors.last_name && 'Last name is required.'}
+                helperText={errorMessages.last_name}
                 onChange={handleChange}
+                onBlur={(e) => handleBlur('last_name', e.target.value)}
               />
 
               <TextField
@@ -138,19 +146,19 @@ const Signup = () => {
                 name="email"
                 label="Email Address"
                 error={fieldErrors.email}
-                onBlur={(e) => handleBlur('email', e.target.value)}
-                helperText={fieldErrors.email && 'Email is required.'}
+                helperText={errorMessages.email}
                 onChange={handleChange}
+                onBlur={(e) => handleBlur('email', e.target.value)}
               />
 
               <TextField
                 required
                 name="phone_number"
                 label="Phone Number"
-                error={fieldErrors.email}
-                onBlur={(e) => handleBlur('phone_number', e.target.value)}
-                helperText={fieldErrors.phone_number && 'Phone number is required.'}
+                error={fieldErrors.phone_number}
+                helperText={errorMessages.phone_number}
                 onChange={handleChange}
+                onBlur={(e) => handleBlur('phone_number', e.target.value)}
               />
 
               <MUITextField
@@ -159,8 +167,9 @@ const Signup = () => {
                 label="Password"
                 type={showPassword ? 'text' : 'password'}
                 error={fieldErrors.password}
+                helperText={errorMessages.password}
+                onChange={handleChange}
                 onBlur={(e) => handleBlur('password', e.target.value)}
-                helperText={fieldErrors.password && 'Password is required.'}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -174,17 +183,17 @@ const Signup = () => {
                     </InputAdornment>
                   ),
                 }}
-                onChange={handleChange}
               />
 
               <MUITextField
                 required
-                name="repeatPassword"
+                name="repeat_password"
                 label="Repeat Password"
                 type={showRepeatPassword ? 'text' : 'password'}
-                error={fieldErrors.repeatPassword}
-                onBlur={(e) => handleBlur('repeatPassword', e.target.value)}
-                helperText={fieldErrors.repeatPassword && 'Repeat password is required.'}
+                error={fieldErrors.repeat_password}
+                helperText={errorMessages.repeat_password}
+                onChange={handleChange}
+                onBlur={(e) => handleBlur('repeat_password', e.target.value)}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -198,7 +207,6 @@ const Signup = () => {
                     </InputAdornment>
                   ),
                 }}
-                onChange={handleChange}
               />
 
               <Button text="submit" primary submit fullWidth />

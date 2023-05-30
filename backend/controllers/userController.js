@@ -2,48 +2,42 @@ const bcrypt = require("bcryptjs");
 
 const USER_MODEL = require("../schemas/user");
 
-exports.signup = async (req, res) => {
-  const { firstName, lastName, email, password, phoneNumber, userType } = req.body;
+const { hashPassword, comparePassword } = require('../utilities/password-util');
+const { validateFields } = require('../utilities/validation');
 
-  // Check for missing fields
-  if (!firstName || !lastName || !email || !password || !phoneNumber || !userType) {
-    return res.status(400).json({ message: 'Missing required field(s)' });
-  }
-
-  // Check for empty string fields
-  if (firstName === '' || lastName === '' || email === '' || password === '' || phoneNumber === '' || userType === '') {
-    return res.status(400).json({ message: 'Empty string(s) found' });
-  }
-
-  try {
-    const existingUser = await USER_MODEL.findOne({ email });
-
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+module.exports = {
+  signup: async (req, res) => {
+    const { firstName, lastName, email, password, repeatPassword, phoneNumber, userType } = req.body;
+  
+    const validationError = validateFields(firstName, lastName, email, password, repeatPassword, phoneNumber);
+  
+    if (validationError) {
+      return res.status(400).json({ message: validationError });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    try {
+      const existingUser = await USER_MODEL.findOne({ email });
 
-    const newUser = new USER_MODEL({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      phoneNumber,
-      userType,
-    });
-    
-    console.log(newUser.firstName)
-    console.log(newUser.lastName)
-    console.log(newUser.password)
-    console.log(newUser.phoneNumber)
-    console.log(newUser.userType)
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists" });
+      }
 
-    await newUser.save();
+      const hashedPassword = await hashPassword(password);
 
-    res.status(201).json({ message: "User created successfully", user: newUser });
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-    console.log(error);
+      const newUser = new USER_MODEL({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+        phoneNumber,
+        userType,
+      });
+
+      await newUser.save();
+
+      res.status(201).json({ message: "User created successfully", user: newUser });
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
   }
-};
+}

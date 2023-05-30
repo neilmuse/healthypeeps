@@ -7,7 +7,8 @@
     "start-dev": "NODE_ENV=development nodemon server.js",
     "lint": "eslint .",
     "start-tests": "NODE_ENV=test mocha --recursive --exit tests --timeout 0",
-    "test": "mocha --recursive --exit tests --timeout 0"
+    "test": "mocha --recursive --exit tests --timeout 0",
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -27,9 +28,11 @@
     "mongodb": "^5.1.0",
     "mongodb-memory-server": "^8.12.2",
     "mongoose": "^7.0.3",
-    "nodemon": "^2.0.22",
     "supertest": "^6.3.3",
     "uniqid": "^5.4.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

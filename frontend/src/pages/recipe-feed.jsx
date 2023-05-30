@@ -3,15 +3,15 @@ import RecipeCard from '../views/recipe-card';
 import ImageSlider from '../views/image-slider';
 import Box from '../components/box.jsx';
 import Grid from '../components/grid.jsx';
-import { getPosts } from "../api/index.js";
+// import { getPosts } from "../api/index.js";
 
 const Recipe = (props) => {
   const [recipes, setRecipes] = useState();
 
-  useEffect(() => {
-    getPosts().then(data =>
-      setRecipes(data));
-  }, [])
+  // useEffect(() => {
+  //   getPosts().then(data =>
+  //     setRecipes(data));
+  // }, [])
 
 
   return (
@@ -24,3 +24,4 @@ const Recipe = (props) => {
 };
 
 export default Recipe;
+
