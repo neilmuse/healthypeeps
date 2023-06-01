@@ -96,7 +96,6 @@ const Signup = () => {
 
     try {
       const result = await signup(user);
-      console.log(result);
       NAVIGATE('/login');
     } catch (error) {
       console.error("Signup failed", error);

@@ -10,4 +10,6 @@ module.exports = (app) => {
 	})
 
     app.post("/api/signup", userController.signup);
+	app.post("/api/login", userController.login);
+	app.post("/api/refresh_token", userController.refreshToken);
 }

@@ -16,10 +16,11 @@ import Button from '../components/button.jsx';
 import Typography from '../components/typography.jsx';
 import LinkComponent from '../components/link.jsx';
 import Box from '../components/box.jsx';
-import { login } from "../api/index.js";
+import { authLogin } from "../auth";
 
 
 const Login = () => {
+  console.log("rd");
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
@@ -37,12 +38,12 @@ const Login = () => {
     }
   
     try {
-      const userData = await login(email, password);
+      const formData = { email, password };
+      const userData = await authLogin(formData);
+
       console.log('User data:', userData);
-      // Perform any necessary actions upon successful login, e.g., save user data, navigate to another page, etc.
     } catch (error) {
       console.error('Login error:', error.message);
-      // Handle the login error, e.g., display an error message to the user.
     }
   };  
 
