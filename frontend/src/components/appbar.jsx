@@ -109,7 +109,7 @@ const TopNavBar = () => {
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map(({name, url}) => (
                   <Box m={2}>
-                    <Link variant="darkBackground" href={url}>{name}</Link>
+                    <Link variant="darkBackground" key={url} href={url}>{name}</Link>
                   </Box>
                 ))}
               </Box>

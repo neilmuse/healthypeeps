@@ -7,7 +7,7 @@ import {
   InputAdornment,
   TextField as MUITextField,
 } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import logo from '../assets/logo-temp.png';
@@ -16,11 +16,12 @@ import Button from '../components/button.jsx';
 import Typography from '../components/typography.jsx';
 import LinkComponent from '../components/link.jsx';
 import Box from '../components/box.jsx';
-import { authLogin } from "../auth";
 
+import { AuthContext } from '../context/auth-context';
 
 const Login = () => {
-  console.log("rd");
+  const NAVIGATE = useNavigate();
+  const { setUser, login } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
@@ -39,9 +40,8 @@ const Login = () => {
   
     try {
       const formData = { email, password };
-      const userData = await authLogin(formData);
-
-      console.log('User data:', userData);
+      const userData = await login(formData);
+      NAVIGATE('/home');
     } catch (error) {
       console.error('Login error:', error.message);
     }

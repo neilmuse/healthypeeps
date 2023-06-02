@@ -1,4 +1,5 @@
 const userController = require("../controllers/userController");
+const authMiddleware = require('../middlewares/auth-middleware');
 
 module.exports = (app) => {
 	app.use((req, res, next) => {
@@ -12,4 +13,5 @@ module.exports = (app) => {
     app.post("/api/signup", userController.signup);
 	app.post("/api/login", userController.login);
 	app.post("/api/refresh_token", userController.refreshToken);
+	app.get('/api/get_user_data', authMiddleware, userController.getUserData);
 }

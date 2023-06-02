@@ -10,9 +10,8 @@ import {
   TextField as MUITextField,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 
 import logo from '../assets/logo-temp.png';
 

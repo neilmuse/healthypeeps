@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Box as MuiBox, Button, Chip, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { Link } from "react-router-dom";
@@ -11,7 +11,11 @@ import Typography from '../components/typography.jsx';
 import Box from '../components/box.jsx';
 import HomepageHero from '../components/hero-section.jsx';
 
+import { AuthContext } from '../context/auth-context';
+
 const Homepage = () => {
+  const { user } = useContext(AuthContext);
+
   const units = ['g', 'mg', 'ml', 'oz', 'cup', 'tbsp', 'tsp', 'lb', 'pieces'];
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -84,6 +88,8 @@ const Homepage = () => {
     <>
       <Box>
         <HomepageHero />
+
+        <Typography variant="title" text= {user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
 
         <Grid container justifyContent="center" alignItems="center">
           <Grid>

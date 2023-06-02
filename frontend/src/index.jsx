@@ -22,28 +22,32 @@ import AboutUs from './pages/about-us.jsx';
 import ProfilePage from './pages/profile.jsx';
 import AdminPage from './pages/admin-pages/accept-delete-posts.jsx';
 
+import { AuthProvider } from './context/auth-context';
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <StyledEngineProvider>
       <ThemeProvider theme={RECIPE_THEME}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<TopNavBar />}>
-              <Route path="login" element={<LoginPage />} />
-              <Route path="signup" element={<SignupPage />} />
-              <Route path="reset-password" element={<ResetPasswordPage />} />
-              <Route path="recipes" element={<RecipeLayout />} />
-              <Route path="recipe/:id" element={<RecipePage />} />
-              <Route path="listings" element={<ListingLayout />} />
-              <Route path="listing/:id" element={<ListingPage />} />
-              <Route path="home" element={<Homepage />} />
-              <Route path="admin" element={<AdminPage />} />
-              <Route path="about" element={<AboutUs />} />
-              <Route path="profile/:id" element={<ProfilePage />} />
-            </Route>
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<TopNavBar />}>
+                <Route path="login" element={<LoginPage />} />
+                <Route path="signup" element={<SignupPage />} />
+                <Route path="reset-password" element={<ResetPasswordPage />} />
+                <Route path="recipes" element={<RecipeLayout />} />
+                <Route path="recipe/:id" element={<RecipePage />} />
+                <Route path="listings" element={<ListingLayout />} />
+                <Route path="listing/:id" element={<ListingPage />} />
+                <Route path="home" element={<Homepage />} />
+                <Route path="admin" element={<AdminPage />} />
+                <Route path="about" element={<AboutUs />} />
+                <Route path="profile" element={<ProfilePage />} />
+              </Route>
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>
     </StyledEngineProvider>

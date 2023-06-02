@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   TextField,
@@ -15,45 +15,68 @@ import Card from '../components/card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
 
+import { authGetUserData } from "../auth";
+import { AuthContext } from '../context/auth-context';
+
 const Profile = () => {
-  const { id } = useParams();
-  const profile = profiles[id] ?? {};
+  const { user, setUser } = useContext(AuthContext);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [formValues, setFormValues] = useState({
-    firstName: profile.first_name ?? "",
-    lastName: profile.last_name ?? "",
-    email: profile.email ?? "",
-    phoneNumber: profile.phone_number ?? "",
-  });
+  // useEffect(() => {
+  //   console.log(user);
+  // }, [user]);
+  
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
+  // useEffect(() => {
+  //   const token = localStorage.getItem('authToken');
+  
+  //   if (token) {
+  //     authGetUserData(token).then(response => {
+  //       console.log("RESPONSE", response);
+  //       setUser(response);
+  //       console.log(response.user);
+  //     }).catch(err => {
+  //       // handle error
+  //       console.error(err);
+  //     });
+  //   }
+  // }, []);
 
-  const handleEditButtonClick = () => {
-    setIsEditing(true);
-  };
+  // const [isEditing, setIsEditing] = useState(false);
+  // const [formValues, setFormValues] = useState({
+  //   firstName: user.firstName ?? "",
+  //   lastName: user.lastName ?? "",
+  //   email: user.email ?? "",
+  //   phoneNumber: user.phoneNumber ?? "",
+  // });
 
-  const handleSaveButtonClick = () => {
-    // Save updated data to MongoDB
-    // ...
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFormValues({
+  //     ...formValues,
+  //     [name]: value,
+  //   });
+  // };
 
-    setIsEditing(false);
-  };
+  // const handleEditButtonClick = () => {
+  //   setIsEditing(true);
+  // };
 
-  const handleCancelButtonClick = () => {
-    setIsEditing(false);
-  };
+  // const handleSaveButtonClick = () => {
+  //   // Save updated data to MongoDB
+  //   // ...
+
+  //   setIsEditing(false);
+  // };
+
+  // const handleCancelButtonClick = () => {
+  //   setIsEditing(false);
+  // };
 
   return (
     <>
       <Box sx={{ border: 1 }}>
-        <Card>
+        <Typography variant="title" text={user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
+        {/* <Card>
           {isEditing ? (
             <>
               <TextField
@@ -90,21 +113,21 @@ const Profile = () => {
               <Typography
                 variant="hero_title"
                 text={
-                  profile?.first_name + " " + profile?.last_name ?? "N/A"
+                  user?.firstName + " " + user?.lastName ?? "N/A"
                 }
               />
-              <CardMedia image={profile?.profile_picture ?? ""} />
+              <CardMedia image={user?.profile_picture ?? ""} />
               <Divider />
-              <Typography variant="title" text={profile?.email ?? "N/A"} />
+              <Typography variant="title" text={user?.email ?? "N/A"} />
               <Typography
                 variant="body1"
-                text={profile.phone_number ?? "N/A"}
+                text={user.phoneNumber ?? "N/A"}
               />
               <Divider />
               <Button onClick={handleEditButtonClick}>Edit Profile</Button>
             </>
           )}
-        </Card>
+        </Card> */}
       </Box>
       <Outlet />
     </>

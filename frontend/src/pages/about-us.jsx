@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { Grid as MUIGrid, Card, CardContent, CardActionArea } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import Typography from '../components/typography.jsx';
 import Box from '../components/box.jsx';
 
 const AboutUs = () => {
+  const { user } = useContext(AuthContext);
   return (
     <>
       <Box>

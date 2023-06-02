@@ -73,4 +73,11 @@ server = app.listen(process.env.PORT || 5000, (err) => {
   console.log(`Server is running on port: ${process.env.PORT || 5000}`);
 });
 
+// CHECK FOR THIS 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
+
 module.exports = server;

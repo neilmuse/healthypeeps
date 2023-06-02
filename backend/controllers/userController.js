@@ -65,8 +65,8 @@ module.exports = {
 
       const token = createToken(user, process.env.JWT_SECRET, "1h");
       const refreshToken = createToken(user, process.env.JWT_SECRET, "7d");
-
-      res.json({ token, refreshToken });
+      // setUser(user);
+      res.json({ user, token, refreshToken });
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -94,5 +94,9 @@ module.exports = {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+  },
+
+  getUserData: async (req, res) => {
+    res.json(req.user);
   }
 }

@@ -62,7 +62,7 @@ const Recipe = () => {
               }} >
               {(recipe.ingredients ?? []).map(({ quantity, units, name }) => (
                 <ListItem>
-                  <Typography variant="body1" text={`${quantity ?? "N/A"} ${units ?? "N/A"} ${name ?? "N/A"}`} />
+                  <Typography variant="body1" key={name} text={`${quantity ?? "N/A"} ${units ?? "N/A"} ${name ?? "N/A"}`} />
                 </ListItem>
               ))}
 
