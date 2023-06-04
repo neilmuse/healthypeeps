@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,11 +12,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from "../components/link.jsx";
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import AppBarText from './appbar-text.jsx';
 import Typography from './typography.jsx';
+
+import { AuthContext } from '../context/auth-context';
 
 const pages = [
   {
@@ -37,12 +39,13 @@ const pages = [
   },
 ];
 
-const settings = ['Profile', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 const TopNavBar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const NAVIGATE = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [loggedIn, setLoggedIn] = React.useState(false);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -57,6 +60,16 @@ const TopNavBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleMenuItemClick = (setting) => {
+    handleCloseUserMenu();
+  
+    if (setting === 'Logout') {
+      logout();
+    } else {
+      NAVIGATE('/profile');
+    }
   };
   
   return (
@@ -120,11 +133,11 @@ const TopNavBar = () => {
 
               <Box sx={{ flexGrow: 0 }}>
                   
-              {loggedIn ? (
+              {user ? (
                 <>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                      <Avatar alt="Profile Icon" src="/src/assets/user.png" />
                     </IconButton>
                   </Tooltip>
                 </>
@@ -152,7 +165,7 @@ const TopNavBar = () => {
                     >
                       
                     {settings.map((setting) => (
-                      <MenuItem key={setting} component="a" href="/${setting}" onClick={handleCloseUserMenu}>
+                      <MenuItem key={setting} component="a" onClick={() => handleMenuItemClick(setting)}>
                           <Typography text={setting} />
                       </MenuItem>
                     ))}

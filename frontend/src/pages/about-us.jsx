@@ -10,7 +10,6 @@ import Typography from '../components/typography.jsx';
 import Box from '../components/box.jsx';
 
 const AboutUs = () => {
-  const { user } = useContext(AuthContext);
   return (
     <>
       <Box>

@@ -7,6 +7,13 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const NAVIGATE = useNavigate();
   const [user, setUser] = useState(null);
+  const [isLoggedOut, setLoggedOut] = useState(false);
+
+  const logout = () => {
+    localStorage.clear();
+    setUser(null);
+    setLoggedOut(true);
+  }
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -40,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

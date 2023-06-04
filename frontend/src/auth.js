@@ -21,7 +21,31 @@ export const authLogin = async (formData) => {
     }
 };
 
-export const authGetUserData = async (token) => {
+export const authGetUserById = async (token) => {
+  try {
+    const response = await fetch('/api/get_user_by_id', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.ok) {
+      const name = await response.json();
+      return name;
+    } else {
+      // Handle error response
+      console.error('Failed to fetch user data:', response.statusText);
+      throw new Error('Failed to fetch user data');
+    }
+  } catch (error) {
+    // Handle fetch error
+    console.error('Failed to fetch user data:', error.message);
+    throw error;
+  }
+};
+
+export const authGetUserData = async (token, refresh_token) => {
   try {
     const response = await fetch('http://localhost:5000/api/get_user_data', {
       method: 'GET',

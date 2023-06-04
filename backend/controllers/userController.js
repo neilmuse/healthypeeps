@@ -87,6 +87,22 @@ module.exports = {
     res.json(req.user);
   },
 
+  getUserById: async (userId) => {
+    try {
+      const user = await User.findById(userId);
+      if (user) {
+        const name = user.firstName;
+        return userName;
+      } else {
+        console.log('User not found');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error retrieving user:', error);
+      throw error;
+    }
+  },
+
   updateUserData: async(req, res) => {
     const { id } = req.params;
     const { firstName, lastName, email, phoneNumber } = req.body;
@@ -126,6 +142,23 @@ module.exports = {
           post = new Review(req.body);
           break;
         case 'discussion':
+
+        const getUserById = async (userId) => {
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      const userName = user.name;
+      console.log('User Name:', userName);
+      return userName;
+    } else {
+      console.log('User not found');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error retrieving user:', error);
+    throw error;
+  }
+};
           post = new Discussion(req.body);
           break;
         case 'recipe':
