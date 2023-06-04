@@ -20,12 +20,16 @@ import Typography from './typography.jsx';
 
 const pages = [
   {
-    name: "Feed",
-    url: "home"
+    name: "Discussions",
+    url: "discussions"
   },
   {
     name: "Recipe",
     url: "recipes"
+  },
+  {
+    name: "Listings",
+    url: "listings"
   },
   {
     name: "About",

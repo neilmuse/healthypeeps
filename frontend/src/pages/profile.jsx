@@ -24,9 +24,6 @@ const Profile = () => {
     phoneNumber: user?.phoneNumber ?? "",
   });
 
-  console.log("USER FROM PROFILE", user);
-  console.log("ID", user._id);
-
   useEffect(() => {
     const token = localStorage.getItem('authToken');
   

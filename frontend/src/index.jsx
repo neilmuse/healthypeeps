@@ -17,6 +17,7 @@ import RecipeLayout from './pages/recipe-feed.jsx';
 import RecipePage from './pages/recipe.jsx';
 import ListingLayout from './pages/listing.jsx';
 import ListingPage from './views/listing.jsx';
+import DiscussionPage from './views/discussion-card.jsx';
 import DiscussionLayout from './pages/discussion-feed.jsx';
 import Homepage from './pages/homepage.jsx';
 import AboutUs from './pages/about-us.jsx';
@@ -42,6 +43,7 @@ root.render(
                 <Route path="listings" element={<ListingLayout />} />
                 <Route path="listing/:id" element={<ListingPage />} />
                 <Route path="discussions" element={<DiscussionLayout />} />
+                <Route path="discussions/:id" element={<DiscussionPage />} />
                 <Route path="home" element={<Homepage />} />
                 <Route path="admin" element={<AdminPage />} />
                 <Route path="about" element={<AboutUs />} />

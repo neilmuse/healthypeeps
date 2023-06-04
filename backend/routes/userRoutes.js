@@ -21,5 +21,7 @@ module.exports = (app) => {
 
 
 	//POST ROUTES
+	app.get('/api/get_all_discussions', userController.getAllDiscussions);
+	app.get('/api/get_discussion/:id', userController.getSpecificDiscussion);
 	app.post('/api/add_post', authMiddleware, userController.addPost);
 }

@@ -21,29 +21,23 @@ const validatePassword = (password) => {
 };
 
 const validateFields = (firstName, lastName, email, password, repeatPassword, phoneNumber) => {
-    console.log("INSIDE FUNCTION");
     if (!firstName || !lastName || !email || !password || !phoneNumber) {
-      console.log("MISSING FIELDS");
       return 'Missing required field(s)';
     }
   
     if (firstName === '' || lastName === '' || email === '' || password === '' || phoneNumber === '') {
-      console.log("EMPTY STRINGS");
       return 'Empty string(s) found';
     }
 
     if (!validatePhoneNumber(phoneNumber)) {
-      console.log("INVALID PHONE NUMBER");
       return 'Invalid phone number';
     }
   
     if (!validateEmail(email) || !validatePassword(password)) {
-      console.log("INVALID EMAIL OR PASSWORD");
       return 'Invalid email or password';
     }
   
     if (password !== repeatPassword) {
-      console.log("PASSWORD NOT MATCHED");
       // Passwords don't match, handle the error
       return 'Password mismatched.';
     }

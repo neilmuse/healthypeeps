@@ -49,7 +49,6 @@ module.exports = {
   },
 
   login: async(req, res) => {
-    console.log("INSIDE LOGIN");
     const { email, password } = req.body;
 
     try {
@@ -66,7 +65,6 @@ module.exports = {
 
       const token = createToken(user, process.env.JWT_SECRET, "1h");
       const refreshToken = createToken(user, process.env.JWT_SECRET, "7d");
-      // setUser(user);
       res.json({ user, token, refreshToken });
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -146,6 +144,33 @@ module.exports = {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
+  },
+
+  getAllDiscussions: async (req, res) => {
+    try {
+      // Retrieve all posts that are discussions
+      const discussions = await Discussion.find();
+      res.json(discussions);
+    } catch (err) {
+      // If an error occurs, send an HTTP status 500 and the error message.
+      res.status(500).json({ message: err.message });
+    }
+  },
+
+  getSpecificDiscussion: async (req, res) => {
+    const userID = req.params.id;
+    try {
+      const discussion = await Discussion.findById(userID);
+      if (discussion == null) {
+        // If there's no discussion with that ID, return an error.
+        return res.status(404).json({ message: "Can't find discussion" });
+      }
+      // If the discussion was found, return it.
+      res.json(discussion);
+    } catch (err) {
+      // In case of an error, return an HTTP status 500 and the error message.
+      return res.status(500).json({ message: err.message });
+    }
+  },
   
 }

@@ -10,7 +10,6 @@ const Recipe = (props) => {
 
   useEffect(() => {
     getPosts().then(data => 
-      console.log(data),
       setRecipes(data));
   }, [])
 

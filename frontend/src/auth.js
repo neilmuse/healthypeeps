@@ -14,7 +14,6 @@ export const authLogin = async (formData) => {
     try {
       const response = await API.post("/api/login", formData);
       const userData = response.data.user; // user object
-      console.log("LOGIN USERDATA", userData);
       return response.data; // access token and refresh token
     } catch (error) {
       console.log(error);
@@ -65,6 +64,40 @@ export const authUpdateUserData = async (userData) => {
 
   const updatedUser = await response.json();
   return updatedUser;
+};
+
+export const authGetAllDiscussions = async () => {
+  const response = await fetch(`http://localhost:5000/api/get_all_discussions`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+  }
+
+  const allDiscussions = await response.json();
+  return allDiscussions;
+};
+
+export const authGetSpecificDiscussion = async () => {
+  const response = await fetch(`http://localhost:5000/api/get_discussion/${post._id}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+  }
+
+  const discussion = await response.json();
+  return discussion;
 };
 
 export const authAddPost = async (postData) => {
