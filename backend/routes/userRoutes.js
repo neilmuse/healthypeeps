@@ -10,8 +10,16 @@ module.exports = (app) => {
 		next();
 	})
 
+	//USER ROUTES
     app.post("/api/signup", userController.signup);
 	app.post("/api/login", userController.login);
-	app.post("/api/refresh_token", userController.refreshToken);
+	app.post("/api/refresh_token", authMiddleware, userController.refreshToken);
+
 	app.get('/api/get_user_data', authMiddleware, userController.getUserData);
+
+	app.patch('/api/update_user/:id', authMiddleware, userController.updateUserData);
+
+
+	//POST ROUTES
+	app.post('/api/add_post', authMiddleware, userController.addPost);
 }

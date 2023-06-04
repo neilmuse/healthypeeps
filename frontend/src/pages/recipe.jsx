@@ -60,9 +60,9 @@ const Recipe = () => {
                   display: 'list-item',
                 },
               }} >
-              {(recipe.ingredients ?? []).map(({ quantity, units, name }) => (
+              {(recipe.ingredients ?? []).map(({ amount, units, name }) => (
                 <ListItem>
-                  <Typography variant="body1" key={name} text={`${quantity ?? "N/A"} ${units ?? "N/A"} ${name ?? "N/A"}`} />
+                  <Typography variant="body1" key={name} text={`${amount ?? "N/A"} ${units ?? "N/A"} ${name ?? "N/A"}`} />
                 </ListItem>
               ))}
 
@@ -87,14 +87,14 @@ const Recipe = () => {
 
               <Grid container spacing={2} p={3}>
                 {
-                  (recipe.macros ?? []).map(({ name, quantity }, index) =>
+                  (recipe.macros ?? []).map(({ name, amount }, index) =>
                     <Grid item xs={6} sm={3}>
                       <Grid container direction="column" alignItems="center">
                         <Grid item>
                           <Avatar />
                         </Grid>
                         <Grid item>
-                          <Typography variant="body_bold" text={quantity ?? "N/A"} />
+                          <Typography variant="body_bold" text={amount ?? "N/A"} />
                         </Grid>
                         <Grid item>
                           <Typography variant="body1" text={name ?? "N/A"} />

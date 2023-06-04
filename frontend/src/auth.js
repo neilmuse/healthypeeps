@@ -47,3 +47,43 @@ export const authGetUserData = async (token) => {
   }
 };
 
+export const authUpdateUserData = async (userData) => {
+  const token = localStorage.getItem('authToken');
+  const response = await fetch(`http://localhost:5000/api/update_user/${userData._id}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(userData)
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+  }
+
+  const updatedUser = await response.json();
+  return updatedUser;
+};
+
+export const authAddPost = async (postData) => {
+  const token = localStorage.getItem('authToken');
+  const response = await fetch(`http://localhost:5000/api/add_post`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(postData)
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+  }
+
+  const newPost = await response.json();
+  return newPost;
+};
+

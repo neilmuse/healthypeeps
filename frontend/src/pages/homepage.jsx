@@ -18,13 +18,23 @@ const Homepage = () => {
 
   const units = ['g', 'mg', 'ml', 'oz', 'cup', 'tbsp', 'tsp', 'lb', 'pieces'];
 
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [briefDescription, setBriefDescription] = useState('');
+  const [preparationTime, setPreparationTime] = useState('');
+  const [price, setPrice] = useState('');
+  const [macronutrients, setMacronutrients] = useState({
+    protein: '',
+    fat: '',
+    carbohydrates: '',
+  });
+  const [instructions, setInstructions] = useState([]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [preparationSteps, setPreparationSteps] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [loggedIn, setLoggedIn] = useState(true);
-  const [tags, setTags] = useState([]);
-  const [newTag, setNewTag] = useState('');
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -73,15 +83,87 @@ const Homepage = () => {
     setIngredients(newIngredients);
   };
 
-  const handleAddTag = () => {
-    if (newTag && !tags.includes(newTag)) {
-      setTags([...tags, newTag]);
-      setNewTag('');
-    }
-  };
+  let image;
 
-  const handleRemoveTag = (tag) => {
-    setTags(tags.filter((t) => t !== tag));
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+  
+    switch (selectedCategory) {
+      case 'review':
+        post = {
+          title,
+          content,
+          category: selectedCategory,
+          image: image
+        };
+        break;
+      case 'discussion':
+        post = {
+          title,
+          content,
+          category: selectedCategory,
+          image: image
+        };
+        break;
+      case 'recipe':
+        post = {
+          title,
+          content,
+          category: selectedCategory,
+          image: image,
+          brief: briefDescription,
+          ingredients,
+          instructions: preparationSteps,
+          nutrition: macronutrients,
+          preparationTime
+        };
+        break;
+      case 'food_listing':
+        post = {
+          title,
+          content,
+          category: selectedCategory,
+          image: image,
+          price
+        };
+        break;
+      default:
+        alert('Invalid category');
+        return;
+    }  
+  
+    // POST request to the backend API to add the post
+    fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(post),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // Reset form fields
+        setTitle('');
+        setContent('');
+        setBriefDescription('');
+        setPreparationTime('');
+        setPrice('');
+        setIngredients([]);
+        setMacronutrients({
+          protein: '',
+          fat: '',
+          carbohydrates: '',
+        });
+        setInstructions([]);
+        // Show success message
+        alert('Post submitted successfully!');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Show error message
+        alert('An error occurred while submitting the post.');
+      });
   };
 
   return (
@@ -126,29 +208,6 @@ const Homepage = () => {
                 <TextField fullWidth label="Title" style={{ marginTop: '1rem' }} />
                 <TextField fullWidth label="Content" multiline rows={4} style={{ marginTop: '1rem' }} />
                 <input type="file" style={{ marginTop: '1rem' }} />
-
-                <MuiBox display="flex" flexWrap="wrap" style={{ marginTop: '1rem' }}>
-                  {tags.map((tag, index) => (
-                    <Chip
-                      key={index}
-                      label={tag}
-                      onDelete={() => handleRemoveTag(tag)}
-                      style={{ margin: '0.25rem' }}
-                    />
-                  ))}
-                  <TextField
-                    label="Tags"
-                    value={newTag}
-                    onChange={(e) => setNewTag(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddTag();
-                      }
-                    }}
-                  />
-                  <Button onClick={handleAddTag} style={{ marginTop: '1rem' }}>Add Tag</Button>
-                </MuiBox>
 
                 {selectedCategory === 'recipe' && (
                   <>
