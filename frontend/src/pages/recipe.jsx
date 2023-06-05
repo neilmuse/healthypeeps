@@ -30,7 +30,6 @@ const Recipe = () => {
 
   useEffect(() => {
     getPost(id).then(data =>
-      console.log(data),
       setRecipe(data));
   }, [])
 

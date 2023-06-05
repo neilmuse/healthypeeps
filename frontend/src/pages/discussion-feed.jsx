@@ -6,7 +6,7 @@ import Typography from '../components/typography.jsx';
 import DiscussionCard from '../views/discussion-card.jsx';
 
 import { AuthContext } from '../context/auth-context';
-import { authAddPost, authGetAllDiscussions } from "../auth";
+import { authAddPost, authGetAllPostsByCategory } from "../auth";
 
 const DiscussionFeed = () => {
     const { user } = useContext(AuthContext);
@@ -17,10 +17,12 @@ const DiscussionFeed = () => {
 
     const [discussions, setDiscussions] = useState([]);
 
+    const category = "discussions";
+
     useEffect(() => {
       const fetchDiscussions = async () => {
         try {
-          let allDiscussions = await authGetAllDiscussions();
+          let allDiscussions = await authGetAllPostsByCategory(category);
           // Sort discussions from newest to oldest
           allDiscussions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setDiscussions(allDiscussions);

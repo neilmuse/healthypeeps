@@ -142,7 +142,6 @@ const Homepage = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         // Reset form fields
         setTitle('');
         setContent('');

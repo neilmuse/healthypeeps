@@ -142,23 +142,6 @@ module.exports = {
           post = new Review(req.body);
           break;
         case 'discussion':
-
-        const getUserById = async (userId) => {
-  try {
-    const user = await User.findById(userId);
-    if (user) {
-      const userName = user.name;
-      console.log('User Name:', userName);
-      return userName;
-    } else {
-      console.log('User not found');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error retrieving user:', error);
-    throw error;
-  }
-};
           post = new Discussion(req.body);
           break;
         case 'recipe':
@@ -179,16 +162,70 @@ module.exports = {
     }
   },
 
-  getAllDiscussions: async (req, res) => {
+  getAllPostsByCategory: async (req, res) => {
     try {
-      // Retrieve all posts that are discussions
-      const discussions = await Discussion.find();
-      res.json(discussions);
+      const category = req.query.category;
+      switch(category) {
+          case 'discussions':
+            // Retrieve all posts that are discussions
+            const discussions = await Discussion.find();
+            res.json(discussions);
+            break;
+          case 'recipes':
+            const recipes = await Listing.find();
+            res.json(recipes);
+            break;
+          case 'reviews':
+            const reviews = await Review.find();
+            res.json(reviews);
+            break;
+          case 'listings':
+            const listings = await Listing.find();
+            res.json(listings);
+            break;
+          default:
+            console.log("Invalid category");
+            break;
+      }
     } catch (err) {
       // If an error occurs, send an HTTP status 500 and the error message.
       res.status(500).json({ message: err.message });
     }
   },
+
+  getSpecificPost: async (req, res) => {
+    const postId = req.params.id;
+    const category = req.params.category;
+    let Model;
+  
+    switch(category) {
+      case 'discussions':
+        Model = Discussion;
+        break;
+      case 'reviews':
+        Model = Review;
+        break;
+      case 'listings':
+        Model = Listing;
+        break;
+      case 'recipes':
+        Model = Recipe;
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid category" });
+    }
+  
+    try {
+      const post = await Model.findById(postId);
+      if (post == null) {
+        return res.status(404).json({ message: `Can't find post with category ${category} and id ${postId}` });
+      }
+      res.json(post);
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  
 
   getSpecificDiscussion: async (req, res) => {
     const userID = req.params.id;
@@ -200,6 +237,54 @@ module.exports = {
       }
       // If the discussion was found, return it.
       res.json(discussion);
+    } catch (err) {
+      // In case of an error, return an HTTP status 500 and the error message.
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  getSpecificReview: async (req, res) => {
+    const userID = req.params.id;
+    try {
+      const review = await Review.findById(userID);
+      if (review == null) {
+        // If there's no review with that ID, return an error.
+        return res.status(404).json({ message: "Can't find review" });
+      }
+      // If the review was found, return it.
+      res.json(review);
+    } catch (err) {
+      // In case of an error, return an HTTP status 500 and the error message.
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  getSpecificListing: async (req, res) => {
+    const userID = req.params.id;
+    try {
+      const listing = await Listing.findById(userID);
+      if (listing == null) {
+        // If there's no listing with that ID, return an error.
+        return res.status(404).json({ message: "Can't find listing" });
+      }
+      // If the listing was found, return it.
+      res.json(listing);
+    } catch (err) {
+      // In case of an error, return an HTTP status 500 and the error message.
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  getSpecificRecipe: async (req, res) => {
+    const userID = req.params.id;
+    try {
+      const recipe = await Recipe.findById(userID);
+      if (recipe == null) {
+        // If there's no recipe with that ID, return an error.
+        return res.status(404).json({ message: "Can't find recipe" });
+      }
+      // If the recipe was found, return it.
+      res.json(recipe);
     } catch (err) {
       // In case of an error, return an HTTP status 500 and the error message.
       return res.status(500).json({ message: err.message });

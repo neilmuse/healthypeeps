@@ -59,7 +59,9 @@ const Listing = Post.discriminator(
   new Schema({
     image: String,
     price: Number,
+    location: String,
+    phoneNumber: String,
+    email: String,
   }, options)
 );
-
 module.exports = { Post, Review, Discussion, Recipe, Listing };

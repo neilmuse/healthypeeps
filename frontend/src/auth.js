@@ -90,8 +90,8 @@ export const authUpdateUserData = async (userData) => {
   return updatedUser;
 };
 
-export const authGetAllDiscussions = async () => {
-  const response = await fetch(`http://localhost:5000/api/get_all_discussions`, {
+export const authGetAllPostsByCategory = async (category) => {
+  const response = await fetch(`http://localhost:5000/api/get_all_posts_by_category?category=${category}`, {
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
@@ -103,8 +103,25 @@ export const authGetAllDiscussions = async () => {
       throw new Error(error.message);
   }
 
-  const allDiscussions = await response.json();
-  return allDiscussions;
+  const posts = await response.json();
+  return posts;
+};
+
+export const authGetSpecificPost = async (category, id) => {
+  const response = await fetch(`http://localhost:5000/api/posts/${category}/${id}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+  }
+
+  const post = await response.json();
+  return post;
 };
 
 export const authGetSpecificDiscussion = async () => {
