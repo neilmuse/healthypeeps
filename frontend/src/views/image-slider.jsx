@@ -1,14 +1,29 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Grid } from '@mui/material';
+import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Grid } from '@mui/material';
+import Typography from '../components/typography.jsx';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import COLORS from '../constants/colors.js';
+import { useNavigate } from 'react-router-dom';
+import ConvertTime from '../utils/moment.jsx';
+import { authGetSpecificPost } from '../auth';
 
 const ImageSlider = ({ images, itemsPerSlide }) => {
+  const NAVIGATE = useNavigate();
   const [current, setCurrent] = useState(0);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const itemsToShow = isSmallScreen ? 2 : itemsPerSlide;
+  const itemsToShow = isSmallScreen ? 2 : itemsPerSlide; 
+
+  const handleCardClick = async (category, id) => {
+    try {
+        const post = await authGetSpecificPost(category, id);
+        NAVIGATE(`/post/${id}`, post); // send the post data along with the route change
+    } catch (error) {
+        console.error('Error fetching post:', error);
+    }
+  }
 
   const handlePrev = () => {
     setCurrent((prev) => (prev === 0 ? images.length - itemsToShow : prev - itemsToShow));
@@ -18,21 +33,49 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
     setCurrent((prev) => (prev + itemsToShow) % images.length);
   };
 
+  // Function to truncate the text
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
+    }
+  }
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <IconButton onClick={handlePrev}>
-        <ChevronLeft />
-      </IconButton>
       <Grid container spacing={2}>
         {images.slice(current, current + itemsToShow).map((image, index) => (
-          <Grid key={index} item xs={12} sm={6} md={12 / itemsPerSlide}>
-            {image}
+          <Grid 
+            key={index} 
+            item 
+            xs={12/itemsToShow}
+            sm={6/itemsToShow} 
+            md={12/itemsToShow}
+            onClick={() => handleCardClick(image.category, image._id)}
+            style={{cursor: 'pointer'}}
+          >
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+
+            <img src={image.image || 'https://picsum.photos/200'} />
+
+              <CardHeader
+                  avatar={
+                  <Avatar sx={{ bgcolor: COLORS.GREEN}} >
+                      {image.author?.firstName?.substr(0, 1)}
+                  </Avatar>
+                  }
+
+                  title={<Typography variant="cardtitle" text={truncateText(image.title, 30)} />}
+                  subheader={<Typography variant="cardsubheader" text={ConvertTime(image.createdAt)} />}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="body1" text={truncateText(image.content, 100)} />
+              </CardContent>
+            </Card>
           </Grid>
         ))}
       </Grid>
-      <IconButton onClick={handleNext}>
-        <ChevronRight />
-      </IconButton>
     </Box>
   );
 };

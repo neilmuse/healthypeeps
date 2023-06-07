@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import {
   Box as MUIBox,
   Container,
@@ -21,7 +21,7 @@ import { AuthContext } from '../context/auth-context';
 
 const Login = () => {
   const NAVIGATE = useNavigate();
-  const { setUser, login } = React.useContext(AuthContext);
+  const { setUser, login } = useContext(AuthContext);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);

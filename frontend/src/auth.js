@@ -107,6 +107,24 @@ export const authGetAllPostsByCategory = async (category) => {
   return posts;
 };
 
+export const authGetAllPostsByCategoryLimited = async (category) => {
+  const response = await fetch(`http://localhost:5000/api/get_all_posts_by_category_limited?category=${category}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+  }
+
+  const posts = await response.json();
+  return posts;
+};
+
+
 export const authGetSpecificPost = async (category, id) => {
   const response = await fetch(`http://localhost:5000/api/posts/${category}/${id}`, {
       method: 'GET',

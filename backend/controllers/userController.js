@@ -193,6 +193,36 @@ module.exports = {
     }
   },
 
+  getAllPostsByCategoryLimited: async (req, res) => {
+    try {
+      const category = req.query.category;
+      let Model;
+      switch(category) {
+          case 'discussions':
+            Model = Discussion;
+            break;
+          case 'recipes':
+            Model = Recipe;
+            break;
+          case 'reviews':
+            Model = Review;
+            break;
+          case 'listings':
+            Model = Listing;
+            break;
+          default:
+            return res.status(400).json({ message: "Invalid category" });
+      }
+      
+      const posts = await Model.find().sort({ createdAt: -1 }).limit(5);
+      res.json(posts);
+  
+    } catch (err) {
+      // If an error occurs, send an HTTP status 500 and the error message.
+      res.status(500).json({ message: err.message });
+    }
+  },
+
   getSpecificPost: async (req, res) => {
     const postId = req.params.id;
     const category = req.params.category;
