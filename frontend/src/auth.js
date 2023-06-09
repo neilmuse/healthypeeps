@@ -5,7 +5,6 @@ export const signup = async (formData) => {
         const response = await API.post("/api/signup", formData);
         return response.data;
     } catch (error) {
-        console.log(error);
         throw error;
     }
 };
@@ -16,7 +15,6 @@ export const authLogin = async (formData) => {
       const userData = response.data.user; // user object
       return response.data; // access token and refresh token
     } catch (error) {
-      console.log(error);
       throw error;
     }
 };
@@ -178,4 +176,43 @@ export const authAddPost = async (postData) => {
   const newPost = await response.json();
   return newPost;
 };
+
+export const authUploadFile = async (file) => {
+  const token = localStorage.getItem('authToken');
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await fetch(`http://localhost:5000/api/upload`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    body: formData
+  });
+
+  if (!response.ok) {
+    // Check if the response is in JSON format, otherwise parse as text
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const error = await response.json();
+      throw new Error(error.message);
+    } else {
+      const error = await response.text();
+      throw new Error(error);
+    }
+  }
+
+  // Similarly, check for the expected content type in the successful response
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    const result = await response.json();
+    return result;
+  } else {
+    const result = await response.text();
+    return result;
+  }
+};
+
+
 

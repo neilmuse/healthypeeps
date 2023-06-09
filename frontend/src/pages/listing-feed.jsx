@@ -6,7 +6,7 @@ import Typography from '../components/typography.jsx';
 import ListingCard from '../views/listing-card.jsx';
 
 import { AuthContext } from '../context/auth-context';
-import { authAddPost, authGetAllPostsByCategory } from "../auth";
+import { authAddPost, authGetAllPostsByCategory, authUploadFile } from "../auth";
 
 const ListingFeed = () => {
     const { user } = useContext(AuthContext);
@@ -56,10 +56,21 @@ const ListingFeed = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
+        let uploadedImageUrl = null;
+  
+        if (image) {
+            try {
+                const uploadedFileResponse = await authUploadFile(image);
+                uploadedImageUrl = uploadedFileResponse.url; // Store the URL from the response
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        }
+
         const listingPost = {
         title,
         content,
-        image,
+        image: uploadedImageUrl,
         category: "listing",
         author: user,
         location,

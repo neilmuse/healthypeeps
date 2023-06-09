@@ -5,11 +5,15 @@ const dotenv = require('dotenv');
 const bodyParser = require("body-parser");
 const router = require('./routes/userRoutes');
 const { MongoMemoryServer } = require("mongodb-memory-server");
+const multer = require('multer');
 
 const USER_ROUTES = require("./routes/userRoutes");
 // const POST_ROUTES = require("./routes/postRoutes");
 // const REGISTER_ROUTES = require("./register-routes");
 // const userRoutes = require("./routes/userRoutes");
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 dotenv.config();
 
@@ -65,6 +69,10 @@ const connection = mongoose.connection;
 
 connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
+});
+
+app.post('/upload', upload.single('image'), (req, res) => {
+  return res.status(200).send('File uploaded successfully.');
 });
 
 server = app.listen(process.env.PORT || 5000, (err) => {

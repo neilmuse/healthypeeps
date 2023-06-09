@@ -3,10 +3,10 @@ import { Box as MuiBox, Button, Chip, Container, Grid, Dialog, DialogTitle, Dial
 import Box from '../components/box.jsx';
 import Typography from '../components/typography.jsx';
 
-import DiscussionCard from '../views/review-card.jsx';
+import ReviewCard from '../views/review-card.jsx';
 
 import { AuthContext } from '../context/auth-context';
-import { authAddPost, authGetAllPostsByCategory } from "../auth";
+import { authAddPost, authGetAllPostsByCategory, authUploadFile } from "../auth";
 
 const ReviewFeed = () => {
     const { user } = useContext(AuthContext);
@@ -47,21 +47,32 @@ const ReviewFeed = () => {
   
     const handleFormSubmit = async (event) => {
       event.preventDefault();
-
+  
+      let uploadedImageUrl = null;
+  
+      if (image) {
+          try {
+              const uploadedFileResponse = await authUploadFile(image);
+              uploadedImageUrl = uploadedFileResponse.url; // Store the URL from the response
+          } catch (error) {
+              console.error('Error uploading file:', error);
+          }
+      }
+  
       const reviewPost = {
-        title,
-        content,
-        image,
-        category: "review",
-        author: user
+          title,
+          content,
+          image: uploadedImageUrl,
+          category: "review",
+          author: user
       };
-
+  
       try {
-        const response = await authAddPost(reviewPost);
-        handleCloseModal();
-        setReviews(prevReviews => [response, ...prevReviews]);  //adding the new post at the start of the array
+          const response = await authAddPost(reviewPost);
+          handleCloseModal();
+          setReviews(prevReviews => [response, ...prevReviews]);  //adding the new post at the start of the array
       } catch (error) {
-        console.error('Error saving review post:', error);
+          console.error('Error saving review post:', error);
       }
     };
   
@@ -104,7 +115,7 @@ const ReviewFeed = () => {
                     <Box>
                       <Typography variant="title" text="Reviews" />
                       {reviews.map((review) => (
-                        <DiscussionCard key={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
+                        <ReviewCard key={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
                       ))}
                     </Box>
                   </Grid>

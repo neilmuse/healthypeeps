@@ -1,6 +1,10 @@
 const userController = require("../controllers/userController");
 const authMiddleware = require('../middlewares/auth-middleware');
 
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 module.exports = (app) => {
 	app.use((req, res, next) => {
 		res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,4 +31,5 @@ module.exports = (app) => {
 	app.get('/api/posts/:category/:id', userController.getSpecificPost);
 	app.get('/api/get_discussion/:id', userController.getSpecificDiscussion);
 	app.post('/api/add_post', authMiddleware, userController.addPost);
+	app.post('/api/upload', upload.single('image'), userController.uploadImage);
 }

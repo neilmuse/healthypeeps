@@ -7,10 +7,18 @@ const { Post, Review, Discussion, Recipe, Listing } = require("../schemas/post")
 const { hashPassword, comparePassword } = require('../utilities/password-util');
 const { validateFields } = require('../utilities/validation');
 
+const cloudinary = require('cloudinary').v2;
+
 const createToken = (user, secret, expiresIn) => {
   const { id, email } = user;
   return jwt.sign({ id, email }, secret, { expiresIn });
 };
+
+cloudinary.config({ 
+  cloud_name: 'healthypeeps', 
+  api_key: '616146284387795', 
+  api_secret: 'pi1zxaKTgcY2LtD0-VtJm9tabuA' 
+});
 
 module.exports = {
   signup: async (req, res) => {
@@ -94,7 +102,6 @@ module.exports = {
         const name = user.firstName;
         return userName;
       } else {
-        console.log('User not found');
         return null;
       }
     } catch (error) {
@@ -184,7 +191,6 @@ module.exports = {
             res.json(listings);
             break;
           default:
-            console.log("Invalid category");
             break;
       }
     } catch (err) {
@@ -255,8 +261,36 @@ module.exports = {
       return res.status(500).json({ message: err.message });
     }
   },
-  
 
+  uploadImage: async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).send('No file received');
+        }
+
+        let imageUrl = null;
+
+        // Upload file to Cloudinary
+        await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream({ resource_type: 'auto' }, (error, result) => {
+                if (error) {
+                    console.error('Upload to Cloudinary failed:', error);
+                    reject('Upload failed.');
+                } else {
+                    imageUrl = result.url; // Store the URL of the image
+                    resolve('File uploaded successfully to Cloudinary.');
+                }
+            }).end(req.file.buffer);
+        });
+
+        // Send the URL back to the frontend
+        return res.status(200).json({ message: 'File uploaded successfully to Cloudinary.', url: imageUrl });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send('Internal Server Error.');
+    }
+  },
+  
   getSpecificDiscussion: async (req, res) => {
     const userID = req.params.id;
     try {

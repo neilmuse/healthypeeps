@@ -61,7 +61,6 @@ const Profile = () => {
 
   const handleSaveButtonClick = async () => {
     try {
-      console.log("FORM VALUES", formValues);
       const updatedUser = await authUpdateUserData(formValues);
       setUser(updatedUser);
       setIsEditing(false);

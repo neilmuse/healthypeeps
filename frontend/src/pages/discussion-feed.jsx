@@ -6,7 +6,7 @@ import Typography from '../components/typography.jsx';
 import DiscussionCard from '../views/discussion-card.jsx';
 
 import { AuthContext } from '../context/auth-context';
-import { authAddPost, authGetAllPostsByCategory } from "../auth";
+import { authAddPost, authGetAllPostsByCategory, authUploadFile } from "../auth";
 
 const DiscussionFeed = () => {
     const { user } = useContext(AuthContext);
@@ -47,11 +47,22 @@ const DiscussionFeed = () => {
   
     const handleFormSubmit = async (event) => {
       event.preventDefault();
+  
+      let uploadedImageUrl = null;
+  
+      if (image) {
+          try {
+              const uploadedFileResponse = await authUploadFile(image);
+              uploadedImageUrl = uploadedFileResponse.url; // Store the URL from the response
+          } catch (error) {
+              console.error('Error uploading file:', error);
+          }
+      }
 
       const discussionPost = {
         title,
         content,
-        image,
+        image: uploadedImageUrl,
         category: "discussion",
         author: user
       };
