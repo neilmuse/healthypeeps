@@ -1,16 +1,28 @@
 const imageStyle = {
-    display: 'block',
-    objectFit: 'cover',
-    maxHeight: '100%',
-    maxWidth: '100%',
-    height: 'auto',
-    width: 'auto',
-    margin: 'auto'
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover'
 };
 
 const imageContainerStyle = {
-    width: '100%',
+    width: '150px',
+    height: '150px',
     position: 'relative'
 };
 
-export { imageStyle, imageContainerStyle };
+const imageStyleCard = {
+    width: '75%',
+    height: '75%',
+    objectFit: 'cover'
+};
+
+const imageContainerStyleCard = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%'
+};
+
+
+
+export { imageStyle, imageStyleCard, imageContainerStyle, imageContainerStyleCard };

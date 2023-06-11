@@ -8,6 +8,7 @@ import COLORS from '../constants/colors.js';
 import { useNavigate } from 'react-router-dom';
 import ConvertTime from '../utils/moment.jsx';
 import { authGetSpecificPost } from '../auth';
+import { imageStyle, imageContainerStyle } from '../constants/styles';
 
 const ImageSlider = ({ images, itemsPerSlide }) => {
   const NAVIGATE = useNavigate();
@@ -57,7 +58,9 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
           >
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 
-            <img src={image.image || 'https://picsum.photos/200'} />
+            <div style={imageContainerStyle}>
+              <img src={image.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyle} />
+            </div>
 
               <CardHeader
                   avatar={

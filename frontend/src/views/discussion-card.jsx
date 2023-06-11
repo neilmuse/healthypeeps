@@ -9,6 +9,8 @@ import Typography from '../components/typography.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
 
+import { imageStyleCard, imageContainerStyleCard } from '../constants/styles';
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -52,7 +54,6 @@ const DiscussionCard = ({ title, image, author, createdAt, content }) => {
 
     return (
         <Card>
-            <img src={image} />
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: COLORS.GREEN}} >
@@ -63,6 +64,11 @@ const DiscussionCard = ({ title, image, author, createdAt, content }) => {
                 title={<Typography variant="cardtitle" text={title} />}
                 subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
             />
+
+            <div style={imageContainerStyleCard}>
+                <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+            </div>
+
             <CardContent>
                 <Typography variant="body1" text={content} />
             </CardContent>

@@ -110,7 +110,6 @@ const ReviewFeed = () => {
                         <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
                         </DialogActions>
                     </Dialog>
-                    
 
                     <Box>
                       <Typography variant="title" text="Reviews" />

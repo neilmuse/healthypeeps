@@ -15,8 +15,6 @@ const createToken = (user, secret, expiresIn) => {
   return jwt.sign({ id, email }, secret, { expiresIn });
 };
 
-
-
 cloudinary.config({ 
   cloudinary_url: process.env.CLOUDINARY_URL
 });

@@ -9,7 +9,7 @@ import Typography from '../components/typography.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
 
-import { imageStyle, imageContainerStyle } from '../constants/styles';
+import { imageStyleCard, imageContainerStyleCard } from '../constants/styles';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -27,7 +27,7 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '80%', // adjust the width as necessary
+    width: '80%',
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -54,9 +54,6 @@ const ReviewCard = ({ title, image, author, createdAt, content }) => {
 
     return (
         <Card>
-            <div style={imageContainerStyle}>
-                <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyle} />
-            </div>
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: COLORS.GREEN}} >
@@ -67,6 +64,12 @@ const ReviewCard = ({ title, image, author, createdAt, content }) => {
                 title={<Typography variant="cardtitle" text={title} />}
                 subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
             />
+
+            <div style={imageContainerStyleCard}>
+                <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+            </div>
+
+
             <CardContent>
                 <Typography variant="body1" text={content} />
             </CardContent>
@@ -115,7 +118,6 @@ const ReviewCard = ({ title, image, author, createdAt, content }) => {
                     </Card>
                 </Box>
             </Modal>
-
         </Card>
     );
 };
