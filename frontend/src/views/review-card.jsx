@@ -9,6 +9,8 @@ import Typography from '../components/typography.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
 
+import { imageStyle, imageContainerStyle } from '../constants/styles';
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -52,7 +54,9 @@ const ReviewCard = ({ title, image, author, createdAt, content }) => {
 
     return (
         <Card>
-            <img src={image} />
+            <div style={imageContainerStyle}>
+                <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyle} />
+            </div>
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: COLORS.GREEN}} >

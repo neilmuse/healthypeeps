@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Box as MuiBox, Button, Chip, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
+import { Box as MuiBox, Button, Chip, Container, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
 import { Outlet, Link } from 'react-router-dom';
 import SearchField from '../components/search-field.jsx';
 import RecipeFeed from './recipe-slider.jsx';
@@ -46,65 +46,70 @@ const Homepage = () => {
       <Box>
         <HomepageHero />
 
-        <Typography variant="title" text= {user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
+        <Container>
 
-        <Grid container justifyContent="center" alignItems="center">
-          <Grid>
-            <Typography variant="hero_title" text="What can we help you with?" />
-            <SearchField />
-          </Grid>
-        </Grid>
+          <Typography variant="title" text= {user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
 
-        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="title" text="New Recipes" />
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid>
+              <Typography variant="hero_title" text="What can we help you with?" />
+              <SearchField />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
-            <Button component={Link} to="/recipes" color="primary" variant="text">
-              View All
-            </Button>
-          </Grid>
-        </Grid>
 
-        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="title" text="Discussions" />
+          <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="title" text="New Recipes" />
+            </Grid>
+            <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
+              <Button component={Link} to="/recipes" color="primary" variant="text">
+                View All
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
-            <Button component={Link} to="/discussions" color="primary" variant="text">
-              View All
-            </Button>
+
+          <ImageSlider images={state.listings} itemsPerSlide={5} />
+
+          <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="title" text="Discussions" />
+            </Grid>
+            <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
+              <Button component={Link} to="/discussions" color="primary" variant="text">
+                View All
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <ImageSlider images={state.discussions} itemsPerSlide={5} />
+          <ImageSlider images={state.discussions} itemsPerSlide={5} />
 
-        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="title" text="Reviews" />
+          <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="title" text="Reviews" />
+            </Grid>
+            <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
+              <Button component={Link} to="/reviews" color="primary" variant="text">
+                View All
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
-            <Button component={Link} to="/reviews" color="primary" variant="text">
-              View All
-            </Button>
+
+          <ImageSlider images={state.reviews} itemsPerSlide={5} />
+
+          <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="title" text="Listings" />
+            </Grid>
+            <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
+              <Button component={Link} to="/listings" color="primary" variant="text">
+                View All
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <ImageSlider images={state.reviews} itemsPerSlide={5} />
+          <ImageSlider images={state.listings} itemsPerSlide={5} />
 
-        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="title" text="Listings" />
-          </Grid>
-          <Grid item xs={12} sm={6} textAlign={{ xs: 'left', sm: 'right' }}>
-            <Button component={Link} to="/listings" color="primary" variant="text">
-              View All
-            </Button>
-          </Grid>
-        </Grid>
-
-        <ImageSlider images={state.listings} itemsPerSlide={5} />
-
+        </Container>
       </Box>
       <Outlet />
     </>

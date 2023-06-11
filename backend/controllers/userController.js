@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -14,10 +15,10 @@ const createToken = (user, secret, expiresIn) => {
   return jwt.sign({ id, email }, secret, { expiresIn });
 };
 
+
+
 cloudinary.config({ 
-  cloud_name: 'healthypeeps', 
-  api_key: '616146284387795', 
-  api_secret: 'pi1zxaKTgcY2LtD0-VtJm9tabuA' 
+  cloudinary_url: process.env.CLOUDINARY_URL
 });
 
 module.exports = {
