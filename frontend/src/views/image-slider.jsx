@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Grid } from '@mui/material';
+import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Grid, Link } from '@mui/material';
 import Typography from '../components/typography.jsx';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
@@ -20,19 +20,12 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
   const handleCardClick = async (category, id) => {
     try {
         const post = await authGetSpecificPost(category, id);
-        NAVIGATE(`/post/${id}`, post); // send the post data along with the route change
+        localStorage.setItem('data', JSON.stringify(post)); //set the data in localStorage before navigation
+        NAVIGATE(`/${category}/${id}`);
     } catch (error) {
         console.error('Error fetching post:', error);
     }
   }
-
-  const handlePrev = () => {
-    setCurrent((prev) => (prev === 0 ? images.length - itemsToShow : prev - itemsToShow));
-  };
-
-  const handleNext = () => {
-    setCurrent((prev) => (prev + itemsToShow) % images.length);
-  };
 
   // Function to truncate the text
   const truncateText = (text, maxLength) => {

@@ -142,10 +142,10 @@ export const authGetSpecificPost = async (category, id) => {
 
 export const authGetSpecificDiscussion = async () => {
   const response = await fetch(`http://localhost:5000/api/get_discussion/${post._id}`, {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-      },
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
   });
 
   if (!response.ok) {
@@ -160,12 +160,12 @@ export const authGetSpecificDiscussion = async () => {
 export const authAddPost = async (postData) => {
   const token = localStorage.getItem('authToken');
   const response = await fetch(`http://localhost:5000/api/add_post`, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(postData)
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(postData)
   });
 
   if (!response.ok) {
@@ -213,6 +213,26 @@ export const authUploadFile = async (file) => {
     return result;
   }
 };
+
+export const authAddComment = async (commentData) => {
+  const token = localStorage.getItem('authToken');
+  const response = await fetch("http://localhost:5000/api/add_comment", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(commentData),
+  });
+  
+  if (!response.ok) {
+      throw new Error("Error adding comment");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
 
 
 

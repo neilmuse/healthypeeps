@@ -11,6 +11,8 @@ import ConvertTime from '../utils/moment.jsx';
 
 import { imageStyleCard, imageContainerStyleCard } from '../constants/styles';
 
+import { authAddComment } from "../auth";
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -34,16 +36,28 @@ const modalStyle = {
 };
 
 
-const ListingCard = ({ title, image, author, createdAt, content, location, price, phoneNumber, email }) => {
-    const [expanded, setExpanded] = React.useState(false);
+const ListingCard = ({ title, image, author, createdAt, content, location, price, phoneNumber, email, postId, authorId }) => {    const [expanded, setExpanded] = React.useState(false);
     const [comments, setComments] = React.useState([]);
     const [newComment, setNewComment] = React.useState('');
     const [open, setOpen] = React.useState(false);
 
-    const handleSendComment = () => {
-        setComments([...comments, newComment]);
-        setNewComment('');
-    };
+    const handleSendComment = async (event) => {
+        event.preventDefault();
+
+        const commentData = {
+            content: newComment,
+            postId,
+            authorId,
+        }
+
+        try  {
+            const newComment = await authAddComment(commentData);
+            setComments(prevComments => [...prevComments, data.comment]);
+            setNewComment('');
+        } catch(error) {
+            console.error("Error adding comment:", error);
+        }
+    };    
 
     const handleExpandClick = () => {
         setExpanded(!expanded);

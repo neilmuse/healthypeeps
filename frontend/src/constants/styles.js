@@ -23,6 +23,4 @@ const imageContainerStyleCard = {
     width: '100%'
 };
 
-
-
 export { imageStyle, imageStyleCard, imageContainerStyle, imageContainerStyleCard };

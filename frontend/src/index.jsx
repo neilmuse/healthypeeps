@@ -16,10 +16,10 @@ import PageNotFound from './pages/not-found.jsx';
 import RecipeLayout from './pages/recipe-feed.jsx';
 import RecipePage from './pages/recipe.jsx';
 import ListingLayout from './pages/listing-feed.jsx';
-import ListingPage from './views/listing-card.jsx';
-import DiscussionPage from './views/discussion-card.jsx';
+import ListingPage from './pages/listing-page.jsx';
+import DiscussionPage from './pages/discussion-page.jsx';
 import DiscussionLayout from './pages/discussion-feed.jsx';
-import ReviewPage from './views/review-card.jsx';
+import ReviewPage from './pages/review-page.jsx';
 import ReviewLayout from './pages/review-feed.jsx';
 import Homepage from './pages/homepage.jsx';
 import AboutUs from './pages/about-us.jsx';
@@ -45,9 +45,9 @@ root.render(
                 <Route path="listings" element={<ListingLayout />} />
                 <Route path="listing/:id" element={<ListingPage />} />
                 <Route path="discussions" element={<DiscussionLayout />} />
-                <Route path="discussions/:id" element={<DiscussionPage />} />
+                <Route path="discussion/:id" element={<DiscussionPage />} />
                 <Route path="reviews" element={<ReviewLayout />} />
-                <Route path="reviews/:id" element={<ReviewPage />} />
+                <Route path="review/:id" element={<ReviewPage />} />
                 <Route path="home" element={<Homepage />} />
                 <Route path="admin" element={<AdminPage />} />
                 <Route path="about" element={<AboutUs />} />

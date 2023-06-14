@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const USER_MODEL = require("../schemas/user");
+const COMMENT_MODEL = require("../schemas/comment");
 const { Post, Review, Discussion, Recipe, Listing } = require("../schemas/post");
 
 const { hashPassword, comparePassword } = require('../utilities/password-util');
@@ -234,16 +235,16 @@ module.exports = {
     let Model;
   
     switch(category) {
-      case 'discussions':
+      case 'discussion':
         Model = Discussion;
         break;
-      case 'reviews':
+      case 'review':
         Model = Review;
         break;
-      case 'listings':
+      case 'listing':
         Model = Listing;
         break;
-      case 'recipes':
+      case 'recipe':
         Model = Recipe;
         break;
       default:
@@ -351,6 +352,45 @@ module.exports = {
     } catch (err) {
       // In case of an error, return an HTTP status 500 and the error message.
       return res.status(500).json({ message: err.message });
+    }
+  },
+
+  //COMMENT
+  addComment: async (req, res) => {
+    try {
+        const { content, postId, authorId } = req.body;
+
+        if (!content || !postId || !authorId) {
+          return res.status(400).json({ message: "Missing required data" });
+        }
+
+        // Check if the comment already exists
+        const existingComment = await COMMENT_MODEL.findOne({
+            content,
+            post: mongoose.Types.ObjectId(postId),
+            author: mongoose.Types.ObjectId(authorId)
+        });
+
+        if (existingComment) {
+            // Comment already exists, return a message
+            return res.status(409).json({ message: "Comment already exists" });
+        }
+
+        // Create new comment
+        const newComment = new COMMENT_MODEL({
+            content,
+            post: mongoose.Types.ObjectId(postId),
+            author: mongoose.Types.ObjectId(authorId),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+
+        // Save the comment
+        await newComment.save();
+
+        res.status(201).json({ message: "Comment created successfully", comment: newComment });
+    } catch (error) {
+        res.status(500).json({ message: "Error adding comment", error: error.message });
     }
   },
   

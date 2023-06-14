@@ -32,4 +32,9 @@ module.exports = (app) => {
 	app.get('/api/get_discussion/:id', userController.getSpecificDiscussion);
 	app.post('/api/add_post', authMiddleware, userController.addPost);
 	app.post('/api/upload', upload.single('image'), userController.uploadImage);
+
+	//COMMENTS
+	app.post('/api/add_comment', authMiddleware, userController.addComment);
+
+
 }

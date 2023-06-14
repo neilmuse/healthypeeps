@@ -141,7 +141,9 @@ const ListingFeed = () => {
                                 location={listing.location} 
                                 email={listing.email} 
                                 phoneNumber={listing.phoneNumber} 
-                                price={listing.price} 
+                                price={listing.price}
+                                authorId={listing.author}
+                                postId={listing._id}
                             />
                         ))}
                     </Box>
