@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Grid,
   Paper,
@@ -8,34 +8,42 @@ import TextField from '../components/textfield';
 import Button from './button.jsx';
 import Divider from '../components/divider.jsx';
 
-const Discussion = () => {
-  const handleSubmit = (event) => {
+import { authAddComment } from "../auth";
+import { AuthContext } from '../context/auth-context';
+
+const CommentBox = ({ postId, authorId }) => {
+  const { user } = useContext(AuthContext);
+  const [comment, setComment] = useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+
+    const commentData = {
+      content: comment,
+      // postId and authorId should be set accordingly
+      postId: postId,
+      authorId: user._id
+    };
+
+    try {
+      const response = await authAddComment(commentData);
+      setComment(''); // Clear the comment input
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
   };
 
   return (
-    <>
-        <Paper style={{ padding: "40px" }}>
-            <Grid container spacing={2}>
-            <TextField
-                required
-                name="comment"
-                label="Comment"
-                autoFocus
-                rows="10"
-                maxRows="15"
-            />
-
-            <Button text="Comment"/>
-            </Grid>
-
-            <Divider/>
-
-        </Paper>
-    </>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="Write a comment..."
+      />
+      <button type="submit">Add Comment</button>
+    </form>
   );
 };
 
-export default Discussion;
-
+export default CommentBox;

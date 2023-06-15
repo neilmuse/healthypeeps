@@ -115,7 +115,7 @@ const DiscussionFeed = () => {
                     <Box>
                       <Typography variant="title" text="Discussions" />
                       {discussions.map((discussion) => (
-                        <DiscussionCard key={discussion._id} title={discussion.title} image={discussion.image} author={discussion.author} createdAt={discussion.createdAt} content={discussion.content} />
+                        <DiscussionCard key={discussion._id} discussionId={discussion._id} title={discussion.title} image={discussion.image} author={discussion.author} createdAt={discussion.createdAt} content={discussion.content} />
                       ))}
                     </Box>
                   </Grid>

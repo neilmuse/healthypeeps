@@ -226,8 +226,9 @@ export const authAddComment = async (commentData) => {
   });
   
   if (!response.ok) {
-      throw new Error("Error adding comment");
-  }
+    const errorDetail = await response.json();
+    throw new Error("Error adding comment");
+  }  
 
   const data = await response.json();
   return data;

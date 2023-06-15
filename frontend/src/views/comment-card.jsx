@@ -9,11 +9,11 @@ import Typography from '../components/typography.jsx';
 import CommentBox from '../components/comment-box.jsx';
 import Divider from '../components/divider.jsx';
 
-const CommentCard = () => {
+const CommentCard = ({ postId, authorId }) => {
   return (
     <>
       <Typography text="Comments" variant="title" />
-      <CommentBox />
+      <CommentBox postId={postId} authorId={authorId}/>
 
       {comments.map((comment) => (
         <Paper style={{ padding: "40px 20px" }}>

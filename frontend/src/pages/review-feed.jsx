@@ -114,7 +114,7 @@ const ReviewFeed = () => {
                     <Box>
                       <Typography variant="title" text="Reviews" />
                       {reviews.map((review) => (
-                        <ReviewCard key={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
+                        <ReviewCard key={review._id} reviewId={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
                       ))}
                     </Box>
                   </Grid>

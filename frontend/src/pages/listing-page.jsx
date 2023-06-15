@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box as MUIBox,
   Grid,
@@ -18,7 +18,10 @@ import CommentCard from '../views/comment-card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
 
+import { AuthContext } from '../context/auth-context';
+
 const ListingPage = () => {
+    const { user } = useContext(AuthContext);
     const { id } = useParams();
     const post = JSON.parse(localStorage.getItem('data'));
 
@@ -26,32 +29,32 @@ const ListingPage = () => {
         <>
         <Box sx={{ border: 1 }}>
             <Card>
-            <Grid item>
-                <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                <Grid item>
+                    <Typography variant="hero_title" text={post.title ?? "N/A"} />
 
-                <CardMedia image={post.image ?? ""} />
+                    <CardMedia image={post.image ?? ""} />
 
-                <Divider />
+                    <Divider />
 
-                <Typography variant="title" text="Brief Description" />
-                <Typography variant="body1" text={post.description ?? "N/A"} />
+                    <Typography variant="title" text="Brief Description" />
+                    <Typography variant="body1" text={post.description ?? "N/A"} />
 
-                <Divider />
+                    <Divider />
 
-                <MUIBox
-                sx={{
-                    backgroundColor: COLORS.LIGHT_GREEN,
-                }}
-                >
+                    <MUIBox
+                    sx={{
+                        backgroundColor: COLORS.LIGHT_GREEN,
+                    }}
+                    >
 
-                <Grid container spacing={2} p={3}>
+                    <Grid container spacing={2} p={3}>
+                    </Grid>
+                    </MUIBox>
+
+                    <Divider />
+
+                    <CommentCard postId={post._id} authorId={user._id} />
                 </Grid>
-                </MUIBox>
-
-                <Divider />
-
-                <CommentCard />
-            </Grid>
             </Card>
         </Box>
         <Outlet />

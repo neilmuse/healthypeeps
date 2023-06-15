@@ -132,7 +132,8 @@ const ListingFeed = () => {
                       <Typography variant="title" text="Listings" />
                         {listings.map((listing) => (
                             <ListingCard 
-                                key={listing._id} 
+                                key={listing._id}
+                                listingId={listing._id}
                                 title={listing.title} 
                                 image={listing.image} 
                                 author={listing.author} 

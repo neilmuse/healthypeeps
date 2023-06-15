@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box as MUIBox,
   Grid,
@@ -19,7 +19,10 @@ import CommentCard from '../views/comment-card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
 
+import { AuthContext } from '../context/auth-context';
+
 const DiscussionPage = () => {
+    const { user } = useContext(AuthContext);
     const { id } = useParams();
     const post = JSON.parse(localStorage.getItem('data'));
 
@@ -51,7 +54,7 @@ const DiscussionPage = () => {
 
                 <Divider />
 
-                <CommentCard />
+                <CommentCard postId={post._id} authorId={user._id} />
             </Grid>
             </Card>
         </Box>

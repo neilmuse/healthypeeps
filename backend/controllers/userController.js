@@ -1,6 +1,7 @@
 const dotenv = require('dotenv').config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require('mongoose');
 
 const USER_MODEL = require("../schemas/user");
 const COMMENT_MODEL = require("../schemas/comment");
@@ -367,8 +368,8 @@ module.exports = {
         // Check if the comment already exists
         const existingComment = await COMMENT_MODEL.findOne({
             content,
-            post: mongoose.Types.ObjectId(postId),
-            author: mongoose.Types.ObjectId(authorId)
+            post: new mongoose.Types.ObjectId(postId),
+            author: new mongoose.Types.ObjectId(authorId)
         });
 
         if (existingComment) {
@@ -379,8 +380,8 @@ module.exports = {
         // Create new comment
         const newComment = new COMMENT_MODEL({
             content,
-            post: mongoose.Types.ObjectId(postId),
-            author: mongoose.Types.ObjectId(authorId),
+            post: new mongoose.Types.ObjectId(postId),
+            author: new mongoose.Types.ObjectId(authorId),
             createdAt: new Date(),
             updatedAt: new Date(),
         });
@@ -392,6 +393,5 @@ module.exports = {
     } catch (error) {
         res.status(500).json({ message: "Error adding comment", error: error.message });
     }
-  },
-  
+  },  
 }
