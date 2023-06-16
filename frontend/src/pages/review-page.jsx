@@ -54,7 +54,7 @@ const ReviewPage = () => {
 
                 <Divider />
 
-                <CommentCard postId={post._id} authorId={user._id} />
+                <CommentCard postId={post?._id} authorId={user?._id} />
             </Grid>
             </Card>
         </Box>

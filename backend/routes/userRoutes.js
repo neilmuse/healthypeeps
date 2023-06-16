@@ -35,6 +35,5 @@ module.exports = (app) => {
 
 	//COMMENTS
 	app.post('/api/add_comment', authMiddleware, userController.addComment);
-
-
+	app.get('/api/comments/:id', userController.getCommentsByPostId);
 }

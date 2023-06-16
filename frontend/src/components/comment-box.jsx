@@ -8,10 +8,12 @@ import TextField from '../components/textfield';
 import Button from './button.jsx';
 import Divider from '../components/divider.jsx';
 
+import ConvertTime from '../utils/moment.jsx';
+
 import { authAddComment } from "../auth";
 import { AuthContext } from '../context/auth-context';
 
-const CommentBox = ({ postId, authorId }) => {
+const CommentBox = ({ postId, authorId, addedComment }) => {
   const { user } = useContext(AuthContext);
   const [comment, setComment] = useState('');
 
@@ -20,17 +22,27 @@ const CommentBox = ({ postId, authorId }) => {
 
     const commentData = {
       content: comment,
-      // postId and authorId should be set accordingly
       postId: postId,
       authorId: user._id
     };
 
     try {
       const response = await authAddComment(commentData);
+      // Ensure that the response has the required fields
+      const newComment = {
+        author: {
+          firstName: user.firstName
+        },
+        content: comment,
+        createdAt: ConvertTime(new Date()),
+        ...response,
+      }
+      addedComment(newComment);
       setComment(''); // Clear the comment input
     } catch (error) {
       console.error('Error adding comment:', error);
     }
+    
   };
 
   return (

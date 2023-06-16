@@ -234,6 +234,23 @@ export const authAddComment = async (commentData) => {
   return data;
 };
 
+export const authGetCommentsByPostId = async (postId) => {
+  const response = await fetch(`http://localhost:5000/api/comments/${postId}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
+
+  if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+  }
+
+  const comments = await response.json();
+  return comments;
+};
+
 
 
 

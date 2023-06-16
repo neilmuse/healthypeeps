@@ -31,14 +31,14 @@ const DiscussionPage = () => {
         <Box sx={{ border: 1 }}>
             <Card>
             <Grid item>
-                <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                <Typography variant="hero_title" text={post?.title ?? "N/A"} />
 
-                <CardMedia image={post.image ?? ""} />
+                <CardMedia image={post?.image ?? ""} />
 
                 <Divider />
 
                 <Typography variant="title" text="Brief Description" />
-                <Typography variant="body1" text={post.description ?? "N/A"} />
+                <Typography variant="body1" text={post?.description ?? "N/A"} />
 
                 <Divider />
 
@@ -54,7 +54,7 @@ const DiscussionPage = () => {
 
                 <Divider />
 
-                <CommentCard postId={post._id} authorId={user._id} />
+                <CommentCard postId={post?._id} authorId={user?._id} />
             </Grid>
             </Card>
         </Box>

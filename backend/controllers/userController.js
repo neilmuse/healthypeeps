@@ -393,5 +393,17 @@ module.exports = {
     } catch (error) {
         res.status(500).json({ message: "Error adding comment", error: error.message });
     }
-  },  
+  },
+
+  getCommentsByPostId: async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const comments = await COMMENT_MODEL.find({ post: postId }).populate('author').exec();
+      res.status(200).json(comments);
+    } catch (error) {
+      res.status(500).json({ message: 'Fetching comments failed.' });
+    }
+  },
+
+
 }
