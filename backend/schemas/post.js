@@ -36,7 +36,6 @@ const Recipe = Post.discriminator(
   'recipe',
   new Schema({
     image: String,
-    description: String,
     ingredients: [
       {
         name: String,

@@ -140,23 +140,6 @@ export const authGetSpecificPost = async (category, id) => {
   return post;
 };
 
-export const authGetSpecificDiscussion = async () => {
-  const response = await fetch(`http://localhost:5000/api/get_discussion/${post._id}`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message);
-  }
-
-  const discussion = await response.json();
-  return discussion;
-};
-
 export const authAddPost = async (postData) => {
   const token = localStorage.getItem('authToken');
   const response = await fetch(`http://localhost:5000/api/add_post`, {

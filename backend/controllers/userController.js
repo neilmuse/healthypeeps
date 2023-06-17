@@ -180,7 +180,7 @@ module.exports = {
             res.json(discussions);
             break;
           case 'recipes':
-            const recipes = await Listing.find();
+            const recipes = await Recipe.find();
             res.json(recipes);
             break;
           case 'reviews':

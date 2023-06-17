@@ -36,6 +36,15 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
     }
   }
 
+  if (!images || images.length === 0) {
+    return (
+      <Box>
+        {/* Display a loading indicator or fallback UI here */}
+        <Typography variant="body1">Loading images...</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Grid container spacing={2}>

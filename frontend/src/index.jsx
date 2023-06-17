@@ -14,7 +14,7 @@ import LoginPage from './pages/login.jsx';
 import ResetPasswordPage from './pages/reset-password.jsx';
 import PageNotFound from './pages/not-found.jsx';
 import RecipeLayout from './pages/recipe-feed.jsx';
-import RecipePage from './pages/recipe.jsx';
+import RecipePage from './pages/recipe-page.jsx';
 import ListingLayout from './pages/listing-feed.jsx';
 import ListingPage from './pages/listing-page.jsx';
 import DiscussionPage from './pages/discussion-page.jsx';

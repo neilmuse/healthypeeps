@@ -18,7 +18,7 @@ const Homepage = () => {
   const [discussions, setDiscussions] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [listings, setListings] = useState([]);
-  const categories = ['discussions', 'reviews', 'listings'];
+  const categories = ['recipes', 'discussions', 'reviews', 'listings'];
 
   const [state, setState] = useState({
     discussions: [],
@@ -68,7 +68,7 @@ const Homepage = () => {
             </Grid>
           </Grid>
 
-          <ImageSlider images={state.listings} itemsPerSlide={5} />
+          <ImageSlider images={state.recipes} itemsPerSlide={5} />
 
           <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
             <Grid item xs={12} sm={6}>
