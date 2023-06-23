@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import {
+  Button, 
+  TextField,
   Grid,
   Paper,
+  Box
 } from '@mui/material';
 
-import TextField from '../components/textfield';
-import Button from './button.jsx';
 import Divider from '../components/divider.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
@@ -28,13 +29,13 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
 
     try {
       const response = await authAddComment(commentData);
-      // Ensure that the response has the required fields
       const newComment = {
         author: {
-          firstName: user.firstName
+          firstName: user.firstName,
+          lastName: user.lastName
         },
         content: comment,
-        createdAt: ConvertTime(new Date()),
+        createdAt: new Date(),
         ...response,
       }
       addedComment(newComment);
@@ -46,14 +47,29 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        placeholder="Write a comment..."
-      />
-      <button type="submit">Add Comment</button>
+    <form onSubmit={handleSubmit} noValidate autoComplete="off">
+      <Box width="100%">
+        <Grid container spacing={1} alignItems="center">
+          <Grid item xs>
+            <TextField
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write a comment..."
+              variant="outlined"
+              fullWidth
+            />        
+          </Grid>
+          <Grid item>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     </form>
   );
 };

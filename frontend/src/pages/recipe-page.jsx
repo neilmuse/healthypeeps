@@ -63,6 +63,8 @@ const RecipePage = () => {
 
                     </List>
 
+                    <Divider />
+
                     <Typography variant="title" text="Macronutrients" />
 
                     <MUIBox

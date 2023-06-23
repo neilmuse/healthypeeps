@@ -9,6 +9,8 @@ import Typography from '../components/typography.jsx';
 import CommentBox from '../components/comment-box.jsx';
 import Divider from '../components/divider.jsx';
 
+import ConvertTime from '../utils/moment.jsx';
+
 import { authGetCommentsByPostId } from '../auth';
 
 const CommentCard = ({ postId, authorId }) => {
@@ -35,23 +37,32 @@ const CommentCard = ({ postId, authorId }) => {
   return (
     <>
       <Typography text="Comments" variant="title" />
+
       <CommentBox postId={postId} authorId={authorId} addedComment={addNewComment} />
 
       {comments.map((comment) => (
-        <Paper key={comment._id} style={{ padding: "40px 20px" }}>
+        <Paper key={comment._id} style={{ padding: "20px 20px", overflow: 'hidden' }}>
           <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
               <Avatar alt="image" src={comment?.image} />
             </Grid>
             <Grid justifyContent="left" item xs zeroMinWidth>
-              <Typography text={comment?.author?.firstName} />
-              <Typography text={comment?.content} />
-              <Typography text={comment?.createdAt} />
+              <Grid container alignItems="center" spacing={1}>
+                <Grid item>
+                  <Typography text={comment?.author?.firstName + " " + comment?.author?.lastName} variant="body_bold" />
+                </Grid>
+                <Grid item>
+                  <Typography text={ConvertTime(comment?.createdAt)} />
+                </Grid>
+              </Grid>
+              <div style={{ wordWrap: 'break-word', overflowWrap: 'break-word', whiteSpace: 'pre-wrap' }}>
+                <Typography text={comment?.content} />
+              </div>
             </Grid>
           </Grid>
-          <Divider/>
+        </Paper>
+      ))}
 
-        </Paper>))}
     </>
   );
 };
