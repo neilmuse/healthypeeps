@@ -395,6 +395,59 @@ module.exports = {
     }
   },
 
+  editComment: async (req, res) => {
+    try {
+      const { content } = req.body;
+      if (!content || content.trim() === "") {
+        return res.status(400).json({ message: 'Content cannot be empty' });
+      }
+
+      const comment = await COMMENT_MODEL.findById(req.params.id);
+
+      // Check if comment exists
+      if (!comment) {
+        return res.status(404).json({ message: 'Comment not found' });
+      }
+
+      // Check if user is the author of the comment
+      if (comment.author.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: 'You are not authorized to edit this comment' });
+      }
+
+      // Update the comment
+      comment.content = content;
+      comment.updatedAt = Date.now();
+      await comment.save();
+
+      res.json(comment);
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+    }
+  },
+
+  deleteComment: async (req, res) => {
+    try {
+      const comment = await COMMENT_MODEL.findById(req.params.id);
+
+      // Check if comment exists
+      if (!comment) {
+        return res.status(404).json({ message: 'Comment not found' });
+      }
+
+      // Check if user is the author of the comment
+      if (comment.author.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: 'You are not authorized to delete this comment' });
+      }
+
+      // Delete the comment
+      await comment.remove();
+
+      res.json({ message: 'Comment deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+    }
+  },
+
   getCommentsByPostId: async (req, res) => {
     try {
       const postId = req.params.id;

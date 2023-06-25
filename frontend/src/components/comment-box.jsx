@@ -20,31 +20,36 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const commentData = {
       content: comment,
       postId: postId,
-      authorId: user._id
+      authorId: authorId // Use authorId passed as prop
     };
 
     try {
       const response = await authAddComment(commentData);
+
+      console.log("RESPONSE", response);
+      
       const newComment = {
+        _id: response.comment._id,
         author: {
+          _id: authorId,
           firstName: user.firstName,
           lastName: user.lastName
         },
         content: comment,
         createdAt: new Date(),
         ...response,
-      }
+      };      
+    
       addedComment(newComment);
       setComment(''); // Clear the comment input
     } catch (error) {
       console.error('Error adding comment:', error);
     }
-    
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit} noValidate autoComplete="off">

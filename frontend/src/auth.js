@@ -217,6 +217,47 @@ export const authAddComment = async (commentData) => {
   return data;
 };
 
+export const authEditComment = async (commentId, updatedContent) => {
+  const token = localStorage.getItem('authToken');
+
+  const response = await fetch(`http://localhost:5000/api/comments/${commentId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ content: updatedContent }),
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.json();
+    throw new Error(errorDetail.message || "Error editing comment");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const authDeleteComment = async (commentId) => {
+  const token = localStorage.getItem('authToken');
+
+  const response = await fetch(`http://localhost:5000/api/comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.json();
+    throw new Error(errorDetail.message || "Error deleting comment");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+
 export const authGetCommentsByPostId = async (postId) => {
   const response = await fetch(`http://localhost:5000/api/comments/${postId}`, {
       method: 'GET',

@@ -35,4 +35,6 @@ module.exports = (app) => {
 	//COMMENTS
 	app.post('/api/add_comment', authMiddleware, userController.addComment);
 	app.get('/api/comments/:id', userController.getCommentsByPostId);
+	app.put('/api/comments/:id', authMiddleware, userController.editComment);
+	app.delete('/api/comments/:id', authMiddleware, userController.deleteComment);
 }
