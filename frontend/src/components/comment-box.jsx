@@ -29,8 +29,6 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
 
     try {
       const response = await authAddComment(commentData);
-
-      console.log("RESPONSE", response);
       
       const newComment = {
         _id: response.comment._id,

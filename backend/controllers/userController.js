@@ -427,24 +427,24 @@ module.exports = {
 
   deleteComment: async (req, res) => {
     try {
-      const comment = await COMMENT_MODEL.findById(req.params.id);
+        const comment = await COMMENT_MODEL.findById(req.params.id);
 
-      // Check if comment exists
-      if (!comment) {
-        return res.status(404).json({ message: 'Comment not found' });
-      }
+        // Check if comment exists
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
 
-      // Check if user is the author of the comment
-      if (comment.author.toString() !== req.user._id.toString()) {
-        return res.status(403).json({ message: 'You are not authorized to delete this comment' });
-      }
+        // Check if user is the author of the comment
+        if (comment.author.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You are not authorized to delete this comment' });
+        }
 
-      // Delete the comment
-      await comment.remove();
+        // Delete the comment
+        await COMMENT_MODEL.deleteOne({ _id: req.params.id });
 
-      res.json({ message: 'Comment deleted successfully' });
+        res.json({ message: 'Comment deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error' });
     }
   },
 

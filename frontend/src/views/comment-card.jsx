@@ -48,7 +48,6 @@ const CommentCard = ({ postId, authorId }) => {
   }, [postId]);
 
   const addNewComment = (newComment) => {
-    console.log("NEW COMMENT", newComment);
     newComment.author = {
         _id: authorId,
         firstName: newComment.author.firstName,
@@ -68,7 +67,6 @@ const CommentCard = ({ postId, authorId }) => {
 
   const handleSaveEdit = async () => {
     try {
-      console.log("Editing comment ID:", isEditing);
       const updatedComment = await authEditComment(isEditing, editingContent);
       updatedComment.author = { 
         _id: authorId, 
