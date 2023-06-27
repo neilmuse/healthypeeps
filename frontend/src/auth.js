@@ -275,6 +275,47 @@ export const authGetCommentsByPostId = async (postId) => {
   return comments;
 };
 
+export const authEditPost = async (postId, updatedPostData) => {
+  const token = localStorage.getItem('authToken');
+
+  const response = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+    method: "PUT",
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(updatedPostData)
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.json();
+    throw new Error(errorDetail.message || "Error updating post");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const authDeletePost = async (postId) => {
+  const token = localStorage.getItem('authToken');
+
+  const response = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+    method: "DELETE",
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.json();
+    throw new Error(errorDetail.message || "Error deleting post");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+
 
 
 

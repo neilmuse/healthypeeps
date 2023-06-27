@@ -31,6 +31,8 @@ module.exports = (app) => {
 	app.get('/api/posts/:category/:id', userController.getSpecificPost);
 	app.post('/api/add_post', authMiddleware, userController.addPost);
 	app.post('/api/upload', upload.single('image'), userController.uploadImage);
+	app.put('/api/posts/:id', authMiddleware, userController.editPost);
+	app.delete('/api/posts/:id', authMiddleware, userController.deletePost);
 
 	//COMMENTS
 	app.post('/api/add_comment', authMiddleware, userController.addComment);

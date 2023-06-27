@@ -426,8 +426,9 @@ module.exports = {
   },
 
   deleteComment: async (req, res) => {
+    const commentId = req.params.id;
     try {
-        const comment = await COMMENT_MODEL.findById(req.params.id);
+        const comment = await COMMENT_MODEL.findById(commentId);
 
         // Check if comment exists
         if (!comment) {
@@ -440,7 +441,7 @@ module.exports = {
         }
 
         // Delete the comment
-        await COMMENT_MODEL.deleteOne({ _id: req.params.id });
+        await COMMENT_MODEL.deleteOne({ _id: commentId });
 
         res.json({ message: 'Comment deleted successfully' });
     } catch (error) {
@@ -458,5 +459,40 @@ module.exports = {
     }
   },
 
+  editPost: async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const updatedData = req.body;
+  
+      // Update the post
+      const updatedPost = await Post.findByIdAndUpdate(postId, updatedData, {
+        new: true,
+        runValidators: true,
+      });
+  
+      // Send the updated post as a response
+      res.json(updatedPost);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  },
+  
+  deletePost: async (req, res) => {
+    const postId = req.params.id;
+  
+    try {
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      await COMMENT_MODEL.deleteMany({ post: postId });
+      await Post.deleteOne({ _id: postId });
+  
+      res.json({ message: 'Post and associated comments deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting post', error });
+    }
+  },
 
 }

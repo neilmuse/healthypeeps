@@ -1,12 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box as MUIBox,
-  Grid,
-  Link,
-  List,
-  ListItem,
+    Box as MUIBox,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Link,
+    List,
+    ListItem,
+    Menu,
+    MenuItem,
 } from '@mui/material';
-import { Outlet, useParams } from 'react-router-dom';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 import COLORS from '../constants/colors.js';
 
@@ -19,10 +29,51 @@ import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
 
 import { AuthContext } from '../context/auth-context';
+import { authDeletePost } from '../auth';
 
 const RecipePage = () => {
     const { user } = useContext(AuthContext);
+    const { id } = useParams();
+    const NAVIGATE = useNavigate();
     const post = JSON.parse(localStorage.getItem('data'));
+
+    const [anchorEls, setAnchorEls] = useState({});
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [postToDelete, setPostToDelete] = useState(null);
+  
+    const handleMenuClick = (event, postId) => {
+        setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
+    };
+
+    const handleMenuClose = (postId) => {
+    setAnchorEls({ ...anchorEls, [postId]: null });
+    };
+
+    const handleEdit = () => {
+    setIsEditing(true);
+    handleMenuClose();
+    };
+  
+    const openDeleteModal = (postId) => {
+      setPostToDelete(postId);
+      setDeleteModalOpen(true);
+    };
+  
+    const handleConfirmDelete = () => {
+      handleDeletePost(postToDelete);
+      setDeleteModalOpen(false);
+    };
+  
+    const handleDeletePost = async (postToDelete) => {
+      try {
+        await authDeletePost(postToDelete);
+        NAVIGATE('/home');
+      } catch (error) {
+        console.error("Error deleting post: ", error);
+      }
+    };
+  
+    const isCurrentUserAuthor = user?._id === post?.author;
 
     return (
         <>
@@ -30,6 +81,27 @@ const RecipePage = () => {
             <Card>
                 <Grid item>
                     <Typography variant="hero_title" text={post.title ?? "N/A"} />
+
+                    {isCurrentUserAuthor && (
+                        <>
+                        <IconButton
+                            aria-label="more"
+                            aria-controls="long-menu"
+                            aria-haspopup="true"
+                            onClick={(event) => handleMenuClick(event, post._id)}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEls[post._id]}
+                            open={Boolean(anchorEls[post._id])}
+                            onClose={() => handleMenuClose(post._id)}
+                        >
+                            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                            <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
+                        </Menu>
+                        </>
+                    )}
 
                     <CardMedia image={post.image ?? ""} />
 
@@ -108,6 +180,30 @@ const RecipePage = () => {
                 </Grid>
             </Card>
         </Box>
+
+        <Dialog
+            open={deleteModalOpen}
+            onClose={() => setDeleteModalOpen(false)}
+        >
+            <DialogTitle>{"Delete Comment?"}</DialogTitle>
+
+            <DialogContent>
+                <DialogContentText>
+                    Are you sure you want to delete this comment?
+                </DialogContentText>
+            </DialogContent>
+
+            <DialogActions>
+                <Button onClick={() => setDeleteModalOpen(false)} color="primary">
+                    Cancel
+                </Button>
+
+                <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+                    Delete
+                </Button>
+            </DialogActions>
+        </Dialog>
+
         <Outlet />
         </>
     );

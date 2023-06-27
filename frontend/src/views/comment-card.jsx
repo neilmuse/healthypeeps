@@ -78,8 +78,7 @@ const CommentCard = ({ postId, authorId }) => {
     } catch (error) {
       console.error("Error editing comment:", error);
     }
-}; 
-
+  }; 
 
   const openDeleteModal = (commentId) => {
     setCommentToDelete(commentId);
@@ -160,6 +159,7 @@ const CommentCard = ({ postId, authorId }) => {
                 )}
               </div>
             </Grid>
+
             {comment.author._id === authorId && (
               <Grid item>
                 <IconButton

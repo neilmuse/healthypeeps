@@ -1,66 +1,204 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
-  Box as MUIBox,
   Grid,
-  Link,
-  List,
-  ListItem,
+  IconButton,
+  Menu,
+  MenuItem,
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Input
 } from '@mui/material';
-import { Outlet, useParams } from 'react-router-dom';
-import { getPost } from '../api/index.js';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 import COLORS from '../constants/colors.js';
 
 import Typography from '../components/typography.jsx';
 import CardMedia from '../components/cardmedia.jsx';
-import Avatar from '../components/avatar.jsx';
 import Card from '../components/card.jsx';
 import CommentCard from '../views/comment-card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
 
 import { AuthContext } from '../context/auth-context';
+import { authEditPost, authDeletePost } from '../auth';
 
 const DiscussionPage = () => {
-    const { user } = useContext(AuthContext);
-    const { id } = useParams();
-    const post = JSON.parse(localStorage.getItem('data'));
+  const { user } = useContext(AuthContext);
+  const { id } = useParams();
+  const NAVIGATE = useNavigate();
+  const post = JSON.parse(localStorage.getItem('data'));
 
-    return (
-        <>
-        <Box sx={{ border: 1 }}>
-            <Card>
-            <Grid item>
-                <Typography variant="hero_title" text={post?.title ?? "N/A"} />
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingTitle, setEditingTitle] = useState(post?.title ?? '');
+  const [editingDescription, setEditingDescription] = useState(post?.description ?? '');
+  const [editingImage, setEditingImage] = useState(post?.image ?? '');
+  const [anchorEls, setAnchorEls] = useState({});
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
 
-                <CardMedia image={post?.image ?? ""} />
+  const handleMenuClick = (event, postId) => {
+    setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
+  };
 
-                <Divider />
+  const handleMenuClose = (postId) => {
+    setAnchorEls({ ...anchorEls, [postId]: null });
+  };
 
-                <Typography variant="title" text="Brief Description" />
-                <Typography variant="body1" text={post?.description ?? "N/A"} />
+  const handleEdit = () => {
+    setIsEditing(true);
+    handleMenuClose();
+  };
 
-                <Divider />
+  const openDeleteModal = (postId) => {
+    setPostToDelete(postId);
+    setDeleteModalOpen(true);
+  };
 
-                <MUIBox
-                sx={{
-                    backgroundColor: COLORS.LIGHT_GREEN,
-                }}
-                >
+  const handleConfirmDelete = () => {
+    handleDeletePost(postToDelete);
+    setDeleteModalOpen(false);
+  };
 
-                <Grid container spacing={2} p={3}>
-                </Grid>
-                </MUIBox>
+  const handleSaveEdit = async () => {
+    try {
+      const updatedPostData = {
+        title: editingTitle,
+        description: editingDescription,
+        image: editingImage
+      };
+      await authEditPost(post._id, updatedPostData);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error editing post: ", error);
+    }
+  };
 
-                <Divider />
+  const handleDeletePost = async (postToDelete) => {
+    try {
+      await authDeletePost(postToDelete);
+      NAVIGATE('/home');
+    } catch (error) {
+      console.error("Error deleting post: ", error);
+    }
+  };
 
-                <CommentCard postId={post?._id} authorId={user?._id} />
+  const isCurrentUserAuthor = user?._id === post?.author;
+
+  return (
+    <>
+      <Box sx={{ border: 1 }}>
+        <Card>
+          <Grid item>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Typography variant="hero_title" text={isEditing ? undefined : post?.title ?? "N/A"} />
+              {isCurrentUserAuthor && (
+                <>
+                  <IconButton
+                    aria-label="more"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => handleMenuClick(event, post._id)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEls[post._id]}
+                    open={Boolean(anchorEls[post._id])}
+                    onClose={() => handleMenuClose(post._id)}
+                  >
+                    <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                    <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
+                  </Menu>
+                </>
+              )}
             </Grid>
-            </Card>
-        </Box>
-        <Outlet />
-        </>
-    );
+
+            {isEditing ? (
+              <TextField
+                multiline
+                value={editingTitle}
+                onChange={(e) => setEditingTitle(e.target.value)}
+                variant="outlined"
+                style={{ width: '100%', marginBottom: '8px' }}
+              />
+            ) : null}
+
+            {isEditing ? (
+              <Input
+                type="file"
+                onChange={(e) => setEditingImage(e.target.files[0])}
+                style={{ marginBottom: '8px' }}
+              />
+            ) : (
+              <CardMedia image={editingImage} />
+            )}
+
+            <Divider />
+
+            <Typography variant="title" text="Brief Description" />
+
+            {isEditing ? (
+              <TextField
+                multiline
+                value={editingDescription}
+                onChange={(e) => setEditingDescription(e.target.value)}
+                variant="outlined"
+                style={{ width: '100%', marginBottom: '8px' }}
+              />
+            ) : (
+              <Typography variant="body1" text={post?.description ?? "N/A"} />
+            )}
+
+            {isEditing ? (
+              <div>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ marginRight: '8px' }}
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </Button>
+                <Button variant="contained" color="primary" onClick={handleSaveEdit}>
+                  Save
+                </Button>
+              </div>
+            ) : null}
+
+            <Divider />
+
+            <CommentCard postId={post?._id} authorId={user?._id} />
+          </Grid>
+        </Card>
+      </Box>
+      <Dialog
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+      >
+        <DialogTitle>{"Delete Comment?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this comment?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteModalOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Outlet />
+    </>
+  );
 };
 
 export default DiscussionPage;
