@@ -25,7 +25,10 @@ import CommentCard from '../views/comment-card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
 
+import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
+
 import { AuthContext } from '../context/auth-context';
+
 import { authEditPost, authDeletePost } from '../auth';
 
 const DiscussionPage = () => {
@@ -97,6 +100,7 @@ const DiscussionPage = () => {
           <Grid item>
             <Grid container justifyContent="space-between" alignItems="center">
               <Typography variant="hero_title" text={isEditing ? undefined : post?.title ?? "N/A"} />
+
               {isCurrentUserAuthor && (
                 <>
                   <IconButton
@@ -136,7 +140,9 @@ const DiscussionPage = () => {
                 style={{ marginBottom: '8px' }}
               />
             ) : (
-              <CardMedia image={editingImage} />
+              <div style={imageContainerStyleCard}>
+                <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+              </div>
             )}
 
             <Divider />

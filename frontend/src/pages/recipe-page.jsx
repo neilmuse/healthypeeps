@@ -29,6 +29,9 @@ import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
 
 import { AuthContext } from '../context/auth-context';
+
+import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
+
 import { authDeletePost } from '../auth';
 
 const RecipePage = () => {
@@ -80,30 +83,34 @@ const RecipePage = () => {
         <Box sx={{ border: 1 }}>
             <Card>
                 <Grid item>
-                    <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                    <Grid container justifyContent="space-between" alignItems="center">
+                        <Typography variant="hero_title" text={post.title ?? "N/A"} />
 
-                    {isCurrentUserAuthor && (
-                        <>
-                        <IconButton
-                            aria-label="more"
-                            aria-controls="long-menu"
-                            aria-haspopup="true"
-                            onClick={(event) => handleMenuClick(event, post._id)}
-                        >
-                            <MoreVertIcon />
-                        </IconButton>
-                        <Menu
-                            anchorEl={anchorEls[post._id]}
-                            open={Boolean(anchorEls[post._id])}
-                            onClose={() => handleMenuClose(post._id)}
-                        >
-                            <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                            <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
-                        </Menu>
-                        </>
-                    )}
+                        {isCurrentUserAuthor && (
+                            <>
+                            <IconButton
+                                aria-label="more"
+                                aria-controls="long-menu"
+                                aria-haspopup="true"
+                                onClick={(event) => handleMenuClick(event, post._id)}
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
+                            <Menu
+                                anchorEl={anchorEls[post._id]}
+                                open={Boolean(anchorEls[post._id])}
+                                onClose={() => handleMenuClose(post._id)}
+                            >
+                                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                                <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
+                            </Menu>
+                            </>
+                        )}
+                    </Grid>
 
-                    <CardMedia image={post.image ?? ""} />
+                    <div style={imageContainerStyleCard}>
+                        <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                    </div>
 
                     <Divider />
 

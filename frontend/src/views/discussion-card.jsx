@@ -9,7 +9,7 @@ import Typography from '../components/typography.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
 
-import { imageStyleCard, imageContainerStyleCard } from '../constants/styles';
+import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
 import { AuthContext } from '../context/auth-context';
 
@@ -25,18 +25,6 @@ const ExpandMore = styled((props) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
-
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%', // adjust the width as necessary
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-};
-
 
 const DiscussionCard = ({ discussionId, title, image, author, createdAt, content }) => {
     const { user } = useContext(AuthContext);

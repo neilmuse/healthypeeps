@@ -9,7 +9,7 @@ import Typography from '../components/typography.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
 
-import { imageStyleCard, imageContainerStyleCard } from '../constants/styles';
+import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
 import { AuthContext } from '../context/auth-context';
 
@@ -25,18 +25,6 @@ const ExpandMore = styled((props) => {
             duration: theme.transitions.duration.shortest,
     }),
 }));
-
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-};
-
 
 const RecipeCard = ({ recipeId, title, image, author, createdAt, content }) => {
     const { user } = useContext(AuthContext);
@@ -84,7 +72,6 @@ const RecipeCard = ({ recipeId, title, image, author, createdAt, content }) => {
             <div style={imageContainerStyleCard}>
                 <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
             </div>
-
 
             <CardContent>
                 <Typography variant="body1" text={content} />
