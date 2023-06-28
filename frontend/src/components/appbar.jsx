@@ -67,10 +67,12 @@ const TopNavBar = () => {
   
     if (setting === 'Logout') {
       logout();
+      NAVIGATE('/home'); // redirect to home page after logging out
     } else {
       NAVIGATE('/profile');
     }
   };
+  
   
   return (
     <>
@@ -110,10 +112,17 @@ const TopNavBar = () => {
                     }}
                     >
                     {pages.map(({name, url}) => (
-                        <MenuItem key={url} value={url} onClick={handleCloseNavMenu} component="a" href={`/${url}`}>
+                      <MenuItem
+                        key={url}
+                        onClick={() => {
+                            NAVIGATE(`/${url}`);
+                            handleCloseNavMenu();
+                        }}
+                      >
                         <Typography text={name} />
-                        </MenuItem>
+                      </MenuItem>
                     ))}
+
                   </Menu>
               </Box>
 
@@ -126,7 +135,7 @@ const TopNavBar = () => {
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map(({name, url}) => (
                   <Box m={2}>
-                    <Link variant="darkBackground" key={url} href={url}>{name}</Link>
+                    <Link variant="darkBackground" key={url} href={`/${url}`}>{name}</Link>
                   </Box>
                 ))}
               </Box>
@@ -143,7 +152,7 @@ const TopNavBar = () => {
                 </>
               ) : (
                 <Box m={2}>
-                  <Link variant="darkBackground" href="login">Login</Link>
+                  <Link variant="darkBackground" href="/login">Login</Link>
                 </Box>
               )}
 
