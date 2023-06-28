@@ -4,6 +4,8 @@ import Box from '../components/box.jsx';
 import Typography from '../components/typography.jsx';
 
 import DiscussionCard from '../views/discussion-card.jsx';
+import SearchField from '../components/search-field.jsx';
+import Divider from '../components/divider.jsx';
 
 import { AuthContext } from '../context/auth-context';
 import { authAddPost, authGetAllPostsByCategory, authUploadFile } from "../auth";
@@ -14,6 +16,7 @@ const DiscussionFeed = () => {
     const [content, setContent] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [image, setImage] = useState(null);
+    const [refetchTrigger, setRefetchTrigger] = useState(false);
 
     const [discussions, setDiscussions] = useState([]);
 
@@ -71,6 +74,7 @@ const DiscussionFeed = () => {
         const response = await authAddPost(discussionPost);
         handleCloseModal();
         setDiscussions(prevDiscussions => [response, ...prevDiscussions]);  //adding the new post at the start of the array
+        setRefetchTrigger(prev => !prev);
       } catch (error) {
         console.error('Error saving discussion post:', error);
       }
@@ -92,7 +96,13 @@ const DiscussionFeed = () => {
 
                   <Grid item>
                     <Typography variant="title" text={user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
-        
+                    
+                    <Grid item>
+                        <SearchField category={category} triggerRefetch={refetchTrigger} />
+                    </Grid>
+
+                    <Divider />
+
                     {user ? (
                       <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Discussion </Button>
                     ): null }
@@ -112,7 +122,7 @@ const DiscussionFeed = () => {
                     </Dialog>
                     
 
-                    <Box>
+                    <Box value={3}>
                       <Typography variant="title" text="Discussions" />
                       {discussions.map((discussion) => (
                         <DiscussionCard key={discussion._id} discussionId={discussion._id} title={discussion.title} image={discussion.image} author={discussion.author} createdAt={discussion.createdAt} content={discussion.content} />

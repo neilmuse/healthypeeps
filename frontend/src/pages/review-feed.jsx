@@ -4,6 +4,8 @@ import Box from '../components/box.jsx';
 import Typography from '../components/typography.jsx';
 
 import ReviewCard from '../views/review-card.jsx';
+import SearchField from '../components/search-field.jsx';
+import Divider from '../components/divider.jsx';
 
 import { AuthContext } from '../context/auth-context';
 import { authAddPost, authGetAllPostsByCategory, authUploadFile } from "../auth";
@@ -14,6 +16,7 @@ const ReviewFeed = () => {
     const [content, setContent] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [image, setImage] = useState(null);
+    const [refetchTrigger, setRefetchTrigger] = useState(false);
 
     const [reviews, setReviews] = useState([]);
 
@@ -71,7 +74,8 @@ const ReviewFeed = () => {
           const response = await authAddPost(reviewPost);
           handleCloseModal();
           setReviews(prevReviews => [response, ...prevReviews]);  //adding the new post at the start of the array
-      } catch (error) {
+          setRefetchTrigger(prev => !prev);
+        } catch (error) {
           console.error('Error saving review post:', error);
       }
     };
@@ -93,6 +97,12 @@ const ReviewFeed = () => {
                   <Grid item>
                     <Typography variant="title" text={user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
         
+                    <Grid item>
+                        <SearchField category={category} triggerRefetch={refetchTrigger} />
+                    </Grid>
+
+                    <Divider />
+
                     {user ? (
                       <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
                     ): null }
@@ -111,7 +121,7 @@ const ReviewFeed = () => {
                         </DialogActions>
                     </Dialog>
 
-                    <Box>
+                    <Box value={3}>
                       <Typography variant="title" text="Reviews" />
                       {reviews.map((review) => (
                         <ReviewCard key={review._id} reviewId={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />

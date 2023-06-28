@@ -33,6 +33,7 @@ module.exports = (app) => {
 	app.post('/api/upload', upload.single('image'), userController.uploadImage);
 	app.put('/api/posts/:id', authMiddleware, userController.editPost);
 	app.delete('/api/posts/:id', authMiddleware, userController.deletePost);
+	app.get('/api/posts', userController.getAllPostsTitleByCategory);
 
 	//COMMENTS
 	app.post('/api/add_comment', authMiddleware, userController.addComment);

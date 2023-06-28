@@ -200,6 +200,37 @@ module.exports = {
     }
   },
 
+  getAllPostsTitleByCategory: async (req, res) => {
+    try {
+      const category = req.query.category;
+  
+      // Mapping to get the appropriate model based on category
+      const categoryModelMapping = {
+        discussions: Discussion,
+        recipes: Recipe,
+        reviews: Review,
+        listings: Listing
+      };
+  
+      // Get the appropriate model for the given category
+      const Model = categoryModelMapping[category];
+  
+      // Validate category
+      if (!Model) {
+        return res.status(400).json({ message: 'Invalid category provided' });
+      }
+  
+      // Fetch and sort data from the appropriate model
+      const documents = await Model.find({}).sort({ title: 1 });
+      const titles = documents.map(document => document.title);
+  
+      res.json(titles);
+  
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },  
+
   getAllPostsByCategoryLimited: async (req, res) => {
     try {
       const category = req.query.category;

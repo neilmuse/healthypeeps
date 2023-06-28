@@ -1,27 +1,37 @@
-import * as React from 'react';
+// Frontend
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Button } from '@mui/material';
 
-export default function SearchField() {
+import { authGetAllPostsTitleByCategory } from "../auth";
+
+export default function SearchField({ category, triggerRefetch }) {
+  const [titles, setTitles] = useState([]);
+
+  useEffect(() => {
+    const fetchTitles = async () => {
+      try {
+        const response = await authGetAllPostsTitleByCategory(category);
+        setTitles(response);
+      } catch (error) {
+        console.error('Failed to fetch titles:', error);
+      }
+    };
+    
+    fetchTitles();
+  }, [category, triggerRefetch]);
+
   return (
-    <Stack spacing={1} justifyContent="center"
-    maxWidth="xl">
+    <Stack spacing={1} justifyContent="center" maxWidth="xl">
       <Autocomplete
         id="free-solo-demo"
         freeSolo
-        options={top100Films.map((option) => option.title)}
+        options={titles}
         renderInput={(params) => <TextField {...params} label="Search" />}
       />
       <Button variant="contained">Search</Button>
     </Stack>
   );
 }
-
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-];
-

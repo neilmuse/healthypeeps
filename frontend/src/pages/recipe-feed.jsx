@@ -8,6 +8,8 @@ import Box from '../components/box.jsx';
 import Typography from '../components/typography.jsx';
 
 import RecipeCard from '../views/recipe-card.jsx';
+import SearchField from '../components/search-field.jsx';
+import Divider from '../components/divider.jsx';
 
 import { AuthContext } from '../context/auth-context';
 import { authAddPost, authGetAllPostsByCategory, authUploadFile } from "../auth";
@@ -24,6 +26,7 @@ const RecipeFeed = () => {
     const [macronutrients, setMacronutrients] = useState({ protein: '', calories: '', carbs: '' });
     const [preparationTime, setPreparationTime] = useState('');
     const [recipes, setRecipes] = useState([]);
+    const [refetchTrigger, setRefetchTrigger] = useState(false);
 
     const category = "recipes";
 
@@ -119,6 +122,7 @@ const RecipeFeed = () => {
             const response = await authAddPost(recipePost);
             handleCloseModal();
             setRecipes(prevRecipes => [response, ...prevRecipes]);  //adding the new post at the start of the array
+            setRefetchTrigger(prev => !prev);
             fetchRecipes(); // re-fetch the recipes
         } catch (error) {
             console.error('Error saving recipe post:', error);
@@ -141,7 +145,13 @@ const RecipeFeed = () => {
 
             <Grid item>
               <Typography variant="title" text={user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
-  
+
+              <Grid item>
+                <SearchField category={category} triggerRefetch={refetchTrigger} />
+              </Grid>
+
+              <Divider />
+
               {user ? (
                 <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Recipe </Button>
               ): null }
@@ -234,7 +244,8 @@ const RecipeFeed = () => {
                       </DialogActions>
               </Dialog>
 
-              <Box>
+              <Box value={3}>
+
                 <Typography variant="title" text="Recipes" />
                   {recipes?.map((recipe) => (
                     <RecipeCard 

@@ -4,6 +4,8 @@ import Box from '../components/box.jsx';
 import Typography from '../components/typography.jsx';
 
 import ListingCard from '../views/listing-card.jsx';
+import SearchField from '../components/search-field.jsx';
+import Divider from '../components/divider.jsx';
 
 import { AuthContext } from '../context/auth-context';
 import { authAddPost, authGetAllPostsByCategory, authUploadFile } from "../auth";
@@ -18,6 +20,7 @@ const ListingFeed = () => {
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [price, setPrice] = useState('');
+    const [refetchTrigger, setRefetchTrigger] = useState(false);
 
     const [listings, setListings] = useState([]);
 
@@ -83,6 +86,7 @@ const ListingFeed = () => {
             const response = await authAddPost(listingPost);
             handleCloseModal();
             setListings(prevListings => [response, ...prevListings]);  //adding the new post at the start of the array
+            setRefetchTrigger(prev => !prev);
         } catch (error) {
             console.error('Error saving listing post:', error);
         }
@@ -104,7 +108,13 @@ const ListingFeed = () => {
 
                   <Grid item>
                     <Typography variant="title" text={user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
-        
+
+                    <Grid item>
+                        <SearchField category={category} triggerRefetch={refetchTrigger} />
+                    </Grid>
+
+                    <Divider />
+
                     {user ? (
                       <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Listing </Button>
                     ): null }
@@ -128,7 +138,7 @@ const ListingFeed = () => {
                     </Dialog>
                     
 
-                    <Box>
+                    <Box value={3}>
                       <Typography variant="title" text="Listings" />
                         {listings.map((listing) => (
                             <ListingCard 

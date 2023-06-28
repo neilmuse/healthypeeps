@@ -53,7 +53,6 @@ const Homepage = () => {
           <Grid container justifyContent="center" alignItems="center">
             <Grid>
               <Typography variant="hero_title" text="What can we help you with?" />
-              <SearchField />
             </Grid>
           </Grid>
 

@@ -315,6 +315,24 @@ export const authDeletePost = async (postId) => {
   return data;
 };
 
+export const authGetAllPostsTitleByCategory = async (category) => {
+  const token = localStorage.getItem('authToken');
+
+  const response = await fetch(`http://localhost:5000/api/posts?category=${category}`, {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.json();
+    throw new Error(errorDetail.message || "Error fetching titles");
+  }
+
+  const data = await response.json();
+  return data;
+};
 
 
 
