@@ -7,8 +7,9 @@ import { Button } from '@mui/material';
 
 import { authGetAllPostsTitleByCategory } from "../auth";
 
-export default function SearchField({ category, triggerRefetch }) {
+export default function SearchField({ category, triggerRefetch, onSearch }) {
   const [titles, setTitles] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchTitles = async () => {
@@ -23,15 +24,22 @@ export default function SearchField({ category, triggerRefetch }) {
     fetchTitles();
   }, [category, triggerRefetch]);
 
+  const handleSearch = () => {
+    onSearch(searchQuery);
+  };
+
   return (
     <Stack spacing={1} justifyContent="center" maxWidth="xl">
       <Autocomplete
         id="free-solo-demo"
         freeSolo
         options={titles}
+        onInputChange={(event, newInputValue) => {
+          setSearchQuery(newInputValue);
+        }}
         renderInput={(params) => <TextField {...params} label="Search" />}
       />
-      <Button variant="contained">Search</Button>
+      <Button variant="contained" onClick={handleSearch}>Search</Button>
     </Stack>
   );
 }

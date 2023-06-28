@@ -17,6 +17,7 @@ const ReviewFeed = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [image, setImage] = useState(null);
     const [refetchTrigger, setRefetchTrigger] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const [reviews, setReviews] = useState([]);
 
@@ -79,6 +80,14 @@ const ReviewFeed = () => {
           console.error('Error saving review post:', error);
       }
     };
+
+    const handleSearch = (query) => {
+      setSearchQuery(query.toLowerCase());
+    };
+  
+    const filteredReviews = reviews.filter(review =>
+      review.title.toLowerCase().includes(searchQuery)
+    );
   
     return (
         <>
@@ -98,7 +107,7 @@ const ReviewFeed = () => {
                     <Typography variant="title" text={user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
         
                     <Grid item>
-                        <SearchField category={category} triggerRefetch={refetchTrigger} />
+                      <SearchField category={category} triggerRefetch={refetchTrigger} onSearch={handleSearch} />
                     </Grid>
 
                     <Divider />
@@ -123,9 +132,12 @@ const ReviewFeed = () => {
 
                     <Box value={3}>
                       <Typography variant="title" text="Reviews" />
-                      {reviews.map((review) => (
-                        <ReviewCard key={review._id} reviewId={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
-                      ))}
+                      {filteredReviews.length > 0 ? (
+                        reviews.map((review) => (
+                          <ReviewCard key={review._id} reviewId={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
+                      ))) : (
+                        <Typography variant="body" text="No reviews found." />
+                      )}
                     </Box>
                   </Grid>
                 </Grid>

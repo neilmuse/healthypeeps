@@ -21,6 +21,7 @@ const ListingFeed = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [price, setPrice] = useState('');
     const [refetchTrigger, setRefetchTrigger] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const [listings, setListings] = useState([]);
 
@@ -91,6 +92,14 @@ const ListingFeed = () => {
             console.error('Error saving listing post:', error);
         }
     };
+
+    const handleSearch = (query) => {
+        setSearchQuery(query.toLowerCase());
+      };
+    
+    const filteredListings = listings.filter(listing =>
+        listing.title.toLowerCase().includes(searchQuery)
+    );
   
     return (
         <>
@@ -110,7 +119,7 @@ const ListingFeed = () => {
                     <Typography variant="title" text={user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
 
                     <Grid item>
-                        <SearchField category={category} triggerRefetch={refetchTrigger} />
+                        <SearchField category={category} triggerRefetch={refetchTrigger} onSearch={handleSearch} />
                     </Grid>
 
                     <Divider />
@@ -140,23 +149,26 @@ const ListingFeed = () => {
 
                     <Box value={3}>
                       <Typography variant="title" text="Listings" />
-                        {listings.map((listing) => (
-                            <ListingCard 
-                                key={listing._id}
-                                listingId={listing._id}
-                                title={listing.title} 
-                                image={listing.image} 
-                                author={listing.author} 
-                                createdAt={listing.createdAt} 
-                                content={listing.content} 
-                                location={listing.location} 
-                                email={listing.email} 
-                                phoneNumber={listing.phoneNumber} 
-                                price={listing.price}
-                                authorId={listing.author}
-                                postId={listing._id}
-                            />
-                        ))}
+                        {filteredListings.length > 0 ? (
+                            listings.map((listing) => (
+                                <ListingCard 
+                                    key={listing._id}
+                                    listingId={listing._id}
+                                    title={listing.title} 
+                                    image={listing.image} 
+                                    author={listing.author} 
+                                    createdAt={listing.createdAt} 
+                                    content={listing.content} 
+                                    location={listing.location} 
+                                    email={listing.email} 
+                                    phoneNumber={listing.phoneNumber} 
+                                    price={listing.price}
+                                    authorId={listing.author}
+                                    postId={listing._id}
+                                />
+                        ))) : (
+                            <Typography variant="body" text="No listings found." />
+                        )}
                     </Box>
                   </Grid>
                 </Grid>
