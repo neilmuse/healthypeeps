@@ -35,10 +35,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const userData = await authLogin(formData);
       const { user, token, refreshToken } = userData;
-      
       localStorage.setItem('authToken', token);
       localStorage.setItem('refreshToken', refreshToken);
-
+      setUser(user);
       return userData;
     } catch (error) {
       throw error;
