@@ -7,7 +7,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import COLORS from '../constants/colors.js';
 import { useNavigate } from 'react-router-dom';
 import ConvertTime from '../utils/moment.jsx';
-import { authGetSpecificPost } from '../auth';
 import { imageStyle, imageContainerStyle } from '../constants/styles';
 
 const ImageSlider = ({ images, itemsPerSlide }) => {
@@ -19,9 +18,7 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
 
   const handleCardClick = async (category, id) => {
     try {
-        const post = await authGetSpecificPost(category, id);
-        localStorage.setItem('data', JSON.stringify(post)); //set the data in localStorage before navigation
-        NAVIGATE(`/${category}/${id}`);
+      NAVIGATE(`/${category}/${id}`);
     } catch (error) {
         console.error('Error fetching post:', error);
     }
@@ -39,7 +36,6 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
   if (!images || images.length === 0) {
     return (
       <Box>
-        {/* Display a loading indicator or fallback UI here */}
         <Typography variant="body1">Loading images...</Typography>
       </Box>
     );

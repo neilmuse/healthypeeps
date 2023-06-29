@@ -9,6 +9,8 @@ import Typography from '../components/typography.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
 
+import { useNavigate } from 'react-router-dom'; 
+
 import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
 import { AuthContext } from '../context/auth-context';
@@ -28,6 +30,7 @@ const ExpandMore = styled((props) => {
 
 const RecipeCard = ({ recipeId, title, image, author, createdAt, content }) => {
     const { user } = useContext(AuthContext);
+    const NAVIGATE = useNavigate();
     const [expanded, setExpanded] = React.useState(false);
     const [newComment, setNewComment] = React.useState('');
     const [open, setOpen] = React.useState(false);
@@ -56,72 +59,79 @@ const RecipeCard = ({ recipeId, title, image, author, createdAt, content }) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const handleCardClick = () => {
+        NAVIGATE(`/recipe/${recipeId}`);
+    };
+
+
     return (
-        <Card>
-            <CardHeader
-                avatar={
-                <Avatar sx={{ bgcolor: COLORS.GREEN}} >
-                    {author?.firstName?.substr(0, 1)}
-                </Avatar>
-                }
+        <div onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+            <Card>
+                <CardHeader
+                    avatar={
+                    <Avatar sx={{ bgcolor: COLORS.GREEN}} >
+                        {author?.firstName?.substr(0, 1)}
+                    </Avatar>
+                    }
 
-                title={<Typography variant="cardtitle" text={title} />}
-                subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
-            />
+                    title={<Typography variant="cardtitle" text={title} />}
+                    subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
+                />
 
-            <div style={imageContainerStyleCard}>
-                <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
-            </div>
+                <div style={imageContainerStyleCard}>
+                    <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                </div>
 
-            <CardContent>
-                <Typography variant="body1" text={content} />
-            </CardContent>
-            <CardActions disableSpacing>
-                <IconButton onClick={handleOpen}>
-                  <CommentIcon />
-                </IconButton>
-                <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-                >
-                <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                <Typography variant="body1" text="More:" />
+                    <Typography variant="body1" text={content} />
                 </CardContent>
-            </Collapse>
+                <CardActions disableSpacing>
+                    <IconButton onClick={handleOpen}>
+                    <CommentIcon />
+                    </IconButton>
+                    <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                    >
+                    <ExpandMoreIcon />
+                    </ExpandMore>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                    <Typography variant="body1" text="More:" />
+                    </CardContent>
+                </Collapse>
 
-            <Modal open={open} onClose={handleClose}>
-                <Box sx={modalStyle}>
-                    <Card>
-                        <CardHeader
-                            avatar={
-                                <Avatar sx={{ bgcolor: COLORS.GREEN }}>
-                                {author?.firstName?.substr(0, 1)}
-                                </Avatar>
-                            }
-                            title={title}
-                            subheader={ConvertTime(createdAt)}
-                        />
-                        <CardContent>
-                            <Typography variant="body1" text={content} />
-                        </CardContent>
-                        <CardActions disableSpacing>
-                            <TextField
-                                label="New Comment"
-                                value={newComment}
-                                onChange={(event) => setNewComment(event.target.value)} // Use setNewComment here
+                <Modal open={open} onClose={handleClose}>
+                    <Box sx={modalStyle}>
+                        <Card>
+                            <CardHeader
+                                avatar={
+                                    <Avatar sx={{ bgcolor: COLORS.GREEN }}>
+                                    {author?.firstName?.substr(0, 1)}
+                                    </Avatar>
+                                }
+                                title={title}
+                                subheader={ConvertTime(createdAt)}
                             />
-                            <Button onClick={handleSubmit}>Send</Button>
-                        </CardActions>
-                    </Card>
-                </Box>
-            </Modal>
-        </Card>
+                            <CardContent>
+                                <Typography variant="body1" text={content} />
+                            </CardContent>
+                            <CardActions disableSpacing>
+                                <TextField
+                                    label="New Comment"
+                                    value={newComment}
+                                    onChange={(event) => setNewComment(event.target.value)} // Use setNewComment here
+                                />
+                                <Button onClick={handleSubmit}>Send</Button>
+                            </CardActions>
+                        </Card>
+                    </Box>
+                </Modal>
+            </Card>
+        </div>
     );
 };
 

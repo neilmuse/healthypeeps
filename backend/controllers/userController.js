@@ -294,6 +294,28 @@ module.exports = {
     }
   },
 
+  getSpecificPostById: async (req, res) => {
+    const postId = req.params.id;
+    
+    const models = [Discussion, Review, Listing, Recipe];
+  
+    for (let Model of models) {
+      try {
+        const post = await Model.findById(postId);
+        if (post != null) {
+          return res.json(post);
+        }
+      } catch (err) {
+        // Log the error but continue searching in other models
+        console.error(err.message);
+      }
+    }
+  
+    // If the loop completes, that means the post was not found in any model
+    return res.status(404).json({ message: `Can't find post with id ${postId}` });
+  },
+  
+
   uploadImage: async (req, res) => {
     try {
         if (!req.file) {

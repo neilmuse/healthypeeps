@@ -122,9 +122,8 @@ export const authGetAllPostsByCategoryLimited = async (category) => {
   return posts;
 };
 
-
-export const authGetSpecificPost = async (category, id) => {
-  const response = await fetch(`http://localhost:5000/api/posts/${category}/${id}`, {
+export const authGetSpecificPostById = async (id) => {
+  const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
