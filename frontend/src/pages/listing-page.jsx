@@ -9,30 +9,29 @@ import {
     DialogTitle,
     Grid,
     IconButton,
-    Link,
+    Input,
     List,
     ListItem,
     Menu,
     MenuItem,
+    TextField,
+    Typography as MUITypography
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 import COLORS from '../constants/colors.js';
 
-import Typography from '../components/typography.jsx';
-import CardMedia from '../components/cardmedia.jsx';
-import Avatar from '../components/avatar.jsx';
 import Card from '../components/card.jsx';
-import CommentCard from '../views/comment-card.jsx';
 import Box from '../components/box.jsx';
 import Divider from '../components/divider.jsx';
+import Typography from '../components/typography.jsx';
+import CommentCard from '../views/comment-card.jsx';
 
 import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
 import { AuthContext } from '../context/auth-context';
-
-import { authDeletePost, authGetSpecificPostById } from '../auth';
+import { authEditPost, authDeletePost, authGetSpecificPostById } from '../auth';
 
 const ListingPage = () => {
     const { user } = useContext(AuthContext);
@@ -40,21 +39,40 @@ const ListingPage = () => {
     const NAVIGATE = useNavigate();
     const [post, setPost] = useState(null);
 
-    const [anchorEls, setAnchorEls] = useState({});
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [currentPostId, setCurrentPostId] = useState(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingTitle, setEditingTitle] = useState('');
+    const [editingContent, setEditingContent] = useState('');
+    const [editingImage, setEditingImage] = useState('');
+    const [editingPrice, setEditingPrice] = useState('');
+    const [editingLocation, setEditingLocation] = useState('');
+    const [editingPhoneNumber, setEditingPhoneNumber] = useState('');
+    const [editingEmail, setEditingEmail] = useState('');
+
   
     const handleMenuClick = (event, postId) => {
-        setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
-    };
-
-    const handleMenuClose = (postId) => {
-    setAnchorEls({ ...anchorEls, [postId]: null });
+        setAnchorEl(event.currentTarget);
+        setCurrentPostId(postId);
+      };
+      
+    const handleMenuClose = () => {
+    setAnchorEl(null);
     };
 
     const handleEdit = () => {
-    setIsEditing(true);
-    handleMenuClose();
+        setEditingTitle(post?.title ?? '');
+        setEditingContent(post?.content ?? '');
+        setEditingImage(post?.image ?? '');
+        setEditingPrice(post?.price ?? '');
+        setEditingLocation(post?.location ?? '');
+        setEditingPhoneNumber(post?.phoneNumber ?? '');
+        setEditingEmail(post?.email ?? '');
+        setIsEditing(true);
+        handleMenuClose();
     };
   
     const openDeleteModal = (postId) => {
@@ -76,6 +94,25 @@ const ListingPage = () => {
       }
     };
 
+    const handleSaveEdit = async () => {
+        try {
+            const updatedPostData = {
+                title: editingTitle,
+                content: editingContent,
+                image: editingImage,
+                price: editingPrice,
+                location: editingLocation,
+                phoneNumber: editingPhoneNumber,
+                email: editingEmail
+            };
+            const updatedPost = await authEditPost(post._id, updatedPostData);
+            setPost(updatedPost);
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error editing post: ", error);
+        }
+    };
+
     useEffect(() => {
         const fetchPost = async () => {
           try {
@@ -87,7 +124,7 @@ const ListingPage = () => {
         };
         
         fetchPost();
-      }, [id]);
+    }, [id]);
   
     const isCurrentUserAuthor = user?._id === post?.author;
 
@@ -96,52 +133,130 @@ const ListingPage = () => {
         {post ? (
             <Box sx={{ border: 1 }}>
                 <Card>
-                    <Grid item>
-                        <Grid container justifyContent="space-between" alignItems="center">
-                            <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                    <Grid>
+                        {isEditing ? (
+                            <>
+                                <Grid container justifyContent="space-between" alignItems="center">
+                                    <TextField
+                                        multiline
+                                        value={editingTitle}
+                                        onChange={(e) => setEditingTitle(e.target.value)}
+                                        variant="outlined"
+                                        style={{ width: '100%', marginBottom: '8px' }}
+                                    />
+                                    <Input
+                                        type="file"
+                                        onChange={(e) => setEditingImage(e.target.files[0])}
+                                        style={{ marginBottom: '8px' }}
+                                    />
+                                    <TextField
+                                        multiline
+                                        rows={4}
+                                        value={editingContent}
+                                        onChange={(e) => setEditingContent(e.target.value)}
+                                        variant="outlined"
+                                        style={{ width: '100%', marginBottom: '8px' }}
+                                    />
+                                    <TextField
+                                        value={editingPrice}
+                                        onChange={(e) => setEditingPrice(e.target.value)}
+                                        variant="outlined"
+                                        style={{ width: '100%', marginBottom: '8px' }}
+                                    />
+                                    <TextField
+                                        value={editingLocation}
+                                        onChange={(e) => setEditingLocation(e.target.value)}
+                                        variant="outlined"
+                                        style={{ width: '100%', marginBottom: '8px' }}
+                                    />
 
-                            {isCurrentUserAuthor && (
-                                <>
-                                <IconButton
-                                    aria-label="more"
-                                    aria-controls="long-menu"
-                                    aria-haspopup="true"
-                                    onClick={(event) => handleMenuClick(event, post._id)}
-                                >
-                                    <MoreVertIcon />
-                                </IconButton>
-                                <Menu
-                                    anchorEl={anchorEls[post._id]}
-                                    open={Boolean(anchorEls[post._id])}
-                                    onClose={() => handleMenuClose(post._id)}
-                                >
-                                    <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                                    <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
-                                </Menu>
-                                </>
-                            )}
-                        </Grid>
+                                    <TextField
+                                        value={editingPhoneNumber}
+                                        onChange={(e) => setEditingPhoneNumber(e.target.value)}
+                                        variant="outlined"
+                                        style={{ width: '100%', marginBottom: '8px' }}
+                                    />
+                                    <TextField
+                                        value={editingEmail}
+                                        onChange={(e) => setEditingEmail(e.target.value)}
+                                        variant="outlined"
+                                        style={{ width: '100%', marginBottom: '8px' }}
+                                    />
 
-                        <div style={imageContainerStyleCard}>
-                            <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
-                        </div>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={handleSaveEdit}
+                                        style={{ marginRight: '8px' }}
+                                    >
+                                        Save
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => setIsEditing(false)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Grid>
+                            </>
+                        ) : (
+                            <>
+                                <Grid container justifyContent="space-between" alignItems="center">
+                                    <Typography variant="hero_title" text={isEditing ? undefined : post?.title ?? "N/A"} />
 
-                        <Divider />
+                                    {isCurrentUserAuthor && (
+                                        <>
+                                            <IconButton
+                                            aria-label="more"
+                                            aria-controls="long-menu"
+                                            aria-haspopup="true"
+                                            onClick={(event) => handleMenuClick(event, post._id)}
+                                            >
+                                            <MoreVertIcon />
+                                            </IconButton>
+                                            <Menu
+                                                anchorEl={anchorEl}
+                                                open={Boolean(anchorEl)}
+                                                onClose={handleMenuClose}
+                                                >
+                                                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                                                <MenuItem onClick={() => openDeleteModal(currentPostId)}>Delete</MenuItem>
+                                            </Menu>
 
-                        <Typography variant="title" text="Brief Description" />
-                        <Typography variant="body1" text={post.description ?? "N/A"} />
+                                        </>
+                                    )}
+                                </Grid>
 
-                        <Divider />
+                                <div style={imageContainerStyleCard}>
+                                    <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                                </div>
 
-                        <MUIBox
-                        sx={{
-                            backgroundColor: COLORS.LIGHT_GREEN,
-                        }}
-                        >
+                                <Divider />
 
-                        <Grid container spacing={2} p={3}>
-                        </Grid>
-                        </MUIBox>
+                                <Typography variant="title" text="Brief Description" />
+                                <Typography variant="body1" text={post.content ?? "N/A"} />
+
+                                <Divider />
+
+                                <Typography variant="title" text="Listing Information" />
+
+                                <List>
+                                    <ListItem>
+                                        <Typography variant="body1" text={`Price: ${post.price ?? "N/A"}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography variant="body1" text={`Location: ${post.location ?? "N/A"}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography variant="body1" text={`Phone Number: ${post.phoneNumber ?? "N/A"}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography variant="body1" text={`Email: ${post.email ?? "N/A"}`} />
+                                    </ListItem>
+                                </List>
+                            </>
+                        )}
 
                         <Divider />
 
@@ -157,11 +272,11 @@ const ListingPage = () => {
             open={deleteModalOpen}
             onClose={() => setDeleteModalOpen(false)}
         >
-            <DialogTitle>{"Delete Comment?"}</DialogTitle>
+            <DialogTitle>{"Delete Post?"}</DialogTitle>
 
             <DialogContent>
                 <DialogContentText>
-                    Are you sure you want to delete this comment?
+                    Are you sure you want to delete this post?
                 </DialogContentText>
             </DialogContent>
 

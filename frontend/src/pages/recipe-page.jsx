@@ -32,7 +32,7 @@ import { AuthContext } from '../context/auth-context';
 
 import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
-import { authDeletePost, authGetSpecificPostById } from '../auth';
+import { authEditPost, authDeletePost, authGetSpecificPostById } from '../auth';
 
 const RecipePage = () => {
     const { user } = useContext(AuthContext);
@@ -43,47 +43,74 @@ const RecipePage = () => {
     const [anchorEls, setAnchorEls] = useState({});
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
-  
+
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingTitle, setEditingTitle] = useState(post?.title ?? '');
+    const [editingContent, setEditingContent] = useState(post?.content ?? '');
+    const [editingImage, setEditingImage] = useState(post?.image ?? '');
+    const [editingPreparationTime, setEditingPreparationTime] = useState(post?.preparationTime ?? '');
+
     const handleMenuClick = (event, postId) => {
         setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
     };
 
     const handleMenuClose = (postId) => {
-    setAnchorEls({ ...anchorEls, [postId]: null });
+        setAnchorEls({ ...anchorEls, [postId]: null });
     };
 
     const handleEdit = () => {
-    setIsEditing(true);
-    handleMenuClose();
+        setEditingTitle(post?.title ?? '');
+        setEditingContent(post?.content ?? '');
+        setEditingImage(post?.image ?? '');
+        setEditingPreparationTime(post?.preparationTime ?? '');
+        setIsEditing(true);
+        handleMenuClose();
     };
-  
+
+    const handleSaveEdit = async () => {
+        try {
+            const updatedPostData = {
+                title: editingTitle,
+                content: editingContent,
+                image: editingImage,
+                preparationTime: editingPreparationTime
+            };
+            const updatedPost = await authEditPost(post._id, updatedPostData);
+            setPost(updatedPost);
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error editing post: ", error);
+        }
+    };
+
     const openDeleteModal = (postId) => {
-      setPostToDelete(postId);
-      setDeleteModalOpen(true);
+        setPostToDelete(postId);
+        setDeleteModalOpen(true);
     };
   
     const handleConfirmDelete = () => {
-      handleDeletePost(postToDelete);
-      setDeleteModalOpen(false);
+        handleDeletePost(postToDelete);
+        setDeleteModalOpen(false);
     };
   
     const handleDeletePost = async (postToDelete) => {
-      try {
-        await authDeletePost(postToDelete);
-        NAVIGATE('/home');
-      } catch (error) {
-        console.error("Error deleting post: ", error);
-      }
+        try {
+            await authDeletePost(postToDelete);
+            NAVIGATE('/home');
+        } catch (error) {
+            console.error("Error deleting post: ", error);
+        }
     };
 
     useEffect(() => {
         const fetchPost = async () => {
-          try {
-            const fetchedPost = await authGetSpecificPostById(id);
-            setPost(fetchedPost);
-          } catch (error) {
-            console.error('Error fetching post:', error);
-          }
+            try {
+                const fetchedPost = await authGetSpecificPostById(id);
+                setPost(fetchedPost);
+            } catch (error) {
+                console.error('Error fetching post:', error);
+            }
         };
         
         fetchPost();
@@ -201,6 +228,9 @@ const RecipePage = () => {
                     </Grid>
                 </Card>
             </Box>
+
+
+
         ) : (
             <Typography variant="body1" text={"Loading page..."} />
         )} 

@@ -9,15 +9,17 @@ import {
     DialogTitle,
     Grid,
     IconButton,
+    Input,
     Link,
     List,
     ListItem,
     Menu,
     MenuItem,
+    TextField,
+    Typography as MUITypography
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { getPost } from '../api/index.js';
 
 import COLORS from '../constants/colors.js';
 
@@ -33,7 +35,7 @@ import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constant
 
 import { AuthContext } from '../context/auth-context';
 
-import { authDeletePost, authGetSpecificPostById } from '../auth';
+import { authEditPost, authDeletePost, authGetSpecificPostById } from '../auth';
 
 const ReviewPage = () => {
     const { user } = useContext(AuthContext);
@@ -44,18 +46,27 @@ const ReviewPage = () => {
     const [anchorEls, setAnchorEls] = useState({});
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingTitle, setEditingTitle] = useState(post?.title ?? '');
+    const [editingContent, setEditingContent] = useState(post?.content ?? '');
+    const [editingImage, setEditingImage] = useState(post?.image ?? '');
+
   
     const handleMenuClick = (event, postId) => {
         setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
     };
 
     const handleMenuClose = (postId) => {
-    setAnchorEls({ ...anchorEls, [postId]: null });
+        setAnchorEls({ ...anchorEls, [postId]: null });
     };
 
     const handleEdit = () => {
-    setIsEditing(true);
-    handleMenuClose();
+        setEditingTitle(post?.title ?? '');
+        setEditingContent(post?.content ?? '');
+        setEditingImage(post?.image ?? '');
+        setIsEditing(true);
+        handleMenuClose();
     };
   
     const openDeleteModal = (postId) => {
@@ -76,6 +87,21 @@ const ReviewPage = () => {
         console.error("Error deleting post: ", error);
       }
     };
+
+    const handleSaveEdit = async () => {
+        try {
+            const updatedPostData = {
+                title: editingTitle || post.title,
+                content: editingContent || post.content,
+                image: editingImage || post.image
+            };
+            const updatedPost = await authEditPost(post._id, updatedPostData);
+            setPost(updatedPost);
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error editing post: ", error);
+        }
+      };
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -99,7 +125,18 @@ const ReviewPage = () => {
                 <Card>
                 <Grid item>
                     <Grid container justifyContent="space-between" alignItems="center">
-                        <Typography variant="hero_title" text={post.title ?? "N/A"} />
+
+                        {isEditing ? (
+                            <TextField
+                                multiline
+                                value={editingTitle}
+                                onChange={(e) => setEditingTitle(e.target.value)}
+                                variant="outlined"
+                                style={{ width: '100%', marginBottom: '8px' }}
+                            />
+                        ) : (
+                            <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                        )}
 
                         {isCurrentUserAuthor && (
                             <>
@@ -123,14 +160,55 @@ const ReviewPage = () => {
                         )}
                     </Grid>
 
-                    <div style={imageContainerStyleCard}>
+                    {isEditing ? (
+                        <Input
+                        type="file"
+                        onChange={(e) => setEditingImage(e.target.files[0])}
+                        style={{ marginBottom: '8px' }}
+                        />
+                    ) : (
+                        <div style={imageContainerStyleCard}>
                         <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
-                    </div>
+                        </div>
+                    )}
 
                     <Divider />
 
                     <Typography variant="title" text="Brief Description" />
-                    <Typography variant="body1" text={post.description ?? "N/A"} />
+
+                    {isEditing ? (
+                        <TextField
+                        multiline
+                        rows={4}
+                        value={editingContent}
+                        onChange={(e) => setEditingContent(e.target.value)}
+                        variant="outlined"
+                        style={{ width: '100%', marginBottom: '8px' }}
+                        />
+                    ) : (
+                        <MUITypography
+                        variant="body1"
+                        style={{ whiteSpace: 'pre-wrap' }}
+                        >
+                            {post?.content ?? "N/A"}
+                        </MUITypography>
+                    )}
+
+                    {isEditing ? (
+                        <div>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            style={{ marginRight: '8px' }}
+                            onClick={() => setIsEditing(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button variant="contained" color="primary" onClick={handleSaveEdit}>
+                            Save
+                        </Button>
+                        </div>
+                    ) : null}
 
                     <Divider />
 
@@ -159,11 +237,11 @@ const ReviewPage = () => {
             open={deleteModalOpen}
             onClose={() => setDeleteModalOpen(false)}
         >
-            <DialogTitle>{"Delete Comment?"}</DialogTitle>
+            <DialogTitle>{"Delete Post?"}</DialogTitle>
 
             <DialogContent>
                 <DialogContentText>
-                    Are you sure you want to delete this comment?
+                    Are you sure you want to delete this post?
                 </DialogContentText>
             </DialogContent>
 

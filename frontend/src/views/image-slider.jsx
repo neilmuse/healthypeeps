@@ -56,9 +56,10 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
           >
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 
-            <div style={imageContainerStyle}>
-              <img src={image.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyle} />
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px', width: '200px' }}>
+                <img src={image.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={{ maxHeight: '100%', maxWidth: '100%' }} />
             </div>
+
 
               <CardHeader
                   avatar={
@@ -67,11 +68,11 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
                   </Avatar>
                   }
 
-                  title={<Typography variant="cardtitle" text={truncateText(image.title, 30)} />}
+                  title={<Typography variant="cardtitle" text={truncateText(image.title, 8)} />}
                   subheader={<Typography variant="cardsubheader" text={ConvertTime(image.createdAt)} />}
               />
               <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="body1" text={truncateText(image.content, 100)} />
+                  <Typography variant="body1" text={truncateText(image.content, 10)} />
               </CardContent>
             </Card>
           </Grid>

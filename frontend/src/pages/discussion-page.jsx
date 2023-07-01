@@ -11,7 +11,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Input
+  Input,
+  Typography as MUITypography
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
@@ -38,7 +39,7 @@ const DiscussionPage = () => {
   const [post, setPost] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editingTitle, setEditingTitle] = useState(post?.title ?? '');
-  const [editingDescription, setEditingDescription] = useState(post?.description ?? '');
+  const [editingContent, setEditingContent] = useState(post?.content ?? '');
   const [editingImage, setEditingImage] = useState(post?.image ?? '');
   const [anchorEls, setAnchorEls] = useState({});
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -53,6 +54,10 @@ const DiscussionPage = () => {
   };
 
   const handleEdit = () => {
+    // Set the editing states to the current post data
+    setEditingTitle(post?.title ?? '');
+    setEditingContent(post?.content ?? '');
+    setEditingImage(post?.image ?? '');
     setIsEditing(true);
     handleMenuClose();
   };
@@ -69,15 +74,16 @@ const DiscussionPage = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const updatedPostData = {
-        title: editingTitle,
-        description: editingDescription,
-        image: editingImage
-      };
-      await authEditPost(post._id, updatedPostData);
-      setIsEditing(false);
+        const updatedPostData = {
+            title: editingTitle || post.title,
+            content: editingContent || post.content,
+            image: editingImage || post.image
+        };
+        const updatedPost = await authEditPost(post._id, updatedPostData);
+        setPost(updatedPost);
+        setIsEditing(false);
     } catch (error) {
-      console.error("Error editing post: ", error);
+        console.error("Error editing post: ", error);
     }
   };
 
@@ -160,18 +166,25 @@ const DiscussionPage = () => {
 
               <Divider />
 
-              <Typography variant="title" text="Brief Description" />
+              <Typography variant="title" text="Content" />
 
               {isEditing ? (
                 <TextField
                   multiline
-                  value={editingDescription}
-                  onChange={(e) => setEditingDescription(e.target.value)}
+                  rows={4} // You can set the number of rows you want.
+                  value={editingContent}
+                  onChange={(e) => setEditingContent(e.target.value)}
                   variant="outlined"
                   style={{ width: '100%', marginBottom: '8px' }}
                 />
               ) : (
-                <Typography variant="body1" text={post?.description ?? "N/A"} />
+                <MUITypography
+                  variant="body1"
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
+                  {post?.content ?? "N/A"}
+                </MUITypography>
+
               )}
 
               {isEditing ? (
@@ -189,7 +202,7 @@ const DiscussionPage = () => {
                   </Button>
                 </div>
               ) : null}
-                <Typography variant="body1" text={post?.description ?? "N/A"} />
+
               <Divider />
 
               <CommentCard postId={post?._id} authorId={user?._id} />
@@ -204,10 +217,10 @@ const DiscussionPage = () => {
         open={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
       >
-        <DialogTitle>{"Delete Comment?"}</DialogTitle>
+        <DialogTitle>{"Delete Post?"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this comment?
+            Are you sure you want to delete this post?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

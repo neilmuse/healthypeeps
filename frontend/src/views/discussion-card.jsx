@@ -77,7 +77,7 @@ const DiscussionCard = ({ discussionId, title, image, author, createdAt, content
                     subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
                 />
 
-                <div style={{ cursor: 'pointer' }} style={imageContainerStyleCard}>
+                <div style={imageContainerStyleCard}>
                     <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
                 </div>
 
@@ -123,7 +123,7 @@ const DiscussionCard = ({ discussionId, title, image, author, createdAt, content
                                 <TextField
                                     label="New Comment"
                                     value={newComment}
-                                    onChange={(event) => setNewComment(event.target.value)} // Use setNewComment here
+                                    onChange={(event) => setNewComment(event.target.value)}
                                 />
                                 <Button onClick={handleSubmit}>Send</Button>
                             </CardActions>

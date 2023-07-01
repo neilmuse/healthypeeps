@@ -8,10 +8,6 @@ const { MongoMemoryServer } = require("mongodb-memory-server");
 const multer = require('multer');
 
 const USER_ROUTES = require("./routes/userRoutes");
-// const POST_ROUTES = require("./routes/postRoutes");
-// const REGISTER_ROUTES = require("./register-routes");
-// const userRoutes = require("./routes/userRoutes");
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -32,9 +28,6 @@ app.use(
 );
 
 router(app);
-
-// REGISTER_ROUTES(app, [USER_ROUTES, POST_ROUTES], "/api");
-// app.use("/api/users", USER_ROUTES);
 
 let server;
 

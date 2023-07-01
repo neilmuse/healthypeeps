@@ -17,6 +17,13 @@ const createToken = (user, secret, expiresIn) => {
   return jwt.sign({ id, email }, secret, { expiresIn });
 };
 
+const models = {
+  review: Review,
+  discussion: Discussion,
+  recipe: Recipe,
+  listing: Listing,
+};
+
 cloudinary.config({ 
   cloudinary_url: process.env.CLOUDINARY_URL
 });
@@ -517,16 +524,24 @@ module.exports = {
       const postId = req.params.id;
       const updatedData = req.body;
   
-      // Update the post
-      const updatedPost = await Post.findByIdAndUpdate(postId, updatedData, {
-        new: true,
-        runValidators: true,
-      });
+      // Find the post first to determine its category
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+  
+      // Get the appropriate model based on the category
+      const Model = models[post.category] || Post;
+  
+      // Update the post using the appropriate model
+      const updatedPost = await Model.findByIdAndUpdate(postId, updatedData, { new: true });
+  
+      console.log("RESPONSE FROM BACKEND", updatedPost);
   
       // Send the updated post as a response
       res.json(updatedPost);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
   },
   
