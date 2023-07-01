@@ -536,8 +536,6 @@ module.exports = {
       // Update the post using the appropriate model
       const updatedPost = await Model.findByIdAndUpdate(postId, updatedData, { new: true });
   
-      console.log("RESPONSE FROM BACKEND", updatedPost);
-  
       // Send the updated post as a response
       res.json(updatedPost);
     } catch (error) {

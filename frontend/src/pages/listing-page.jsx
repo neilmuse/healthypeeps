@@ -183,21 +183,19 @@ const ListingPage = () => {
                                         style={{ width: '100%', marginBottom: '8px' }}
                                     />
 
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleSaveEdit}
-                                        style={{ marginRight: '8px' }}
-                                    >
-                                        Save
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        onClick={() => setIsEditing(false)}
-                                    >
-                                        Cancel
-                                    </Button>
+                                    <div>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            style={{ marginRight: '8px' }}
+                                            onClick={() => setIsEditing(false)}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button variant="contained" color="primary" onClick={handleSaveEdit}>
+                                            Save
+                                        </Button>
+                                    </div>
                                 </Grid>
                             </>
                         ) : (
