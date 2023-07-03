@@ -52,6 +52,10 @@ const ReviewPage = () => {
     const [editingContent, setEditingContent] = useState(post?.content ?? '');
     const [editingImage, setEditingImage] = useState(post?.image ?? '');
 
+    const [titleError, setTitleError] = useState(false);
+    const [contentError, setContentError] = useState(false);
+    const [titleHelperText, setTitleHelperText] = useState('');
+    const [contentHelperText, setContentHelperText] = useState('');
   
     const handleMenuClick = (event, postId) => {
         setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
@@ -62,12 +66,21 @@ const ReviewPage = () => {
     };
 
     const handleEdit = () => {
+        // Set the editing states to the current post data
         setEditingTitle(post?.title ?? '');
         setEditingContent(post?.content ?? '');
         setEditingImage(post?.image ?? '');
         setIsEditing(true);
         handleMenuClose();
-    };
+      };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setTitleError(false);
+        setContentError(false);
+        setTitleHelperText('');
+        setContentHelperText('');
+      };    
   
     const openDeleteModal = (postId) => {
       setPostToDelete(postId);
@@ -89,6 +102,25 @@ const ReviewPage = () => {
     };
 
     const handleSaveEdit = async () => {
+
+        let isValid = true;
+    
+        if (!editingTitle.trim()) { // Check if title is empty
+          setTitleError(true);
+          setTitleHelperText("Title is required");
+          isValid = false;
+        }
+      
+        if (!editingContent.trim()) { // Check if content is empty
+          setContentError(true);
+          setContentHelperText("Content is required");
+          isValid = false;
+        }
+      
+        if (!isValid) {
+          return;
+        }
+
         try {
             const updatedPostData = {
                 title: editingTitle || post.title,
@@ -120,25 +152,33 @@ const ReviewPage = () => {
 
     return (
         <>
-        {post ? (
+          {post ? (
             <Box sx={{ border: 1 }}>
-                <Card>
+              <Card>
                 <Grid item>
-                    <Grid container justifyContent="space-between" alignItems="center">
-
-                        {isEditing ? (
-                            <TextField
-                                multiline
-                                value={editingTitle}
-                                onChange={(e) => setEditingTitle(e.target.value)}
-                                variant="outlined"
-                                style={{ width: '100%', marginBottom: '8px' }}
-                            />
-                        ) : (
-                            <Typography variant="hero_title" text={post.title ?? "N/A"} />
-                        )}
-
-                        {isCurrentUserAuthor && (
+                  <Grid container justifyContent="space-between" alignItems="center">
+    
+                    {isEditing ? (
+                        <TextField
+                            label="Post Title"
+                            placeholder="Enter post title"
+                            error={titleError}
+                            helperText={titleHelperText}
+                            multiline
+                            value={editingTitle}
+                            onChange={(e) => {
+                                setTitleError(false);
+                                setTitleHelperText('');
+                                setEditingTitle(e.target.value);
+                            }}
+                            variant="outlined"
+                            style={{ width: '100%', marginBottom: '8px' }}
+                        />
+                    ) : (
+                      <>
+                        <Typography variant="hero_title" text={post.title ?? "N/A"} />
+    
+                          {isCurrentUserAuthor && (
                             <>
                             <IconButton
                                 aria-label="more"
@@ -158,40 +198,44 @@ const ReviewPage = () => {
                             </Menu>
                             </>
                         )}
-                    </Grid>
-
-                    {isEditing ? (
-                        <Input
-                        type="file"
-                        onChange={(e) => setEditingImage(e.target.files[0])}
-                        style={{ marginBottom: '8px' }}
-                        />
-                    ) : (
-                        <div style={imageContainerStyleCard}>
-                        <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
-                        </div>
+                      </>
                     )}
+                  </Grid>
+
+                    <div style={imageContainerStyleCard}>
+                        <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                    </div>
 
                     <Divider />
 
-                    <Typography variant="title" text="Brief Description" />
-
                     {isEditing ? (
                         <TextField
-                        multiline
-                        rows={4}
-                        value={editingContent}
-                        onChange={(e) => setEditingContent(e.target.value)}
-                        variant="outlined"
-                        style={{ width: '100%', marginBottom: '8px' }}
+                            label="Content"
+                            placeholder="Enter the content of your post"
+                            error={contentError}
+                            helperText={contentHelperText}
+                            multiline
+                            rows={4}
+                            value={editingContent}
+                            onChange={(e) => {
+                                setContentError(false); // Reset error state on change
+                                setContentHelperText('');
+                                setEditingContent(e.target.value);
+                            }}
+                            variant="outlined"
+                            style={{ width: '100%', marginBottom: '8px' }}
                         />
-                    ) : (
-                        <MUITypography
-                        variant="body1"
-                        style={{ whiteSpace: 'pre-wrap' }}
-                        >
-                            {post?.content ?? "N/A"}
-                        </MUITypography>
+                    ) : (  
+                        <>
+                            <Typography variant="title" text="Brief Description" />
+
+                            <MUITypography
+                            variant="body1"
+                            style={{ whiteSpace: 'pre-wrap' }}
+                            >
+                                {post?.content ?? "N/A"}
+                            </MUITypography>
+                        </>
                     )}
 
                     {isEditing ? (
@@ -200,10 +244,11 @@ const ReviewPage = () => {
                             variant="contained"
                             color="secondary"
                             style={{ marginRight: '8px' }}
-                            onClick={() => setIsEditing(false)}
+                            onClick={handleCancelEdit}
                         >
                             Cancel
                         </Button>
+
                         <Button variant="contained" color="primary" onClick={handleSaveEdit}>
                             Save
                         </Button>

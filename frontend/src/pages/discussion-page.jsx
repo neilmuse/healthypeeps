@@ -45,6 +45,11 @@ const DiscussionPage = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
 
+  const [titleError, setTitleError] = useState(false);
+  const [contentError, setContentError] = useState(false);
+  const [titleHelperText, setTitleHelperText] = useState('');
+  const [contentHelperText, setContentHelperText] = useState('');
+
   const handleMenuClick = (event, postId) => {
     setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
   };
@@ -73,6 +78,24 @@ const DiscussionPage = () => {
   };
 
   const handleSaveEdit = async () => {
+    let isValid = true;
+    
+    if (!editingTitle.trim()) { // Check if title is empty
+      setTitleError(true);
+      setTitleHelperText("Title is required");
+      isValid = false;
+    }
+  
+    if (!editingContent.trim()) { // Check if content is empty
+      setContentError(true);
+      setContentHelperText("Content is required");
+      isValid = false;
+    }
+  
+    if (!isValid) {
+      return;
+    }
+
     try {
         const updatedPostData = {
             title: editingTitle || post.title,
@@ -86,6 +109,15 @@ const DiscussionPage = () => {
         console.error("Error editing post: ", error);
     }
   };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setTitleError(false);
+    setContentError(false);
+    setTitleHelperText('');
+    setContentHelperText('');
+  };
+  
 
   const handleDeletePost = async (postToDelete) => {
     try {
@@ -118,72 +150,85 @@ const DiscussionPage = () => {
           <Card>
             <Grid item>
               <Grid container justifyContent="space-between" alignItems="center">
-                <Typography variant="hero_title" text={isEditing ? undefined : post?.title ?? "N/A"} />
 
-                {isCurrentUserAuthor && (
+                {isEditing ? (
+                    <TextField
+                        label="Post Title"
+                        placeholder="Enter post title"
+                        error={titleError}
+                        helperText={titleHelperText}
+                        multiline
+                        value={editingTitle}
+                        onChange={(e) => {
+                            setTitleError(false);
+                            setTitleHelperText('');
+                            setEditingTitle(e.target.value);
+                        }}
+                        variant="outlined"
+                        style={{ width: '100%', marginBottom: '8px' }}
+                    />
+                ) : (
                   <>
-                    <IconButton
-                      aria-label="more"
-                      aria-controls="long-menu"
-                      aria-haspopup="true"
-                      onClick={(event) => handleMenuClick(event, post._id)}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEls[post._id]}
-                      open={Boolean(anchorEls[post._id])}
-                      onClose={() => handleMenuClose(post._id)}
-                    >
-                      <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                      <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
-                    </Menu>
+                    <Typography variant="hero_title" text={post.title ?? "N/A"} />
+
+                      {isCurrentUserAuthor && (
+                        <>
+                        <IconButton
+                            aria-label="more"
+                            aria-controls="long-menu"
+                            aria-haspopup="true"
+                            onClick={(event) => handleMenuClick(event, post._id)}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEls[post._id]}
+                            open={Boolean(anchorEls[post._id])}
+                            onClose={() => handleMenuClose(post._id)}
+                        >
+                            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                            <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
+                        </Menu>
+                        </>
+                    )}
                   </>
                 )}
               </Grid>
 
-              {isEditing ? (
-                <TextField
-                  multiline
-                  value={editingTitle}
-                  onChange={(e) => setEditingTitle(e.target.value)}
-                  variant="outlined"
-                  style={{ width: '100%', marginBottom: '8px' }}
-                />
-              ) : null}
-
-              {isEditing ? (
-                <Input
-                  type="file"
-                  onChange={(e) => setEditingImage(e.target.files[0])}
-                  style={{ marginBottom: '8px' }}
-                />
-              ) : (
-                <div style={imageContainerStyleCard}>
-                  <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
-                </div>
-              )}
+              <div style={imageContainerStyleCard}>
+                <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+              </div>
 
               <Divider />
 
-              <Typography variant="title" text="Content" />
-
               {isEditing ? (
                 <TextField
+                  label="Content"
+                  placeholder="Enter the content of your post"
+                  error={contentError}
+                  helperText={contentHelperText}
                   multiline
-                  rows={4} // You can set the number of rows you want.
+                  rows={4}
                   value={editingContent}
-                  onChange={(e) => setEditingContent(e.target.value)}
+                  onChange={(e) => {
+                    setContentError(false); // Reset error state on change
+                    setContentHelperText('');
+                    setEditingContent(e.target.value);
+                  }}
                   variant="outlined"
                   style={{ width: '100%', marginBottom: '8px' }}
                 />
               ) : (
-                <MUITypography
-                  variant="body1"
-                  style={{ whiteSpace: 'pre-wrap' }}
-                >
-                  {post?.content ?? "N/A"}
-                </MUITypography>
+                <>
+                  <Typography variant="title" text="Content" />
+
+                  <MUITypography
+                    variant="body1"
+                    style={{ whiteSpace: 'pre-wrap' }}
+                  >
+                    {post?.content ?? "N/A"}
+                  </MUITypography>
+                </>
 
               )}
 
@@ -193,10 +238,11 @@ const DiscussionPage = () => {
                     variant="contained"
                     color="secondary"
                     style={{ marginRight: '8px' }}
-                    onClick={() => setIsEditing(false)}
+                    onClick={handleCancelEdit}
                   >
                     Cancel
                   </Button>
+
                   <Button variant="contained" color="primary" onClick={handleSaveEdit}>
                     Save
                   </Button>

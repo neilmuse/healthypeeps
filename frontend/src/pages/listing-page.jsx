@@ -53,6 +53,20 @@ const ListingPage = () => {
     const [editingPhoneNumber, setEditingPhoneNumber] = useState('');
     const [editingEmail, setEditingEmail] = useState('');
 
+    const [titleError, setTitleError] = useState(false);
+    const [contentError, setContentError] = useState(false);
+    const [priceError, setPriceError] = useState('');
+    const [locationError, setLocationError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [phoneNumberError, setPhoneNumberError] = useState('');
+
+    const [titleHelperText, setTitleHelperText] = useState('');
+    const [contentHelperText, setContentHelperText] = useState('');
+    const [priceHelperText, setPriceHelperText] = useState('');
+    const [locationHelperText, setLocationHelperText] = useState('');
+    const [emailHelperText, setEmailHelperText] = useState('');
+    const [phoneNumberHelperText, setPhoneNumberHelperText] = useState('');
+
   
     const handleMenuClick = (event, postId) => {
         setAnchorEl(event.currentTarget);
@@ -95,6 +109,72 @@ const ListingPage = () => {
     };
 
     const handleSaveEdit = async () => {
+        let isValid = true;
+    
+        if (!editingTitle.trim()) { // Check if title is empty
+            setTitleError(true);
+            setTitleHelperText("Title is required");
+            isValid = false;
+        } else {
+            setTitleError(false);
+            setTitleHelperText("");
+        }
+    
+        if (!editingContent.trim()) { // Check if content is empty
+            setContentError(true);
+            setContentHelperText("Content is required");
+            isValid = false;
+        } else {
+            setContentError(false);
+            setContentHelperText("");
+        }
+    
+        // Regular expression to match a simple price format (numbers, optional decimal points)
+        const pricePattern = /^\d+(\.\d{1,2})?$/;
+        if (!pricePattern.test(editingPrice)) { // Check if price is in the correct format
+            setPriceError(true);
+            setPriceHelperText("Enter a valid price (e.g. 123 or 123.45)");
+            isValid = false;
+        } else {
+            setPriceError(false);
+            setPriceHelperText("");
+        }
+    
+        if (!editingLocation.trim()) { // Check if location is empty
+            setLocationError(true);
+            setLocationHelperText("Location is required");
+            isValid = false;
+        } else {
+            setLocationError(false);
+            setLocationHelperText("");
+        }
+    
+        // Regular expression to match a simple email format
+        const emailPattern = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+        if (!emailPattern.test(editingEmail)) { // Check if email is in the correct format
+            setEmailError(true);
+            setEmailHelperText("Enter a valid email address");
+            isValid = false;
+        } else {
+            setEmailError(false);
+            setEmailHelperText("");
+        }
+    
+        // Regular expression to match a simple phone number format
+        const phoneNumberPattern = /^(09|\+639)\d{9}$/;
+        if (!phoneNumberPattern.test(editingPhoneNumber)) { // Check if phone number is in the correct format
+            setPhoneNumberError(true);
+            setPhoneNumberHelperText("Enter a valid PH phone number.");
+            isValid = false;
+        } else {
+            setPhoneNumberError(false);
+            setPhoneNumberHelperText("");
+        }
+    
+        if (!isValid) {
+            return;
+        }
+
         try {
             const updatedPostData = {
                 title: editingTitle,
@@ -111,6 +191,18 @@ const ListingPage = () => {
         } catch (error) {
             console.error("Error editing post: ", error);
         }
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setTitleError(false);
+        setContentError(false);
+        setTitleHelperText('');
+        setContentHelperText('');
+        setPriceHelperText('');
+        setLocationHelperText('');
+        setPhoneNumberHelperText('');
+        setEmailHelperText('');
     };
 
     useEffect(() => {
@@ -138,63 +230,110 @@ const ListingPage = () => {
                             <>
                                 <Grid container justifyContent="space-between" alignItems="center">
                                     <TextField
+                                        label="Post Title"
+                                        placeholder="Enter post title"
+                                        error={titleError}
+                                        helperText={titleHelperText}
                                         multiline
                                         value={editingTitle}
-                                        onChange={(e) => setEditingTitle(e.target.value)}
+                                        onChange={(e) => {
+                                            setTitleError(false);
+                                            setTitleHelperText('');
+                                            setEditingTitle(e.target.value);
+                                        }}
                                         variant="outlined"
                                         style={{ width: '100%', marginBottom: '8px' }}
                                     />
-                                    <Input
-                                        type="file"
-                                        onChange={(e) => setEditingImage(e.target.files[0])}
-                                        style={{ marginBottom: '8px' }}
-                                    />
                                     <TextField
+                                        label="Content"
+                                        placeholder="Enter the content of your post"
+                                        error={contentError}
+                                        helperText={contentHelperText}
                                         multiline
                                         rows={4}
                                         value={editingContent}
-                                        onChange={(e) => setEditingContent(e.target.value)}
+                                        onChange={(e) => {
+                                            setContentError(false); // Reset error state on change
+                                            setContentHelperText('');
+                                            setEditingContent(e.target.value);
+                                        }}
                                         variant="outlined"
                                         style={{ width: '100%', marginBottom: '8px' }}
                                     />
                                     <TextField
+                                        label="Price"
+                                        placeholder="Enter listing price"
+                                        error={priceError}
+                                        helperText={priceHelperText}
                                         value={editingPrice}
-                                        onChange={(e) => setEditingPrice(e.target.value)}
+                                        onChange={(e) => {
+                                            setPriceError(false);
+                                            setPriceHelperText('');
+                                            setEditingPrice(e.target.value);
+                                        }}
                                         variant="outlined"
                                         style={{ width: '100%', marginBottom: '8px' }}
                                     />
                                     <TextField
+                                        label="Location"
+                                        placeholder="Enter listing location"
+                                        error={locationError}
+                                        helperText={locationHelperText}
                                         value={editingLocation}
-                                        onChange={(e) => setEditingLocation(e.target.value)}
+                                        onChange={(e) => {
+                                            setLocationError(false);
+                                            setLocationHelperText('');
+                                            setEditingLocation(e.target.value);
+                                        }}
                                         variant="outlined"
                                         style={{ width: '100%', marginBottom: '8px' }}
                                     />
 
                                     <TextField
+                                        label="Phone Number"
+                                        placeholder="Enter phone number"
+                                        error={phoneNumberError}
+                                        helperText={phoneNumberHelperText}
                                         value={editingPhoneNumber}
-                                        onChange={(e) => setEditingPhoneNumber(e.target.value)}
+                                        onChange={(e) => {
+                                            setPhoneNumberError(false);
+                                            setPhoneNumberHelperText('');
+                                            setEditingPhoneNumber(e.target.value);
+                                        }}
                                         variant="outlined"
                                         style={{ width: '100%', marginBottom: '8px' }}
                                     />
+
                                     <TextField
+                                        label="Email"
+                                        placeholder="Enter email"
+                                        error={emailError}
+                                        helperText={emailHelperText}
                                         value={editingEmail}
-                                        onChange={(e) => setEditingEmail(e.target.value)}
+                                        onChange={(e) => {
+                                            setEmailError(false);
+                                            setEmailHelperText('');
+                                            setEditingEmail(e.target.value);
+                                        }}
                                         variant="outlined"
                                         style={{ width: '100%', marginBottom: '8px' }}
                                     />
 
                                     <div>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            style={{ marginRight: '8px' }}
-                                            onClick={() => setIsEditing(false)}
-                                        >
-                                            Cancel
-                                        </Button>
-                                        <Button variant="contained" color="primary" onClick={handleSaveEdit}>
-                                            Save
-                                        </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        style={{ marginRight: '8px' }}
+                                        onClick={handleCancelEdit}
+                                    >
+                                        Cancel
+                                    </Button>
+
+                                    <Button
+                                        variant="contained" color="primary" 
+                                        onClick={handleSaveEdit}>
+                                        Save
+                                    </Button>
                                     </div>
                                 </Grid>
                             </>
