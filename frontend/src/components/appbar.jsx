@@ -26,8 +26,12 @@ const pages = [
     url: "discussions"
   },
   {
-    name: "Recipe",
+    name: "Recipes",
     url: "recipes"
+  },
+  {
+    name: "Reviews",
+    url: "reviews"
   },
   {
     name: "Listings",

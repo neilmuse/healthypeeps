@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Box as MuiBox, Button, Chip, Container, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
 import { Outlet, Link } from 'react-router-dom';
+
 import SearchField from '../components/search-field.jsx';
 import RecipeFeed from './recipe-slider.jsx';
 import Typography from '../components/typography.jsx';
 import Box from '../components/box.jsx';
 import HomepageHero from '../components/hero-section.jsx';
+import Divider from '../components/divider.jsx';
 
 import ImageSlider from '../views/image-slider';
 
@@ -48,6 +50,8 @@ const Homepage = () => {
 
         <Container>
 
+          <Divider />
+
           <Typography variant="title" text= {user ? `Hello, ${user.firstName + "!"}` : 'Hello, Guest!'} />
 
           <Grid container justifyContent="center" alignItems="center">
@@ -55,6 +59,8 @@ const Homepage = () => {
               <Typography variant="hero_title" text="What can we help you with?" />
             </Grid>
           </Grid>
+
+          <Divider />
 
           <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -69,6 +75,8 @@ const Homepage = () => {
 
           <ImageSlider images={state.recipes} itemsPerSlide={5} />
 
+          <Divider />
+
           <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
             <Grid item xs={12} sm={6}>
               <Typography variant="title" text="Discussions" />
@@ -81,6 +89,8 @@ const Homepage = () => {
           </Grid>
 
           <ImageSlider images={state.discussions} itemsPerSlide={5} />
+
+          <Divider />
 
           <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -95,6 +105,8 @@ const Homepage = () => {
 
           <ImageSlider images={state.reviews} itemsPerSlide={5} />
 
+          <Divider />
+
           <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
             <Grid item xs={12} sm={6}>
               <Typography variant="title" text="Listings" />
@@ -107,6 +119,8 @@ const Homepage = () => {
           </Grid>
 
           <ImageSlider images={state.listings} itemsPerSlide={5} />
+
+          <Divider />
 
         </Container>
       </Box>
