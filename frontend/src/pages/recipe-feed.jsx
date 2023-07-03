@@ -206,7 +206,7 @@ const RecipeFeed = () => {
                 <Button startIcon={<AddIcon />} onClick={handleAddIngredient} style={{ marginTop: '1rem' }}>Add Ingredient</Button>
       
 
-                <Typography variant="subtitle1" style={{ marginTop: '1rem' }}>Preparation Steps</Typography>
+                <Typography variant="subtitle1" style={{ marginTop: '1rem' }}> Preparation Steps </Typography>
                 {preparationSteps.map((step, index) => (
                   <MuiBox key={index} display="flex" justifyContent="space-between" alignItems="center" style={{ marginTop: '1rem' }}>
                     <TextField label={`Step ${index + 1}`} value={step} onChange={(e) => handlePreparationStepChange(index, e.target.value)} fullWidth />
@@ -266,6 +266,7 @@ const RecipeFeed = () => {
                       createdAt={recipe.createdAt} 
                       content={recipe.content} 
                       authorId={recipe.author}
+                      macronutrients={recipe.macros}
                     />
                 ))) : (
                   <Typography variant="body" text="No recipes found." />

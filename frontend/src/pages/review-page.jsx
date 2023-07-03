@@ -212,18 +212,6 @@ const ReviewPage = () => {
 
                     <Divider />
 
-                    <MUIBox
-                    sx={{
-                        backgroundColor: COLORS.LIGHT_GREEN,
-                    }}
-                    >
-
-                    <Grid container spacing={2} p={3}>
-                    </Grid>
-                    </MUIBox>
-
-                    <Divider />
-
                     <CommentCard postId={post?._id} authorId={user?._id} />
                 </Grid>
                 </Card>

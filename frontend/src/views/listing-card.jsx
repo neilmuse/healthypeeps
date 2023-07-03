@@ -64,8 +64,8 @@ const ListingCard = ({ listingId, title, image, author, createdAt, content, loca
     };
 
     return (
-        <div onClick={handleCardClick} style={{ cursor: 'pointer' }}>
-            <Card>
+        <Card>
+            <div onClick={handleCardClick} style={{ cursor: 'pointer' }}>
                 <CardHeader
                     avatar={
                     <Avatar sx={{ bgcolor: COLORS.GREEN}} >
@@ -83,58 +83,29 @@ const ListingCard = ({ listingId, title, image, author, createdAt, content, loca
 
                 <CardContent>
                     <Typography variant="body1" text={content} />
+                </CardContent>
+            </div>
+
+            <CardActions disableSpacing>
+                <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                >
+                    <ExpandMoreIcon />
+                </ExpandMore>
+            </CardActions>
+
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
                     <Typography variant="body1" text={`Location: ${location}`} />
                     <Typography variant="body1" text={`Price: ${price}`} />
                     <Typography variant="body1" text={`Phone Number: ${phoneNumber}`} />
                     <Typography variant="body1" text={`Email: ${email}`} />
                 </CardContent>
-                <CardActions disableSpacing>
-                    <IconButton onClick={handleOpen}>
-                    <CommentIcon />
-                    </IconButton>
-                    <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    >
-                    <ExpandMoreIcon />
-                    </ExpandMore>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                    <Typography variant="body1" text="More:" />
-                    </CardContent>
-                </Collapse>
-
-                <Modal open={open} onClose={handleClose}>
-                    <Box sx={modalStyle}>
-                        <Card>
-                            <CardHeader
-                                avatar={
-                                    <Avatar sx={{ bgcolor: COLORS.GREEN }}>
-                                    {author?.firstName?.substr(0, 1)}
-                                    </Avatar>
-                                }
-                                title={title}
-                                subheader={ConvertTime(createdAt)}
-                            />
-                            <CardContent>
-                                <Typography variant="body1" text={content} />
-                            </CardContent>
-                            <CardActions disableSpacing>
-                                <TextField
-                                    label="New Comment"
-                                    value={newComment}
-                                    onChange={(event) => setNewComment(event.target.value)} // Use setNewComment here
-                                />
-                                <Button onClick={handleSubmit}>Send</Button>
-                            </CardActions>
-                        </Card>
-                    </Box>
-                </Modal>
-            </Card>
-        </div>
+            </Collapse>
+        </Card>
     );
 };
 

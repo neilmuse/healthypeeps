@@ -28,7 +28,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-const RecipeCard = ({ recipeId, title, image, author, createdAt, content }) => {
+const RecipeCard = ({ recipeId, title, image, author, createdAt, content, macronutrients }) => {
     const { user } = useContext(AuthContext);
     const NAVIGATE = useNavigate();
     const [expanded, setExpanded] = React.useState(false);
@@ -63,10 +63,9 @@ const RecipeCard = ({ recipeId, title, image, author, createdAt, content }) => {
         NAVIGATE(`/recipe/${recipeId}`);
     };
 
-
     return (
-        <div onClick={handleCardClick} style={{ cursor: 'pointer' }}>
-            <Card>
+        <Card>
+            <div onClick={handleCardClick} style={{ cursor: 'pointer' }}>
                 <CardHeader
                     avatar={
                     <Avatar sx={{ bgcolor: COLORS.GREEN}} >
@@ -85,53 +84,30 @@ const RecipeCard = ({ recipeId, title, image, author, createdAt, content }) => {
                 <CardContent>
                     <Typography variant="body1" text={content} />
                 </CardContent>
-                <CardActions disableSpacing>
-                    <IconButton onClick={handleOpen}>
-                    <CommentIcon />
-                    </IconButton>
-                    <ExpandMore
+
+            </div>
+
+            <CardActions disableSpacing>
+                <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}
                     aria-expanded={expanded}
                     aria-label="show more"
-                    >
+                >
                     <ExpandMoreIcon />
-                    </ExpandMore>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                    <Typography variant="body1" text="More:" />
-                    </CardContent>
-                </Collapse>
+                </ExpandMore>
+            </CardActions>
 
-                <Modal open={open} onClose={handleClose}>
-                    <Box sx={modalStyle}>
-                        <Card>
-                            <CardHeader
-                                avatar={
-                                    <Avatar sx={{ bgcolor: COLORS.GREEN }}>
-                                    {author?.firstName?.substr(0, 1)}
-                                    </Avatar>
-                                }
-                                title={title}
-                                subheader={ConvertTime(createdAt)}
-                            />
-                            <CardContent>
-                                <Typography variant="body1" text={content} />
-                            </CardContent>
-                            <CardActions disableSpacing>
-                                <TextField
-                                    label="New Comment"
-                                    value={newComment}
-                                    onChange={(event) => setNewComment(event.target.value)} // Use setNewComment here
-                                />
-                                <Button onClick={handleSubmit}>Send</Button>
-                            </CardActions>
-                        </Card>
-                    </Box>
-                </Modal>
-            </Card>
-        </div>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                    <Typography variant="cardtitle" text={"Macronutrients:"} />
+                    <Typography variant="body1" text={`Protein: ${macronutrients.protein} g`} />
+                    <Typography variant="body1" text={`Calories: ${macronutrients.calories} cal`} />
+                    <Typography variant="body1" text={`Carbs: ${macronutrients.carbs} g`} />
+                </CardContent>
+            </Collapse>
+
+        </Card>
     );
 };
 
