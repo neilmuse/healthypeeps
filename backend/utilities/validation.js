@@ -14,10 +14,9 @@ const validateEmail = (email) => {
 
 // Function to validate password
 const validatePassword = (password) => {
-// Password should have a minimum length of 8 characters
-// and contain at least one lowercase letter, one uppercase letter,
-// one numeric digit, and one special character.
-    return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/.test(password);
+  // Password should have a minimum length of 8 characters
+  // and contain at least one letter and one numeric digit.
+  return /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(password);
 };
 
 const validateFields = (firstName, lastName, email, password, repeatPassword, phoneNumber) => {

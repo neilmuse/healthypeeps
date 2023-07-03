@@ -30,6 +30,13 @@ const RecipeFeed = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
 
+  const [titleError, setTitleError] = useState('');
+  const [contentError, setContentError] = useState('');
+  const [ingredientsError, setIngredientsError] = useState('');
+  const [preparationStepsError, setPreparationStepsError] = useState('');
+  const [preparationTimeError, setPreparationTimeError] = useState('');
+  const [macronutrientsError, setMacronutrientsError] = useState({ protein: '', calories: '', carbs: '' });
+
   const category = "recipes";
 
   useEffect(() => {
@@ -52,14 +59,83 @@ const RecipeFeed = () => {
   };
 
   const handleCloseModal = () => {
-      setModalOpen(false);
-      setTitle('');
-      setContent('');
-      setImage(null);
-      setIngredients([]);
-      setPreparationSteps([]);
-      setMacronutrients({ protein: '', calories: '', carbs: '' });
-      setPreparationTime('');
+    setModalOpen(false);
+    setTitle('');
+    setContent('');
+    setImage(null);
+    setIngredients([]);
+    setPreparationSteps([]);
+    setMacronutrients({ protein: '', calories: '', carbs: '' });
+    setPreparationTime('');
+  
+    // Reset error states
+    setTitleError('');
+    setContentError('');
+    setIngredientsError('');
+    setPreparationStepsError('');
+    setPreparationTimeError('');
+    setMacronutrientsError({ protein: '', calories: '', carbs: '' });
+  };
+  
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (title.trim() === '') {
+        setTitleError('Title is required.');
+        isValid = false;
+    } else {
+        setTitleError('');
+    }
+
+    if (content.trim() === '') {
+        setContentError('Content is required.');
+        isValid = false;
+    } else {
+        setContentError('');
+    }
+
+    if (ingredients.length === 0) {
+        setIngredientsError('At least one ingredient is required.');
+        isValid = false;
+    } else {
+        setIngredientsError('');
+    }
+
+    if (preparationSteps.length === 0) {
+        setPreparationStepsError('At least one preparation step is required.');
+        isValid = false;
+    } else {
+        setPreparationStepsError('');
+    }
+
+    if (!preparationTime.trim() || isNaN(preparationTime) || preparationTime < 0) {
+        setPreparationTimeError('Preparation time should be a positive number.');
+        isValid = false;
+    } else {
+        setPreparationTimeError('');
+    }
+
+    let newMacronutrientsError = { ...macronutrientsError, protein: '', calories: '', carbs: '' };
+
+    if (!macronutrients.protein.trim() || isNaN(macronutrients.protein) || macronutrients.protein < 0) {
+        newMacronutrientsError.protein = 'Protein should be a positive number.';
+        isValid = false;
+    }
+
+    if (!macronutrients.calories.trim() || isNaN(macronutrients.calories) || macronutrients.calories < 0) {
+        newMacronutrientsError.calories = 'Calories should be a positive number.';
+        isValid = false;
+    }
+
+    if (!macronutrients.carbs.trim() || isNaN(macronutrients.carbs) || macronutrients.carbs < 0) {
+        newMacronutrientsError.carbs = 'Carbs should be a positive number.';
+        isValid = false;
+    }
+
+    setMacronutrientsError(newMacronutrientsError);
+
+    return isValid;
   };
 
   const handleAddPreparationStep = () => {
@@ -106,6 +182,10 @@ const RecipeFeed = () => {
           } catch (error) {
               console.error('Error uploading file:', error);
           }
+      }
+
+      if (!validateForm()) {
+        return;
       }
 
       const recipePost = {
@@ -178,9 +258,26 @@ const RecipeFeed = () => {
               <DialogTitle>Add New Recipe</DialogTitle>
               <DialogContent>
 
-                <TextField fullWidth label="Title" value={title} onChange={e => setTitle(e.target.value)} />
+                <TextField
+                    fullWidth
+                    label="Title"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                    error={!!titleError}
+                    helperText={titleError}
+                />
 
-                <TextField fullWidth label="Content" multiline rows={4} value={content} onChange={e => setContent(e.target.value)} />
+                <TextField
+                    fullWidth
+                    label="Content"
+                    multiline
+                    rows={4}
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
+                    error={!!contentError}
+                    helperText={contentError}
+                />
+
                 <input type="file" onChange={e => setImage(e.target.files[0])} />
 
                 <Typography variant="subtitle1" style={{ marginTop: '1rem' }}>Ingredients</Typography>
@@ -232,6 +329,8 @@ const RecipeFeed = () => {
                   label="Protein"
                   value={macronutrients.protein}
                   onChange={(e) => setMacronutrients({ ...macronutrients, protein: e.target.value })}
+                  error={!!macronutrientsError.protein}
+                  helperText={macronutrientsError.protein}
                   style={{ marginRight: '1rem', marginTop: '1rem' }}
                 />
 
@@ -239,6 +338,8 @@ const RecipeFeed = () => {
                   label="Calories"
                   value={macronutrients.calories}
                   onChange={(e) => setMacronutrients({ ...macronutrients, calories: e.target.value })}
+                  error={!!macronutrientsError.calories}
+                  helperText={macronutrientsError.calories}
                   style={{ marginRight: '1rem', marginTop: '1rem' }}
                 />
 
@@ -246,20 +347,26 @@ const RecipeFeed = () => {
                   label="Carbs"
                   value={macronutrients.carbs}
                   onChange={(e) => setMacronutrients({ ...macronutrients, carbs: e.target.value })}
+                  error={!!macronutrientsError.carbs}
+                  helperText={macronutrientsError.carbs}
                   style={{ marginTop: '1rem' }}
                 />
 
                 <TextField
-                  label="Preparation Time (minutes)"
-                  value={preparationTime}
-                  onChange={(e) => setPreparationTime(e.target.value)}
-                  style={{ marginTop: '1rem' }}
+                    fullWidth
+                    label="Preparation Time (minutes)"
+                    value={preparationTime}
+                    onChange={(e) => setPreparationTime(e.target.value)}
+                    style={{ marginTop: '1rem' }}
+                    error={!!preparationTimeError}
+                    helperText={preparationTimeError}
                 />
-                  </DialogContent>
-                    <DialogActions>
-                    <Button onClick={handleCloseModal} color="primary">Cancel</Button>
-                    <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
-                  </DialogActions>
+
+                </DialogContent>
+                  <DialogActions>
+                  <Button onClick={handleCloseModal} color="primary">Cancel</Button>
+                  <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
+                </DialogActions>
             </Dialog>
 
             <Box value={3}>

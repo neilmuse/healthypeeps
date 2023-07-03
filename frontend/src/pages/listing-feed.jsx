@@ -24,6 +24,13 @@ const ListingFeed = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
 
+    const [titleError, setTitleError] = useState('');
+    const [contentError, setContentError] = useState('');
+    const [locationError, setLocationError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [phoneNumberError, setPhoneNumberError] = useState('');
+    const [priceError, setPriceError] = useState('');
+
     const [listings, setListings] = useState([]);
 
     const category = "listings";
@@ -49,6 +56,8 @@ const ListingFeed = () => {
   
     const handleCloseModal = () => {
         setModalOpen(false);
+        
+        // Reset fields
         setTitle('');
         setContent('');
         setImage(null);
@@ -56,6 +65,65 @@ const ListingFeed = () => {
         setEmail('');
         setPhoneNumber('');
         setPrice('');
+    
+        // Reset helper texts
+        setTitleError('');
+        setContentError('');
+        setLocationError('');
+        setEmailError('');
+        setPhoneNumberError('');
+        setPriceError('');
+    };
+    
+
+    const validateForm = () => {
+        let isValid = true;
+
+        if (title.trim() === '') {
+            setTitleError('Title is required.');
+            isValid = false;
+        } else {
+            setTitleError('');
+        }
+
+        if (content.trim() === '') {
+            setContentError('Content is required.');
+            isValid = false;
+        } else {
+            setContentError('');
+        }
+
+        if (location.trim() === '') {
+            setLocationError('Location is required.');
+            isValid = false;
+        } else {
+            setLocationError('');
+        }
+
+        const emailRegex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+        if (!email.match(emailRegex)) {
+            setEmailError('Please enter a valid email.');
+            isValid = false;
+        } else {
+            setEmailError('');
+        }
+
+        const phoneNumberRegex = /^(09|\+639)\d{9}$/;
+        if (!phoneNumber.match(phoneNumberRegex)) {
+            setPhoneNumberError('Please enter a valid PH phone number.');
+            isValid = false;
+        } else {
+            setPhoneNumberError('');
+        }
+
+        if (isNaN(price) || price <= 0) {
+            setPriceError('Please enter a valid price.');
+            isValid = false;
+        } else {
+            setPriceError('');
+        }
+
+        return isValid;
     };
   
     const handleFormSubmit = async (event) => {
@@ -72,16 +140,20 @@ const ListingFeed = () => {
             }
         }
 
+        if (!validateForm()) {
+            return;
+        }
+
         const listingPost = {
-        title,
-        content,
-        image: uploadedImageUrl,
-        category: "listing",
-        author: user,
-        location,
-        email,
-        phoneNumber,
-        price,
+            title,
+            content,
+            image: uploadedImageUrl,
+            category: "listing",
+            author: user,
+            location,
+            email,
+            phoneNumber,
+            price,
       };
 
         try {
@@ -136,25 +208,36 @@ const ListingFeed = () => {
                     {user ? (
                       <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Listing </Button>
                     ): null }
-                    
-            
+
                     <Dialog open={modalOpen} onClose={handleCloseModal} fullWidth>
                         <DialogTitle>Add New Listing</DialogTitle>
                         <DialogContent>
-                        <TextField fullWidth label="Title" value={title} onChange={e => setTitle(e.target.value)} />
-                        <TextField fullWidth label="Content" multiline rows={4} value={content} onChange={e => setContent(e.target.value)} />
-                        <TextField fullWidth label="Location" value={location} onChange={e => setLocation(e.target.value)} />
-                        <TextField fullWidth label="Email" value={email} onChange={e => setEmail(e.target.value)} />
-                        <TextField fullWidth label="Phone Number" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
-                        <TextField fullWidth label="Price" value={price} onChange={e => setPrice(e.target.value)} />
-                        <input type="file" onChange={e => setImage(e.target.files[0])} />
+                            <TextField
+                                fullWidth label="Title" value={title} onChange={e => setTitle(e.target.value)} error={!!titleError} helperText={titleError}
+                            />
+
+                            <TextField
+                                fullWidth label="Content" value={content} multiline rows={4} onChange={e => setContent(e.target.value)} error={!!contentError} helperText={contentError}
+                            />
+                            <TextField 
+                                fullWidth label="Location" value={location} onChange={e => setLocation(e.target.value)} error={!!locationError} helperText={locationError}
+                            />
+                            <TextField 
+                                fullWidth label="Email" value={email} onChange={e => setEmail(e.target.value)} error={!!emailError} helperText={emailError} 
+                            />
+                            <TextField 
+                                fullWidth label="Phone Number" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} error={!!phoneNumberError} helperText={phoneNumberError}
+                            />
+                            <TextField 
+                                fullWidth label="Price" value={price} onChange={e => setPrice(e.target.value)} error={!!priceError} helperText={priceError}
+                            />
+                            <input type="file" onChange={e => setImage(e.target.files[0])} />
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={handleCloseModal} color="primary">Cancel</Button>
-                        <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
+                            <Button onClick={handleCloseModal} color="primary">Cancel</Button>
+                            <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
                         </DialogActions>
                     </Dialog>
-                    
 
                     <Box value={3}>
                       <Typography variant="title" text="Listings" />

@@ -20,6 +20,9 @@ const DiscussionFeed = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
 
+  const [titleError, setTitleError] = useState('');
+  const [contentError, setContentError] = useState('');
+
   const [discussions, setDiscussions] = useState([]);
 
   const category = "discussions";
@@ -45,9 +48,35 @@ const DiscussionFeed = () => {
 
   const handleCloseModal = () => {
     setModalOpen(false);
+    
+    // Reset fields
     setTitle('');
     setContent('');
     setImage(null);
+
+    // Reset helper texts
+    setTitleError('');
+    setContentError('');
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (title.trim() === '') {
+        setTitleError('Title is required.');
+        isValid = false;
+    } else {
+        setTitleError('');
+    }
+
+    if (content.trim() === '') {
+        setContentError('Content is required.');
+        isValid = false;
+    } else {
+        setContentError('');
+    }
+
+    return isValid;
   };
 
   const handleFormSubmit = async (event) => {
@@ -62,6 +91,10 @@ const DiscussionFeed = () => {
         } catch (error) {
             console.error('Error uploading file:', error);
         }
+    }
+
+    if (!validateForm()) {
+      return;
     }
 
     const discussionPost = {
@@ -129,13 +162,20 @@ const DiscussionFeed = () => {
                   <Dialog open={modalOpen} onClose={handleCloseModal} fullWidth>
                       <DialogTitle>Add New Discussion</DialogTitle>
                       <DialogContent>
-                      <TextField fullWidth label="Title" value={title} onChange={e => setTitle(e.target.value)} />
-                      <TextField fullWidth label="Content" multiline rows={4} value={content} onChange={e => setContent(e.target.value)} />
-                      <input type="file" onChange={e => setImage(e.target.files[0])} />
+
+                        <TextField
+                            fullWidth label="Title" value={title} onChange={e => setTitle(e.target.value)} error={!!titleError} helperText={titleError}
+                        />
+
+                        <TextField
+                            fullWidth label="Content" value={content} multiline rows={4} onChange={e => setContent(e.target.value)} error={!!contentError} helperText={contentError}
+                        />
+                        <input type="file" onChange={e => setImage(e.target.files[0])} />
                       </DialogContent>
+
                       <DialogActions>
-                      <Button onClick={handleCloseModal} color="primary">Cancel</Button>
-                      <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
+                        <Button onClick={handleCloseModal} color="primary">Cancel</Button>
+                        <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
                       </DialogActions>
                   </Dialog>
                   
