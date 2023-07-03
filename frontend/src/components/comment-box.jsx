@@ -6,6 +6,7 @@ import {
   Paper,
   Box
 } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 
 import Divider from '../components/divider.jsx';
 
@@ -17,10 +18,16 @@ import { AuthContext } from '../context/auth-context';
 const CommentBox = ({ postId, authorId, addedComment }) => {
   const { user } = useContext(AuthContext);
   const [comment, setComment] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
+    if (!user) {
+      setOpenAlert(true);
+      return;
+    }
+
     const commentData = {
       content: comment,
       postId: postId,
@@ -40,14 +47,21 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
         content: comment,
         createdAt: new Date(),
         ...response,
-      };      
-    
+      };
+      
       addedComment(newComment);
       setComment(''); // Clear the comment input
     } catch (error) {
       console.error('Error adding comment:', error);
     }
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenAlert(false);
+  };
 
   return (
     <form onSubmit={handleSubmit} noValidate autoComplete="off">
@@ -60,7 +74,7 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
               placeholder="Write a comment..."
               variant="outlined"
               fullWidth
-            />        
+            />
           </Grid>
           <Grid item>
             <Button
@@ -73,6 +87,12 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
           </Grid>
         </Grid>
       </Box>
+
+      <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          You need to log in to add comments!
+        </Alert>
+      </Snackbar>
     </form>
   );
 };

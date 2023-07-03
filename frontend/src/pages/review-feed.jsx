@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Box as MuiBox, Button, Chip, Container, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
+import { Alert, Snackbar, Box as MuiBox, Button, Chip, Container, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
 import Box from '../components/box.jsx';
 import Typography from '../components/typography.jsx';
 
@@ -18,6 +18,7 @@ const ReviewFeed = () => {
     const [image, setImage] = useState(null);
     const [refetchTrigger, setRefetchTrigger] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [successAlertOpen, setSuccessAlertOpen] = useState(false);
 
     const [reviews, setReviews] = useState([]);
 
@@ -76,9 +77,17 @@ const ReviewFeed = () => {
           handleCloseModal();
           setReviews(prevReviews => [response, ...prevReviews]);  //adding the new post at the start of the array
           setRefetchTrigger(prev => !prev);
+          setSuccessAlertOpen(true); // Open the success alert
         } catch (error) {
           console.error('Error saving review post:', error);
       }
+    };
+
+    const handleSuccessAlertClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setSuccessAlertOpen(false);
     };
 
     const handleSearch = (query) => {
@@ -143,6 +152,12 @@ const ReviewFeed = () => {
                 </Grid>
               </Container>
             </Box>
+
+            <Snackbar open={successAlertOpen} autoHideDuration={5000} onClose={handleSuccessAlertClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                <Alert onClose={handleSuccessAlertClose} severity="success" sx={{ width: '100%' }}>
+                    Post successfully added!
+                </Alert>
+            </Snackbar>
         </>
     );
 };
