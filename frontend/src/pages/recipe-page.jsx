@@ -60,6 +60,9 @@ const RecipePage = () => {
     const [editingMacros, setEditingMacros] = useState(post?.macros ?? {});
     const [editingPreparation, setEditingPreparation] = useState(post?.preparation ?? []);
 
+    const [errors, setErrors] = useState({});
+    const [helperTexts, setHelperTexts] = useState({});
+
     const handleMenuClick = (event, postId) => {
         setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
     };
@@ -80,7 +83,129 @@ const RecipePage = () => {
         handleMenuClose();
     };
 
+    const validateIngredient = (ingredient, index) => {
+        let newErrors = { ...errors };
+        let newHelperTexts = { ...helperTexts };
+    
+        if (!newErrors.ingredients) {
+          newErrors.ingredients = [];
+        }
+        if (!newHelperTexts.ingredients) {
+          newHelperTexts.ingredients = [];
+        }
+    
+        // Validation for ingredient name
+        if (!ingredient.name.trim() || !/^[A-Za-z\s]+$/.test(ingredient.name)) {
+            newErrors.ingredients[index] = { ...newErrors.ingredients[index], name: true };
+            if (!ingredient.name.trim()) {
+                newHelperTexts.ingredients[index] = { ...newHelperTexts.ingredients[index], name: 'Name is required' };
+            } else {
+                newHelperTexts.ingredients[index] = { ...newHelperTexts.ingredients[index], name: 'Name can only contain letters and spaces' };
+            }
+        } else {
+            newErrors.ingredients[index] = { ...newErrors.ingredients[index], name: false };
+            newHelperTexts.ingredients[index] = { ...newHelperTexts.ingredients[index], name: '' };
+        }    
+
+        // Validation for amount
+        if (!ingredient.amount || isNaN(ingredient.amount) || ingredient.amount <= 0) {
+            newErrors.ingredients[index] = { ...newErrors.ingredients[index], amount: true };
+            newHelperTexts.ingredients[index] = { ...newHelperTexts.ingredients[index], amount: 'Amount must be a positive number' };
+        } else {
+            newErrors.ingredients[index] = { ...newErrors.ingredients[index], amount: false };
+            newHelperTexts.ingredients[index] = { ...newHelperTexts.ingredients[index], amount: '' };
+        }
+    
+        // Add more validations here for unit and amount
+    
+        setErrors(newErrors);
+        setHelperTexts(newHelperTexts);
+    };
+
+    const validateMacros = (key, value) => {
+        let newErrors = { ...errors };
+        let newHelperTexts = { ...helperTexts };
+    
+        if (!newErrors.macros) {
+            newErrors.macros = {};
+        }
+        if (!newHelperTexts.macros) {
+            newHelperTexts.macros = {};
+        }
+    
+        // Validation for macros - you can add more conditions based on your requirements
+        if (!value || isNaN(value) || value <= 0) {
+            newErrors.macros[key] = true;
+            newHelperTexts.macros[key] = 'Value must be a positive number';
+        } else {
+            newErrors.macros[key] = false;
+            newHelperTexts.macros[key] = '';
+        }
+
+        editingPreparation.forEach((step, index) => {
+            if (!step.trim()) {
+                newErrors = { ...newErrors, preparationSteps: { ...newErrors.preparationSteps, [index]: true }};
+                newHelperTexts = { ...newHelperTexts, preparationSteps: { ...newHelperTexts.preparationSteps, [index]: 'Step cannot be empty' }};
+            }
+        });        
+    
+        setErrors(newErrors);
+        setHelperTexts(newHelperTexts);
+    };    
+
+    const validateForm = () => {
+        let newErrors = {};
+        let newHelperTexts = {};
+    
+        if (!editingTitle.trim()) {
+          newErrors.title = true;
+          newHelperTexts.title = "Title is required.";
+        }
+    
+        if (editingContent.trim() === '') {
+            newErrors.content = true;
+            newHelperTexts.content = "Content is required.";
+        }
+    
+        if (editingIngredients.length === 0) {
+            newErrors.editingIngredients = true;
+            newHelperTexts.ingredients = "At least one ingredient is required.";
+        }
+    
+        if (editingPreparation.length === 0) {
+            newErrors.preparationSteps = true;
+            newHelperTexts.preparationSteps = "At least one preparation step is required.";
+        }
+    
+        editingIngredients.forEach((ingredient, index) => {
+            validateIngredient(ingredient, index);
+        });
+    
+        if (editingPreparationTime == null || editingPreparationTime === '' || isNaN(editingPreparationTime) || editingPreparationTime < 0) {
+            newErrors.preparationTime = true;
+            if (editingPreparationTime == null || editingPreparationTime === '') {
+                newHelperTexts.preparationTime = "Preparation time is required.";
+            } else {
+                newHelperTexts.preparationTime = "Preparation time should be a positive number.";
+            }
+        }
+
+        Object.entries(editingMacros ?? {}).forEach(([key, value]) => {
+            validateMacros(key, value);
+        });
+        
+        setErrors(newErrors);
+        setHelperTexts(newHelperTexts);
+    
+        // Return true if no errors
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSaveEdit = async () => {
+        if (!validateForm()) {
+            return;
+        }
+
         try {
             const updatedPostData = {
                 title: editingTitle,
@@ -97,6 +222,14 @@ const RecipePage = () => {
         } catch (error) {
             console.error("Error editing post: ", error);
         }
+
+        setErrors({});
+        setHelperTexts({});
+    };
+
+    const handleCancelEdit = () => {
+        setErrors({});
+        setHelperTexts({});
     };
 
     const openDeleteModal = (postId) => {
@@ -143,9 +276,16 @@ const RecipePage = () => {
 
                             {isEditing ? (
                                 <TextField
+                                    label="Title"
                                     value={editingTitle}
-                                    onChange={(e) => setEditingTitle(e.target.value)}
-                                />
+                                    error={errors.title}
+                                    helperText={helperTexts.title}
+                                    onChange={(e) => {
+                                    setEditingTitle(e.target.value);
+                                    setErrors({ ...errors, title: false });
+                                    setHelperTexts({ ...helperTexts, title: '' });
+                                }}
+                            />
                             ) : (
                                 <Typography variant="hero_title" text={post.title ?? "N/A"} />
                             )}
@@ -172,42 +312,50 @@ const RecipePage = () => {
                             )}
                         </Grid>
 
-                        {isEditing ? (
-                            <Input
-                                type="file"
-                                onChange={(e) => setEditingImage(e.target.files[0])}
-                                style={{ marginBottom: '8px' }}
-                            />
-                        ) : (
-                            <div style={imageContainerStyleCard}>
-                                <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
-                            </div>
-                        )}
+                        <div style={imageContainerStyleCard}>
+                            <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                        </div>
 
                         <Divider />
 
-                        <Typography variant="title" text="Brief Description" />
-
                         {isEditing ? (
                             <TextField
+                                label="Content"
                                 value={editingContent}
-                                onChange={(e) => setEditingContent(e.target.value)}
+                                error={errors.content}
+                                helperText={helperTexts.content}
+                                onChange={(e) => {
+                                setEditingContent(e.target.value);
+                                setErrors({ ...errors, content: false });
+                                setHelperTexts({ ...helperTexts, content: '' });
+                                }}
                             />
                         ) : (
-                            <Typography variant="body1" text={post.content ?? "N/A"} />
+                            <>
+                                <Typography variant="title" text="Brief Description" />
+                                <Typography variant="body1" text={post.content ?? "N/A"} />
+                            </>
                         )}
 
                         <Divider />
 
-                        <Typography variant="title" text="Preparation Time (in minutes)" />
-
                         {isEditing ? (
                             <TextField
+                                label="Preparation Time"
                                 value={editingPreparationTime}
-                                onChange={(e) => setEditingPreparationTime(e.target.value)}
+                                error={errors.preparationTime}
+                                helperText={helperTexts.preparationTime}
+                                onChange={(e) => {
+                                setEditingPreparationTime(e.target.value);
+                                setErrors({ ...errors, preparationTime: false });
+                                setHelperTexts({ ...helperTexts, preparationTime: '' });
+                                }}
                             />
                         ) : (
-                            <Typography variant="body1" text={post.preparationTime ?? "N/A"} />
+                            <>
+                                <Typography variant="title" text="Preparation Time (in minutes)" />
+                                <Typography variant="body1" text={post.preparationTime ?? "N/A"} />
+                            </>
                         )}
 
                         <Divider />
@@ -216,25 +364,31 @@ const RecipePage = () => {
 
                         <List
                             sx={{
-                                listStyleType: 'disc',
-                                pl: 2,
-                                '& .MuiListItem-root': {
-                                    display: 'list-item',
-                                },
+                            listStyleType: 'disc',
+                            pl: 2,
+                            '& .MuiListItem-root': {
+                                display: 'list-item',
+                            },
                             }}
                         >
-                            {isEditing
-                                ? (editingIngredients ?? []).map(({ name, unit, amount }, index) => (
+                            {isEditing ? 
+                                (editingIngredients ?? []).map(({ name, unit, amount }, index) => (
                                     <ListItem key={index}>
                                         <TextField
                                             label="Name"
                                             value={name}
+                                            error={errors.ingredients?.[index]?.name}
+                                            helperText={helperTexts.ingredients?.[index]?.name}
                                             onChange={(e) => {
                                                 const updatedIngredients = [...editingIngredients];
                                                 updatedIngredients[index].name = e.target.value;
                                                 setEditingIngredients(updatedIngredients);
+
+                                                // Validate ingredient after change
+                                                validateIngredient(updatedIngredients[index], index);
                                             }}
                                         />
+
                                         <FormControl>
                                             <InputLabel htmlFor={`unit-select-${index}`}>Unit</InputLabel>
                                             <Select
@@ -257,15 +411,22 @@ const RecipePage = () => {
                                                 ))}
                                             </Select>
                                         </FormControl>
+
                                         <TextField
                                             label="Amount"
                                             value={amount}
+                                            error={errors.ingredients?.[index]?.amount}
+                                            helperText={helperTexts.ingredients?.[index]?.amount}
                                             onChange={(e) => {
                                                 const updatedIngredients = [...editingIngredients];
                                                 updatedIngredients[index].amount = e.target.value;
                                                 setEditingIngredients(updatedIngredients);
+
+                                                // Validate ingredient after change
+                                                validateIngredient(updatedIngredients[index], index);
                                             }}
                                         />
+
                                     </ListItem>
                                 ))
                                 : (post.ingredients ?? []).map(({ name, unit, amount }) => (
@@ -291,12 +452,16 @@ const RecipePage = () => {
                                                 <Grid item>
                                                     <TextField
                                                         value={value}
-                                                        onChange={(e) =>
+                                                        error={errors.macros?.[key]}
+                                                        helperText={helperTexts.macros?.[key]}
+                                                        onChange={(e) => {
                                                             setEditingMacros({
                                                                 ...editingMacros,
                                                                 [key]: e.target.value
-                                                            })
-                                                        }
+                                                            });
+                                                            // Validate macros after change
+                                                            validateMacros(key, e.target.value);
+                                                        }}
                                                     />
                                                 </Grid>
                                                 <Grid item>
@@ -332,6 +497,8 @@ const RecipePage = () => {
                                             fullWidth
                                             label={`Step ${index + 1}`}
                                             value={step}
+                                            error={errors.preparationSteps?.[index]} // <-- Added error
+                                            helperText={helperTexts.preparationSteps?.[index]} // <-- Added helperText
                                             onChange={(e) => {
                                                 const updatedSteps = [...editingPreparation];
                                                 updatedSteps[index] = e.target.value;
