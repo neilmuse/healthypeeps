@@ -1,8 +1,10 @@
 import API from "./api";
 
+const API_URL = import.meta.env.VITE_APP_API_URL;
+
 export const signup = async (formData) => {
     try {
-        const response = await API.post("/api/signup", formData);
+        const response = await API.post(`/api/signup`, formData);
         return response.data;
     } catch (error) {
         throw error;
@@ -11,7 +13,7 @@ export const signup = async (formData) => {
 
 export const authLogin = async (formData) => {
     try {
-      const response = await API.post("/api/login", formData);
+      const response = await API.post(`/api/login`, formData);
       const userData = response.data.user; // user object
       return response.data; // access token and refresh token
     } catch (error) {
@@ -21,7 +23,7 @@ export const authLogin = async (formData) => {
 
 export const authGetUserById = async (token) => {
   try {
-    const response = await fetch('/api/get_user_by_id', {
+    const response = await fetch(`${API_URL}/get_user_by_id`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +47,7 @@ export const authGetUserById = async (token) => {
 
 export const authGetUserData = async (token, refresh_token) => {
   try {
-    const response = await fetch('http://localhost:5000/api/get_user_data', {
+    const response = await fetch(`${API_URL}/get_user_data`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +72,7 @@ export const authGetUserData = async (token, refresh_token) => {
 
 export const authUpdateUserData = async (userData) => {
   const token = localStorage.getItem('authToken');
-  const response = await fetch(`http://localhost:5000/api/update_user/${userData._id}`, {
+  const response = await fetch(`${API_URL}/update_user/${userData._id}`, {
       method: 'PATCH',
       headers: {
           'Content-Type': 'application/json',
@@ -89,7 +91,7 @@ export const authUpdateUserData = async (userData) => {
 };
 
 export const authGetAllPostsByCategory = async (category) => {
-  const response = await fetch(`http://localhost:5000/api/get_all_posts_by_category?category=${category}`, {
+  const response = await fetch(`${API_URL}/get_all_posts_by_category?category=${category}`, {
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
@@ -106,7 +108,7 @@ export const authGetAllPostsByCategory = async (category) => {
 };
 
 export const authGetAllPostsByCategoryLimited = async (category) => {
-  const response = await fetch(`http://localhost:5000/api/get_all_posts_by_category_limited?category=${category}`, {
+  const response = await fetch(`${API_URL}/get_all_posts_by_category_limited?category=${category}`, {
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
@@ -122,8 +124,9 @@ export const authGetAllPostsByCategoryLimited = async (category) => {
   return posts;
 };
 
+
 export const authGetSpecificPostById = async (id) => {
-  const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
+  const response = await fetch(`${API_URL}/posts/${id}`, {
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
@@ -141,7 +144,7 @@ export const authGetSpecificPostById = async (id) => {
 
 export const authAddPost = async (postData) => {
   const token = localStorage.getItem('authToken');
-  const response = await fetch(`http://localhost:5000/api/add_post`, {
+  const response = await fetch(`${API_URL}/add_post`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -165,7 +168,7 @@ export const authUploadFile = async (file) => {
   const formData = new FormData();
   formData.append('image', file);
 
-  const response = await fetch(`http://localhost:5000/api/upload`, {
+  const response = await fetch(`${API_URL}/upload`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -198,7 +201,7 @@ export const authUploadFile = async (file) => {
 
 export const authAddComment = async (commentData) => {
   const token = localStorage.getItem('authToken');
-  const response = await fetch("http://localhost:5000/api/add_comment", {
+  const response = await fetch(`${API_URL}/add_comment`, {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
@@ -219,7 +222,7 @@ export const authAddComment = async (commentData) => {
 export const authEditComment = async (commentId, updatedContent) => {
   const token = localStorage.getItem('authToken');
 
-  const response = await fetch(`http://localhost:5000/api/comments/${commentId}`, {
+  const response = await fetch(`${API_URL}/comments/${commentId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -240,7 +243,7 @@ export const authEditComment = async (commentId, updatedContent) => {
 export const authDeleteComment = async (commentId) => {
   const token = localStorage.getItem('authToken');
 
-  const response = await fetch(`http://localhost:5000/api/comments/${commentId}`, {
+  const response = await fetch(`${API_URL}/comments/${commentId}`, {
     method: "DELETE",
     headers: {
       'Authorization': `Bearer ${token}`
@@ -258,7 +261,7 @@ export const authDeleteComment = async (commentId) => {
 
 
 export const authGetCommentsByPostId = async (postId) => {
-  const response = await fetch(`http://localhost:5000/api/comments/${postId}`, {
+  const response = await fetch(`${API_URL}/comments/${postId}`, {
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
@@ -277,7 +280,7 @@ export const authGetCommentsByPostId = async (postId) => {
 export const authEditPost = async (postId, updatedPostData) => {
   const token = localStorage.getItem('authToken');
 
-  const response = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+  const response = await fetch(`${API_URL}/posts/${postId}`, {
     method: "PUT",
     headers: {
       'Content-Type': 'application/json',
@@ -298,7 +301,7 @@ export const authEditPost = async (postId, updatedPostData) => {
 export const authDeletePost = async (postId) => {
   const token = localStorage.getItem('authToken');
 
-  const response = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+  const response = await fetch(`${API_URL}/posts/${postId}`, {
     method: "DELETE",
     headers: {
       'Authorization': `Bearer ${token}`
@@ -317,7 +320,7 @@ export const authDeletePost = async (postId) => {
 export const authGetAllPostsTitleByCategory = async (category) => {
   const token = localStorage.getItem('authToken');
 
-  const response = await fetch(`http://localhost:5000/api/posts?category=${category}`, {
+  const response = await fetch(`${API_URL}/posts?category=${category}`, {
     method: "GET",
     headers: {
       'Content-Type': 'application/json',
