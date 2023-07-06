@@ -133,7 +133,7 @@ const TopNavBar = () => {
               <AppBarText
                 variant="h5"
                 text="Healthy Peeps"
-                href="/home"
+                href="/"
               />
 
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

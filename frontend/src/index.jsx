@@ -35,24 +35,23 @@ root.render(
       <ThemeProvider theme={RECIPE_THEME}>
         <BrowserRouter>
           <AuthProvider>
+            <TopNavBar />
             <Routes>
-              <Route path="/" element={<TopNavBar />}>
-                <Route path="login" element={<LoginPage />} />
-                <Route path="signup" element={<SignupPage />} />
-                <Route path="reset-password" element={<ResetPasswordPage />} />
-                <Route path="recipes" element={<RecipeLayout />} />
-                <Route path="recipe/:id" element={<RecipePage />} />
-                <Route path="listings" element={<ListingLayout />} />
-                <Route path="listing/:id" element={<ListingPage />} />
-                <Route path="discussions" element={<DiscussionLayout />} />
-                <Route path="discussion/:id" element={<DiscussionPage />} />
-                <Route path="reviews" element={<ReviewLayout />} />
-                <Route path="review/:id" element={<ReviewPage />} />
-                <Route path="home" element={<Homepage />} />
-                <Route path="admin" element={<AdminPage />} />
-                <Route path="about" element={<AboutUs />} />
-                <Route path="profile" element={<ProfilePage />} />
-              </Route>
+              <Route path="/" element={<Homepage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="signup" element={<SignupPage />} />
+              <Route path="reset-password" element={<ResetPasswordPage />} />
+              <Route path="recipes" element={<RecipeLayout />} />
+              <Route path="recipe/:id" element={<RecipePage />} />
+              <Route path="listings" element={<ListingLayout />} />
+              <Route path="listing/:id" element={<ListingPage />} />
+              <Route path="discussions" element={<DiscussionLayout />} />
+              <Route path="discussion/:id" element={<DiscussionPage />} />
+              <Route path="reviews" element={<ReviewLayout />} />
+              <Route path="review/:id" element={<ReviewPage />} />
+              <Route path="admin" element={<AdminPage />} />
+              <Route path="about" element={<AboutUs />} />
+              <Route path="profile" element={<ProfilePage />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </AuthProvider>
@@ -61,4 +60,5 @@ root.render(
     </StyledEngineProvider>
   </React.StrictMode>
 );
+
 
