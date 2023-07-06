@@ -431,7 +431,7 @@ const RecipePage = () => {
                                 ))
                                 : (post.ingredients ?? []).map(({ name, unit, amount }) => (
                                     <ListItem>
-                                        <Typography variant="body1" text={`${name ?? "N/A"} ${unit ?? "N/A"} ${amount ?? "N/A"}`} />
+                                        <Typography variant="body1" text={`${amount ?? "N/A"} ${unit ?? "N/A"} ${name ?? "N/A"}`} />
                                     </ListItem>
                                 ))}
                         </List>

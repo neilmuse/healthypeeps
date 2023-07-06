@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 
 export const signup = async (formData) => {
     try {
-        const response = await API.post(`/api/signup`, formData);
+        const response = await API.post(`/signup`, formData);
         return response.data;
     } catch (error) {
         throw error;
@@ -13,7 +13,7 @@ export const signup = async (formData) => {
 
 export const authLogin = async (formData) => {
     try {
-      const response = await API.post(`/api/login`, formData);
+      const response = await API.post(`/login`, formData);
       const userData = response.data.user; // user object
       return response.data; // access token and refresh token
     } catch (error) {

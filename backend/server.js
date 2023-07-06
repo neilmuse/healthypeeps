@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const router = require('./routes/userRoutes');
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const multer = require('multer');
+const path = require('path');
 
 const USER_ROUTES = require("./routes/userRoutes");
 const storage = multer.memoryStorage();
@@ -36,27 +37,11 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
 });
 
-// if (NODE_ENV === "test") {
-//   const mongoServer = new MongoMemoryServer();
-//   console.log("Initializing test environment");
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-//   mongoServer.start().then(() => {
-//     const mongoUri = mongoServer.getUri();
-
-//     mongoose.connect(process.env.MONGODB_URI, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-
-//     mongoose.connection.on("error", (err) => {
-//       console.log(err);
-//     });
-
-//     mongoose.connection.once("open", () => {
-//       console.log(`Test enviroment initialized | Connected @ ${mongoUri}`);
-//     });
-//   });
-// }
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
 
 const connection = mongoose.connection;
 
