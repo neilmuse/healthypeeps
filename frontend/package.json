@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "https://historic-denali-preserve-88168-2bc2c34b6336.herokuapp.com/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
