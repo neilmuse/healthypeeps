@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import {
+  Alert,
   Box as MUIBox,
   Container,
   Grid,
   IconButton,
   InputAdornment,
+  Snackbar,
   TextField as MUITextField,
 } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -28,6 +30,10 @@ const Login = () => {
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
 
+  const [open, setOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = React.useState('');
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
   
@@ -41,11 +47,13 @@ const Login = () => {
     try {
       const formData = { email, password };
       const userData = await login(formData);
-      NAVIGATE('/home');
+      NAVIGATE('/');
     } catch (error) {
-      console.error('Login error:', error.message);
+      setAlertMessage('Check your email or password.');
+      setOpen(true);
     }
-  };  
+  };
+  
 
   const handleBlur = (fieldValue, setError) => {
     setError(!fieldValue);
@@ -116,9 +124,6 @@ const Login = () => {
 
                 <Grid container spacing={2}>
                   <Grid item xs={6} sx={{ marginTop: 2 }}>
-                    <LinkComponent href="/reset-password" variant="body2" text="Forgot Password?" />
-                  </Grid>
-                  <Grid item xs={6} sx={{ marginTop: 2 }}>
                     <LinkComponent href="/signup" variant="body2" text="Don't have an account? Sign Up" />
                   </Grid>
                 </Grid>
@@ -126,6 +131,17 @@ const Login = () => {
             </Grid>
           </Grid>
         </Container>
+
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={() => setOpen(false)}
+        >
+          <Alert onClose={() => setOpen(false)} severity="error" sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+
       </Box>
       <Outlet />
     </>

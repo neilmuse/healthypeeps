@@ -71,7 +71,7 @@ const TopNavBar = () => {
   
     if (setting === 'Logout') {
       logout();
-      NAVIGATE('/home'); // redirect to home page after logging out
+      NAVIGATE('/'); // redirect to home page after logging out
     } else {
       NAVIGATE('/profile');
     }

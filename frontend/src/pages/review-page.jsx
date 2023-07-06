@@ -95,7 +95,7 @@ const ReviewPage = () => {
     const handleDeletePost = async (postToDelete) => {
       try {
         await authDeletePost(postToDelete);
-        NAVIGATE('/home');
+        NAVIGATE('/');
       } catch (error) {
         console.error("Error deleting post: ", error);
       }

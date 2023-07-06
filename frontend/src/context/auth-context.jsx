@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.clear();
     setUser(null);
     setLoggedOut(true);
-    NAVIGATE("/home", { replace: true });
+    NAVIGATE("/", { replace: true });
   }
 
   useEffect(() => {

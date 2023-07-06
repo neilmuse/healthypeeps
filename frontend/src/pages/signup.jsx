@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Alert,
   Avatar,
   Box as MUIBox,
   Container,
@@ -7,6 +8,7 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  Snackbar,
   TextField as MUITextField,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -26,6 +28,8 @@ import { signup } from "../auth";
 
 const Signup = () => {
   const NAVIGATE = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = React.useState('');
 
   const [fieldErrors, setFieldErrors] = React.useState({
     first_name: false,
@@ -97,7 +101,8 @@ const Signup = () => {
       const result = await signup(user);
       NAVIGATE('/login');
     } catch (error) {
-      console.error("Signup failed", error);
+      setAlertMessage('Check your details. Password be eight characters and must contain a number.');
+      setOpen(true);
     }
   };
 
@@ -217,6 +222,15 @@ const Signup = () => {
             </MUIBox>
           </Grid>
         </Container>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={() => setOpen(false)}
+        >
+          <Alert onClose={() => setOpen(false)} severity="error" sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
       </Box>
       <Outlet />
     </>

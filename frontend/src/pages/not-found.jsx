@@ -26,7 +26,7 @@ const PageNotFound = () => {
     const NAVIGATE = useNavigate();
 
     const handleButtonClick = () => {
-        NAVIGATE('/home');
+        NAVIGATE('/');
     };
 
     return (
