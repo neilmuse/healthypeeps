@@ -24,6 +24,7 @@ const ReviewFeed = () => {
     const [contentError, setContentError] = useState('');
 
     const [reviews, setReviews] = useState([]);
+    const [sortOrder, setSortOrder] = useState('date');
 
     const category = "reviews";
 
@@ -121,20 +122,40 @@ const ReviewFeed = () => {
       setSuccessAlertOpen(false);
     };
 
+    const handleSortChange = (event) => {
+      setSortOrder(event.target.value);
+    };
+
     const handleSearch = (query) => {
       setSearchQuery(query.toLowerCase());
     };
-  
+
+      // First, filter the reviews
     const filteredReviews = reviews.filter(review =>
-      review.title.toLowerCase().includes(searchQuery)
+      review.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // Next, sort the filtered reviews
+    let sortedReviews = filteredReviews;
+
+    switch (sortOrder) {
+      case 'alphabetical':
+        sortedReviews = sortedReviews.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'reverseAlphabetical':
+        sortedReviews = sortedReviews.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case 'date':
+        sortedReviews = sortedReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+      default:
+        break;
+    }
   
     return (
         <>
             <Box>
-
               <Container maxWidth="md">
-
                 <Grid
                   container
                   direction="column"
@@ -152,10 +173,22 @@ const ReviewFeed = () => {
 
                     <Divider />
 
-                    {user ? (
-                      <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
-                    ): null }
-                    
+                    <Box value={2}>
+                      <FormControl>
+                          <InputLabel>Sort by</InputLabel>
+                          <Select value={sortOrder} onChange={handleSortChange}>
+                              <MenuItem value={'date'}>Newest</MenuItem>
+                              <MenuItem value={'alphabetical'}>A-Z</MenuItem>
+                              <MenuItem value={'reverseAlphabetical'}>Z-A</MenuItem>
+                          </Select>
+                      </FormControl>
+                    </Box>
+
+                    <Grid item> 
+                      {user ? (
+                        <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
+                      ): null }
+                    </Grid>
             
                     <Dialog open={modalOpen} onClose={handleCloseModal} fullWidth>
                         <DialogTitle>Add New Review</DialogTitle>
@@ -179,7 +212,7 @@ const ReviewFeed = () => {
                     <Box value={3}>
                       <Typography variant="title" text="Reviews" />
                       {filteredReviews.length > 0 ? (
-                        reviews.map((review) => (
+                        filteredReviews.map((review) => (
                           <ReviewCard key={review._id} reviewId={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
                       ))) : (
                         <Typography variant="body" text="No reviews found." />

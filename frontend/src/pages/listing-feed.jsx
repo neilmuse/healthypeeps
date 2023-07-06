@@ -32,6 +32,7 @@ const ListingFeed = () => {
     const [priceError, setPriceError] = useState('');
 
     const [listings, setListings] = useState([]);
+    const [sortOrder, setSortOrder] = useState('date');
 
     const category = "listings";
 
@@ -178,9 +179,31 @@ const ListingFeed = () => {
         setSearchQuery(query.toLowerCase());
       };
     
+    // First, filter the reviews
     const filteredListings = listings.filter(listing =>
-        listing.title.toLowerCase().includes(searchQuery)
+        listing.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const handleSortChange = (event) => {
+        setSortOrder(event.target.value);
+    };
+
+    // Next, sort the filtered listings
+    let sortedListings = filteredListings;
+
+    switch (sortOrder) {
+    case 'alphabetical':
+        sortedListings = sortedListings.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+    case 'reverseAlphabetical':
+        sortedListings = sortedListings.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+    case 'date':
+        sortedListings = sortedListings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+    default:
+        break;
+    }
   
     return (
         <>
@@ -205,9 +228,22 @@ const ListingFeed = () => {
 
                     <Divider />
 
-                    {user ? (
-                      <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Listing </Button>
-                    ): null }
+                    <Box value={2}>
+                      <FormControl>
+                          <InputLabel>Sort by</InputLabel>
+                          <Select value={sortOrder} onChange={handleSortChange}>
+                              <MenuItem value={'date'}>Newest</MenuItem>
+                              <MenuItem value={'alphabetical'}>A-Z</MenuItem>
+                              <MenuItem value={'reverseAlphabetical'}>Z-A</MenuItem>
+                          </Select>
+                      </FormControl>
+                    </Box>
+
+                    <Grid item> 
+                      {user ? (
+                        <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
+                      ): null }
+                    </Grid>
 
                     <Dialog open={modalOpen} onClose={handleCloseModal} fullWidth>
                         <DialogTitle>Add New Listing</DialogTitle>
@@ -242,7 +278,7 @@ const ListingFeed = () => {
                     <Box value={3}>
                       <Typography variant="title" text="Listings" />
                         {filteredListings.length > 0 ? (
-                            listings.map((listing) => (
+                            filteredListings.map((listing) => (
                                 <ListingCard 
                                     key={listing._id}
                                     listingId={listing._id}
@@ -271,7 +307,7 @@ const ListingFeed = () => {
                 <Alert onClose={handleSuccessAlertClose} severity="success" sx={{ width: '100%' }}>
                     Post successfully added!
                 </Alert>
-          </Snackbar>
+            </Snackbar>
         </>
     );
 };

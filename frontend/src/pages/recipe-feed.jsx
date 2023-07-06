@@ -37,6 +37,8 @@ const RecipeFeed = () => {
   const [preparationTimeError, setPreparationTimeError] = useState('');
   const [macronutrientsError, setMacronutrientsError] = useState({ protein: '', calories: '', carbs: '' });
 
+  const [sortOrder, setSortOrder] = useState('date');
+
   const category = "recipes";
 
   useEffect(() => {
@@ -53,6 +55,10 @@ const RecipeFeed = () => {
 
       fetchRecipes();
   }, []);
+
+  const handleSortChange = (event) => {
+    setSortOrder(event.target.value);
+  };
 
   const handleOpenModal = () => {
       setModalOpen(true);
@@ -76,7 +82,6 @@ const RecipeFeed = () => {
     setPreparationTimeError('');
     setMacronutrientsError({ protein: '', calories: '', carbs: '' });
   };
-  
 
   const validateForm = () => {
     let isValid = true;
@@ -223,10 +228,28 @@ const RecipeFeed = () => {
     setSearchQuery(query.toLowerCase());
   };
 
+  // First, filter the recipes
   const filteredRecipes = recipes.filter(recipe =>
-    recipe.title.toLowerCase().includes(searchQuery)
+    recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  
+
+  // Next, sort the filtered recipes
+  let sortedRecipes = filteredRecipes;
+
+  switch (sortOrder) {
+    case 'alphabetical':
+      sortedRecipes = sortedRecipes.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'reverseAlphabetical':
+      sortedRecipes = sortedRecipes.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+    case 'date':
+      sortedRecipes = sortedRecipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      break;
+    default:
+      break;
+  }
+
   return (
     <>
     <Box>
@@ -250,9 +273,22 @@ const RecipeFeed = () => {
 
             <Divider />
 
-            {user ? (
-              <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Recipe </Button>
-            ): null }
+            <Box value={2}>
+              <FormControl>
+                  <InputLabel>Sort by</InputLabel>
+                  <Select value={sortOrder} onChange={handleSortChange}>
+                      <MenuItem value={'date'}>Newest</MenuItem>
+                      <MenuItem value={'alphabetical'}>A-Z</MenuItem>
+                      <MenuItem value={'reverseAlphabetical'}>Z-A</MenuItem>
+                  </Select>
+              </FormControl>
+            </Box>
+
+            <Grid item> 
+              {user ? (
+                <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
+              ): null }
+            </Grid>
             
             <Dialog open={modalOpen} onClose={handleCloseModal} fullWidth>
               <DialogTitle>Add New Recipe</DialogTitle>
@@ -371,22 +407,23 @@ const RecipeFeed = () => {
 
             <Box value={3}>
               <Typography variant="title" text="Recipes" />
-                {filteredRecipes.length > 0 ? (
-                  filteredRecipes.map((recipe) => (
-                    <RecipeCard 
-                      key={recipe._id}
-                      recipeId={recipe._id}
-                      title={recipe.title} 
-                      image={recipe.image} 
-                      author={recipe.author} 
-                      createdAt={recipe.createdAt} 
-                      content={recipe.content} 
-                      authorId={recipe.author}
-                      macronutrients={recipe.macros}
-                    />
-                ))) : (
-                  <Typography variant="body" text="No recipes found." />
-                )}
+              {sortedRecipes.length > 0 ? (
+                sortedRecipes.map((recipe) => (
+                  <RecipeCard 
+                    key={recipe._id}
+                    recipeId={recipe._id}
+                    title={recipe.title} 
+                    image={recipe.image} 
+                    author={recipe.author} 
+                    createdAt={recipe.createdAt} 
+                    content={recipe.content} 
+                    authorId={recipe.author}
+                    macronutrients={recipe.macros}
+                  />
+                ))
+              ) : (
+                <Typography variant="body" text="No recipes found." />
+              )}
             </Box>
           </Grid>
           </Grid>

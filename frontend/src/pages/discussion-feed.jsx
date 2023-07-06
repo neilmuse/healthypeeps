@@ -24,6 +24,7 @@ const DiscussionFeed = () => {
   const [contentError, setContentError] = useState('');
 
   const [discussions, setDiscussions] = useState([]);
+  const [sortOrder, setSortOrder] = useState('date');
 
   const category = "discussions";
 
@@ -123,13 +124,35 @@ const DiscussionFeed = () => {
     setSuccessAlertOpen(false);
   };
 
+  const handleSortChange = (event) => {
+    setSortOrder(event.target.value);
+  };
+
   const handleSearch = (query) => {
     setSearchQuery(query.toLowerCase());
   };
 
+    // First, filter the discussions
   const filteredDiscussions = discussions.filter(discussion =>
-    discussion.title.toLowerCase().includes(searchQuery)
+    discussion.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Next, sort the filtered discussions
+  let sortedDiscussions = filteredDiscussions;
+
+  switch (sortOrder) {
+    case 'alphabetical':
+      sortedDiscussions = sortedDiscussions.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'reverseAlphabetical':
+      sortedDiscussions = sortedDiscussions.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+    case 'date':
+      sortedDiscussions = sortedDiscussions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      break;
+    default:
+      break;
+  }
 
   return (
       <>
@@ -154,11 +177,23 @@ const DiscussionFeed = () => {
 
                   <Divider />
 
-                  {user ? (
-                    <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Discussion </Button>
-                  ): null }
+                  <Box value={2}>
+                      <FormControl>
+                          <InputLabel>Sort by</InputLabel>
+                          <Select value={sortOrder} onChange={handleSortChange}>
+                              <MenuItem value={'date'}>Newest</MenuItem>
+                              <MenuItem value={'alphabetical'}>A-Z</MenuItem>
+                              <MenuItem value={'reverseAlphabetical'}>Z-A</MenuItem>
+                          </Select>
+                      </FormControl>
+                    </Box>
+
+                  <Grid item> 
+                    {user ? (
+                      <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
+                    ): null }
+                  </Grid>
                   
-          
                   <Dialog open={modalOpen} onClose={handleCloseModal} fullWidth>
                       <DialogTitle>Add New Discussion</DialogTitle>
                       <DialogContent>
@@ -178,7 +213,6 @@ const DiscussionFeed = () => {
                         <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
                       </DialogActions>
                   </Dialog>
-                  
 
                   <Box value={3}>
                     <Typography variant="title" text="Discussions" />
