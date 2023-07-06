@@ -105,7 +105,7 @@ module.exports = {
 
   getUserById: async (userId) => {
     try {
-      const user = await User.findById(userId);
+      const user = await USER_MODEL.findById(userId);
       if (user) {
         const name = user.firstName;
         return userName;
@@ -122,8 +122,26 @@ module.exports = {
     const { id } = req.params;
     const { firstName, lastName, email, phoneNumber } = req.body;
 
+    // Validate email format
+    const emailRegex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+    if (!email.match(emailRegex)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    // Validate phone number format (assuming it's a Philippine number)
+    const phoneNumberRegex = /^(09|\+639)\d{9}$/;
+    if (!phoneNumber.match(phoneNumberRegex)) {
+        return res.status(400).json({ message: 'Invalid phone number format' });
+    }
+
     try {
-        const user = await User.findById(id);
+        // Check if the email is already used by another user
+        const existingUser = await USER_MODEL.findOne({ email: email });
+        if (existingUser && String(existingUser._id) !== String(id)) {
+            return res.status(400).json({ message: 'Email is already in use' });
+        }
+
+        const user = await USER_MODEL.findById(id);
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         user.firstName = firstName;
