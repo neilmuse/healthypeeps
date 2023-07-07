@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import {
   Alert,
   Box as MUIBox,
+  CircularProgress,
   Container,
   Grid,
   IconButton,
@@ -33,6 +34,7 @@ const Login = () => {
   const [open, setOpen] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState('');
 
+  const [isLoading, setIsLoading] = React.useState(false); // State for the loading icon
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,16 +46,22 @@ const Login = () => {
       return;
     }
   
+    setIsLoading(true);
+    
     try {
       const formData = { email, password };
       const userData = await login(formData);
-      NAVIGATE('/');
+      setTimeout(() => {
+        setIsLoading(false);
+        NAVIGATE('/');
+      }, 250);
+      
     } catch (error) {
+      setIsLoading(false);
       setAlertMessage('Check your email or password.');
       setOpen(true);
     }
   };
-  
 
   const handleBlur = (fieldValue, setError) => {
     setError(!fieldValue);
@@ -61,6 +69,25 @@ const Login = () => {
 
   return (
     <>
+      {isLoading && ( // Display loading icon if isLoading is true
+        <MUIBox
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            zIndex: 9999,
+          }}
+        >
+          <CircularProgress />
+        </MUIBox>
+      )}
+
       <Box>
         <Container maxWidth="sm">
           <Grid

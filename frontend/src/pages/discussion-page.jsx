@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box as MUIBox,
+  CircularProgress,
   Grid,
   IconButton,
   Menu,
@@ -49,6 +51,8 @@ const DiscussionPage = () => {
   const [contentError, setContentError] = useState(false);
   const [titleHelperText, setTitleHelperText] = useState('');
   const [contentHelperText, setContentHelperText] = useState('');
+
+  const [isLoading, setIsLoading] = React.useState(false); // State for the loading icon
 
   const handleMenuClick = (event, postId) => {
     setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
@@ -120,9 +124,14 @@ const DiscussionPage = () => {
   
 
   const handleDeletePost = async (postToDelete) => {
+    setIsLoading(true);
+
     try {
       await authDeletePost(postToDelete);
-      NAVIGATE('/');
+      setTimeout(() => {
+          setIsLoading(false);
+          NAVIGATE('/');
+      }, 250);
     } catch (error) {
       console.error("Error deleting post: ", error);
     }
@@ -150,6 +159,25 @@ const DiscussionPage = () => {
           <Card>
             <Grid item>
               <Grid container justifyContent="space-between" alignItems="center">
+
+                {isLoading && ( // Display loading icon if isLoading is true
+                    <MUIBox
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        zIndex: 9999,
+                    }}
+                    >
+                      <CircularProgress />
+                    </MUIBox>
+                )}
 
                 {isEditing ? (
                     <TextField

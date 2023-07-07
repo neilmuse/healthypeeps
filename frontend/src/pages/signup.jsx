@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {
   Alert,
   Avatar,
   Box as MUIBox,
+  CircularProgress,
   Container,
   CssBaseline,
   Grid,
@@ -30,6 +31,7 @@ const Signup = () => {
   const NAVIGATE = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [fieldErrors, setFieldErrors] = React.useState({
     first_name: false,
@@ -97,17 +99,43 @@ const Signup = () => {
       userType: "normal",
     };
 
+    setIsLoading(true);
+
     try {
       const result = await signup(user);
-      NAVIGATE('/login');
+      setTimeout(() => {
+        setIsLoading(false);
+        NAVIGATE('/login');
+      }, 300);
     } catch (error) {
-      setAlertMessage('Check your details. Password be eight characters and must contain a number.');
-      setOpen(true);
+        setIsLoading(false);
+        setAlertMessage('Check your details. Password be eight characters and must contain a number.');
+        setOpen(true);
     }
   };
 
   return (
     <>
+
+      {isLoading && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            zIndex: 9999,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
       <Box>
         <Container component="main" maxWidth="sm">
           <Grid

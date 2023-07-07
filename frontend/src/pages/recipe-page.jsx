@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+    Alert,
+    Snackbar,
     Box as MUIBox,
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -62,6 +65,10 @@ const RecipePage = () => {
 
     const [errors, setErrors] = useState({});
     const [helperTexts, setHelperTexts] = useState({});
+
+    const [open, setOpen] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState('');
+    const [isLoading, setIsLoading] = React.useState(false); // State for the loading icon
 
     const handleMenuClick = (event, postId) => {
         setAnchorEls({ ...anchorEls, [postId]: event.currentTarget });
@@ -243,12 +250,20 @@ const RecipePage = () => {
     };
   
     const handleDeletePost = async (postToDelete) => {
+        setIsLoading(true);
+
         try {
             await authDeletePost(postToDelete);
-            NAVIGATE('/');
+            setTimeout(() => {
+                setIsLoading(false);
+                NAVIGATE('/');
+            }, 250);
+            setAlertMessage('Post successfully deleted.');
+            setOpen(true);
         } catch (error) {
-            console.error("Error deleting post: ", error);
+            setIsLoading(false);
         }
+        
     };
 
     useEffect(() => {
@@ -273,6 +288,25 @@ const RecipePage = () => {
                 <Card>
                     <Grid item>
                         <Grid container justifyContent="space-between" alignItems="center">
+
+                        {isLoading && ( // Display loading icon if isLoading is true
+                            <MUIBox
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                zIndex: 9999,
+                            }}
+                            >
+                            <CircularProgress />
+                            </MUIBox>
+                        )}
 
                             {isEditing ? (
                                 <TextField
@@ -566,6 +600,19 @@ const RecipePage = () => {
                 </Button>
             </DialogActions>
         </Dialog>
+
+        <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            open={open}
+            autoHideDuration={6000}
+            onClose={() => setOpen(false)}
+            message={alertMessage}
+        >
+            <Alert onClose={() => setOpen(false)} severity="success">
+                {alertMessage}
+            </Alert>
+        </Snackbar>
+
 
         <Outlet />
         </>

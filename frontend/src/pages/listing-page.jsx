@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
     Box as MUIBox,
+    CircularProgress,
     Button,
     Dialog,
     DialogActions,
@@ -67,6 +68,7 @@ const ListingPage = () => {
     const [emailHelperText, setEmailHelperText] = useState('');
     const [phoneNumberHelperText, setPhoneNumberHelperText] = useState('');
 
+    const [isLoading, setIsLoading] = React.useState(false); // State for the loading icon
   
     const handleMenuClick = (event, postId) => {
         setAnchorEl(event.currentTarget);
@@ -100,12 +102,16 @@ const ListingPage = () => {
     };
   
     const handleDeletePost = async (postToDelete) => {
-      try {
-        await authDeletePost(postToDelete);
-        NAVIGATE('/');
-      } catch (error) {
-        console.error("Error deleting post: ", error);
-      }
+        setIsLoading(true);
+        try {
+            await authDeletePost(postToDelete);
+            setTimeout(() => {
+                setIsLoading(false);
+                NAVIGATE('/');
+        }, 250);
+        } catch (error) {
+            console.error("Error deleting post: ", error);
+        }
     };
 
     const handleSaveEdit = async () => {
@@ -226,6 +232,26 @@ const ListingPage = () => {
             <Box sx={{ border: 1 }}>
                 <Card>
                     <Grid>
+
+                        {isLoading && ( // Display loading icon if isLoading is true
+                            <MUIBox
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                zIndex: 9999,
+                            }}
+                            >
+                            <CircularProgress />
+                            </MUIBox>
+                        )}
+
                         {isEditing ? (
                             <>
                                 <Grid container justifyContent="space-between" alignItems="center">

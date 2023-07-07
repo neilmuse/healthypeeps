@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,7 +12,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from "../components/link.jsx";
 
-import { Outlet, useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import AppBarText from './appbar-text.jsx';
@@ -50,6 +52,8 @@ const TopNavBar = () => {
   const NAVIGATE = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const location = useLocation();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -70,16 +74,52 @@ const TopNavBar = () => {
     handleCloseUserMenu();
   
     if (setting === 'Logout') {
-      logout();
-      NAVIGATE('/'); // redirect to home page after logging out
+        setIsLoading(true); // Show loading icon
+        setTimeout(() => {
+            logout();
+            NAVIGATE('/'); // redirect to home page after logging out
+            setIsLoading(false);
+        }, 250); // 250ms delay before logging out and redirecting
     } else {
-      NAVIGATE('/profile');
+        NAVIGATE('/profile');
     }
   };
+
+
+  const handleNavigationClick = (url) => {
+    setIsLoading(true); // Set loading state to true before navigating
+    setTimeout(() => {
+      NAVIGATE(url);
+    }, 250);
+  };
   
+
+  useEffect(() => {
+    // This will be called whenever the location changes
+    setIsLoading(false);
+  }, [location]);
   
   return (
     <>
+      {isLoading && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            zIndex: 9999,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
       <AppBar position="fixed">
         <Container maxWidth="xl">
             <Toolbar disableGutters>
@@ -119,9 +159,9 @@ const TopNavBar = () => {
                       <MenuItem
                         key={url}
                         onClick={() => {
-                            NAVIGATE(`/${url}`);
-                            handleCloseNavMenu();
-                        }}
+                          handleNavigationClick(`/${url}`);
+                          handleCloseNavMenu();
+                      }}
                       >
                         <Typography text={name} />
                       </MenuItem>
@@ -138,8 +178,17 @@ const TopNavBar = () => {
 
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map(({name, url}) => (
-                  <Box m={2}>
-                    <Link variant="darkBackground" key={url} href={`/${url}`}>{name}</Link>
+                  <Box m={2} key={url}>
+                    <Link
+                      variant="darkBackground"
+                      href={`/${url}`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleNavigationClick(`/${url}`);
+                      }}
+                    >
+                      {name}
+                    </Link>
                   </Box>
                 ))}
               </Box>
