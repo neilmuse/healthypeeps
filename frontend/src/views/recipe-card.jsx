@@ -78,7 +78,7 @@ const RecipeCard = ({ recipeId, title, image, author, createdAt, content, macron
                 />
 
                 <div style={imageContainerStyleCard}>
-                    <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                    <img src={image || 'https://realandvibrant.com/wp-content/uploads/2020/04/red-lentil-curry-bowl.jpg'} alt="Image Description Temp" style={imageStyleCard} />
                 </div>
 
                 <CardContent>

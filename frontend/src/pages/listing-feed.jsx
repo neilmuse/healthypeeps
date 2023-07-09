@@ -241,7 +241,7 @@ const ListingFeed = () => {
 
                     <Grid item> 
                       {user ? (
-                        <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
+                        <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Listing </Button>
                       ): null }
                     </Grid>
 

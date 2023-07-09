@@ -66,7 +66,7 @@ const ReviewCard = ({ reviewId, title, image, author, createdAt, content }) => {
                 />
 
                 <div style={imageContainerStyleCard}>
-                    <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                    <img src={image || 'https://cdn-icons-png.flaticon.com/512/3799/3799666.png'} alt="Image Description Temp" style={imageStyleCard} />
                 </div>
 
 

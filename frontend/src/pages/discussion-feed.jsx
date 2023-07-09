@@ -190,7 +190,7 @@ const DiscussionFeed = () => {
 
                   <Grid item> 
                     {user ? (
-                      <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
+                      <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Discussion </Button>
                     ): null }
                   </Grid>
                   

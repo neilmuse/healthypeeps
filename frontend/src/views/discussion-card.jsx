@@ -66,7 +66,7 @@ const DiscussionCard = ({ discussionId, title, image, author, createdAt, content
                 />
 
                 <div style={imageContainerStyleCard}>
-                    <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                    <img src={image || 'https://img.freepik.com/premium-vector/fresh-vegetables-with-placeholder-text_703393-568.jpg?w=2000'} alt="Image Description Temp" style={imageStyleCard} />
                 </div>
 
                 <CardContent>

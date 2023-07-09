@@ -78,7 +78,7 @@ const ListingCard = ({ listingId, title, image, author, createdAt, content, loca
                 />
 
                 <div style={imageContainerStyleCard}>
-                    <img src={image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                    <img src={image || 'https://img.freepik.com/free-icon/placeholder_318-855930.jpg?w=500'} alt="Image Description Temp" style={imageStyleCard} />
                 </div>
 
                 <CardContent>

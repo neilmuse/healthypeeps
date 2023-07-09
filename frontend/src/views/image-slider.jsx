@@ -57,7 +57,7 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px', width: '200px' }}>
-                <img src={image.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+                <img src={image.image || 'https://www.verywellfit.com/thmb/5MXTT9v41sRi7c-v82SB2UJ8D_Y=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/VWF-Plant-Based-Eating-V6-edit1-0a05c9c9c14e489b8e981fbb0221d49e.jpg'} alt="Image Description Temp" style={{ maxHeight: '100%', maxWidth: '100%' }} />
             </div>
 
 
