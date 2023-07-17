@@ -3,12 +3,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require("body-parser");
-const router = require('./routes/userRoutes');
-const { MongoMemoryServer } = require("mongodb-memory-server");
+const router = require('./routes/routes');
 const multer = require('multer');
 const path = require('path');
 
-const USER_ROUTES = require("./routes/userRoutes");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -59,7 +57,6 @@ server = app.listen(process.env.PORT || 5000, (err) => {
   console.log(`Server is running on port: ${process.env.PORT || 5000}`);
 });
 
-// CHECK FOR THIS 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');

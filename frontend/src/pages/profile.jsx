@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 import { Outlet } from 'react-router-dom';
+
+import icon from '../assets/profile.png';
 
 import COLORS from '../constants/colors.js';
 
@@ -49,6 +51,7 @@ const Profile = () => {
   if(isLoading){
     return <div>Loading...</div>
   }
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormValues({
@@ -162,25 +165,32 @@ const Profile = () => {
             </>
           ) : (
             <>
-              <Typography
-                variant="hero_title"
-                text={
-                  user?.firstName + " " + user?.lastName ?? "N/A"
-                }
-              />
+              <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <img src={icon} style={{width: '100vw', maxWidth: '300px'}} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                      <Typography
+                          variant="hero_title"
+                          text={
+                              user?.firstName + " " + user?.lastName ?? "N/A"
+                          }
+                      />
 
-              <Divider />
+                      <Divider />
 
-              <Typography variant="title" text={user?.email ?? "N/A"} />
+                      <Typography variant="title" text={user?.email ?? "N/A"} />
 
-              <Typography
-                variant="body1"
-                text={user.phoneNumber ?? "N/A"}
-              />
+                      <Typography
+                          variant="body1"
+                          text={user.phoneNumber ?? "N/A"}
+                      />
 
-              <Divider />
+                      <Divider />
 
-              <Button onClick={handleEditButtonClick}>Edit Profile</Button>
+                      <Button onClick={handleEditButtonClick}>Edit Profile</Button>
+                  </Grid>
+              </Grid>
             </>
           )}
         </Card>

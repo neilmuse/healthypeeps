@@ -275,12 +275,21 @@ const RecipeFeed = () => {
 
             <Box value={2}>
               <FormControl>
-                  <InputLabel>Sort by</InputLabel>
-                  <Select value={sortOrder} onChange={handleSortChange}>
-                      <MenuItem value={'date'}>Newest</MenuItem>
-                      <MenuItem value={'alphabetical'}>A-Z</MenuItem>
-                      <MenuItem value={'reverseAlphabetical'}>Z-A</MenuItem>
-                  </Select>
+                <InputLabel 
+                  sx={{ 
+                    width: 'fit-content', 
+                    borderBottom: 'none',
+                    paddingTop: '0.4rem'
+                  }}
+                >
+                  Sort by
+                </InputLabel>
+
+                <Select value={sortOrder} onChange={handleSortChange}>
+                    <MenuItem value={'date'}>Newest</MenuItem>
+                    <MenuItem value={'alphabetical'}>A-Z</MenuItem>
+                    <MenuItem value={'reverseAlphabetical'}>Z-A</MenuItem>
+                </Select>
               </FormControl>
             </Box>
 

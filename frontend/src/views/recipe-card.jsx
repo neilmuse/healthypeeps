@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Avatar, Card, CardHeader, CardContent, CardActions, Collapse, TextField, Button, IconButton, Modal, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import COLORS from '../constants/colors.js';
@@ -15,7 +15,7 @@ import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constant
 
 import { AuthContext } from '../context/auth-context';
 
-import { authAddComment } from "../auth";
+import { authAddComment, authGetUserById } from "../auth";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -34,6 +34,7 @@ const RecipeCard = ({ recipeId, title, image, author, createdAt, content, macron
     const [expanded, setExpanded] = React.useState(false);
     const [newComment, setNewComment] = React.useState('');
     const [open, setOpen] = React.useState(false);
+    const [authorData, setAuthor] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -63,18 +64,31 @@ const RecipeCard = ({ recipeId, title, image, author, createdAt, content, macron
         NAVIGATE(`/recipe/${recipeId}`);
     };
 
+    useEffect(() => {
+        const fetchAuthor = async () => {
+          try {
+            const userData = await authGetUserById(author);
+            setAuthor(userData);
+          } catch (error) {
+            console.error("Error fetching author data:", error);
+          }
+        };
+  
+        fetchAuthor();
+    }, [author]); 
+
     return (
         <Card>
             <div onClick={handleCardClick} style={{ cursor: 'pointer' }}>
                 <CardHeader
                     avatar={
                     <Avatar sx={{ bgcolor: COLORS.GREEN}} >
-                        {author?.firstName?.substr(0, 1)}
+                        {authorData && (authorData.firstName[0] + authorData.lastName[0]).toUpperCase()}
                     </Avatar>
                     }
-
+                    
                     title={<Typography variant="cardtitle" text={title} />}
-                    subheader={<Typography variant="cardsubheader" text={ConvertTime(createdAt)} />}
+                    subheader={<Typography variant="cardsubheader" text={authorData?.firstName + " " + authorData?.lastName + " " + "· " + ConvertTime(createdAt)} />}
                 />
 
                 <div style={imageContainerStyleCard}>
