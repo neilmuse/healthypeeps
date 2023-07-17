@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Box as MuiBox, Button, Chip, Container, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
+import { CircularProgress, Box as MuiBox, Button, Chip, Container, Grid, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, InputLabel, FormControl, IconButton, Select, TextField, } from '@mui/material';
 import { Outlet, Link } from 'react-router-dom';
 
 import SearchField from '../components/search-field.jsx';
@@ -20,6 +20,8 @@ const Homepage = () => {
   const [discussions, setDiscussions] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [listings, setListings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const categories = ['recipes', 'discussions', 'reviews', 'listings'];
 
   const [state, setState] = useState({
@@ -31,21 +33,48 @@ const Homepage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        let stateUpdate = {};
+        let authorCache = {}; // cache for already fetched authors
+
         for (let category of categories) {
           let posts = await authGetAllPostsByCategoryLimited(category);
-          let postsWithAuthor = await Promise.all(posts.map(async post => {
-            let author = await authGetUserById(post.author);
-            return { ...post, author: { firstName: author.firstName, lastName: author.lastName }};
-          }));
-          setState((prevState) => ({ ...prevState, [category]: postsWithAuthor }));
+          
+          let authorFetchPromises = posts.map(async post => {
+            if (!authorCache[post.author]) {
+              authorCache[post.author] = authGetUserById(post.author);
+            }
+            return authorCache[post.author];
+          });
+
+          let authors = await Promise.all(authorFetchPromises);
+
+          let postsWithAuthor = posts.map((post, index) => {
+            return { ...post, author: { firstName: authors[index].firstName, lastName: authors[index].lastName }};
+          });
+
+          stateUpdate[category] = postsWithAuthor;
         }
+
+        setState(stateUpdate);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
+        setIsLoading(false);
       }
     };
-  
+
     fetchPosts();
-  }, []);  
+  }, []);
+
+
+  if (isLoading) {
+    return (
+      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
 
   return (
     <>
