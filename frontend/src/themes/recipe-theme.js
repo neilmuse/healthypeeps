@@ -25,8 +25,10 @@ const theme = createTheme({
       color: "white !important",
       fontFamily: "Roboto",
     },
-    small: {
-      fontSize: "0.8em",
+    author: {
+      fontSize: "1.2rem",
+      fontFamily: "Quicksand",
+      fontWeight: 600,
     },
     body_bold: {
       fontSize: "1.1rem",

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Grid as MUIGrid, Card, CardContent, CardActionArea } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
-import developer from '../assets/mae.jpg'
+import developer from '../assets/dev.jpg'
 import logo from '../assets/logo-temp.png'
 
 import CardMedia from '../components/cardmedia.jsx';

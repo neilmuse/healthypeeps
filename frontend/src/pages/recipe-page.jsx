@@ -40,7 +40,7 @@ import { AuthContext } from '../context/auth-context';
 
 import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
-import { authEditPost, authDeletePost, authGetSpecificPostById } from '../auth';
+import { authEditPost, authDeletePost, authGetSpecificPostById, authGetUserById } from '../auth';
 
 const RecipePage = () => {
     const { user } = useContext(AuthContext);
@@ -53,6 +53,7 @@ const RecipePage = () => {
     const [anchorEls, setAnchorEls] = useState({});
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
+    const [author, setAuthor] = useState(null);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editingTitle, setEditingTitle] = useState(post?.title ?? '');
@@ -271,6 +272,11 @@ const RecipePage = () => {
             try {
                 const fetchedPost = await authGetSpecificPostById(id);
                 setPost(fetchedPost);
+
+                if (fetchedPost?.author) {
+                    const authorData = await authGetUserById(fetchedPost.author);
+                    setAuthor(authorData);
+                }
             } catch (error) {
                 console.error('Error fetching post:', error);
             }
@@ -310,6 +316,7 @@ const RecipePage = () => {
 
                             {isEditing ? (
                                 <TextField
+                                    fullWidth
                                     label="Title"
                                     value={editingTitle}
                                     error={errors.title}
@@ -321,7 +328,12 @@ const RecipePage = () => {
                                 }}
                             />
                             ) : (
-                                <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                                <>
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                                        <Typography variant="author" text={"by" + " " + author?.firstName + " " + author?.lastName} />
+                                    </div>
+                                </>
                             )}
 
                             {isCurrentUserAuthor && (
@@ -346,6 +358,8 @@ const RecipePage = () => {
                             )}
                         </Grid>
 
+                        <Divider />
+
                         <div style={imageContainerStyleCard}>
                             <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
                         </div>
@@ -354,6 +368,9 @@ const RecipePage = () => {
 
                         {isEditing ? (
                             <TextField
+                                fullWidth
+                                multiline
+                                rows={3}
                                 label="Content"
                                 value={editingContent}
                                 error={errors.content}
@@ -375,6 +392,7 @@ const RecipePage = () => {
 
                         {isEditing ? (
                             <TextField
+                                fullWidth
                                 label="Preparation Time"
                                 value={editingPreparationTime}
                                 error={errors.preparationTime}
@@ -408,14 +426,15 @@ const RecipePage = () => {
                             {isEditing ? 
                                 (editingIngredients ?? []).map(({ name, unit, amount }, index) => (
                                     <ListItem key={index}>
+
                                         <TextField
-                                            label="Name"
-                                            value={name}
-                                            error={errors.ingredients?.[index]?.name}
-                                            helperText={helperTexts.ingredients?.[index]?.name}
+                                            label="Amount"
+                                            value={amount}
+                                            error={errors.ingredients?.[index]?.amount}
+                                            helperText={helperTexts.ingredients?.[index]?.amount}
                                             onChange={(e) => {
                                                 const updatedIngredients = [...editingIngredients];
-                                                updatedIngredients[index].name = e.target.value;
+                                                updatedIngredients[index].amount = e.target.value;
                                                 setEditingIngredients(updatedIngredients);
 
                                                 // Validate ingredient after change
@@ -447,13 +466,13 @@ const RecipePage = () => {
                                         </FormControl>
 
                                         <TextField
-                                            label="Amount"
-                                            value={amount}
-                                            error={errors.ingredients?.[index]?.amount}
-                                            helperText={helperTexts.ingredients?.[index]?.amount}
+                                            label="Name"
+                                            value={name}
+                                            error={errors.ingredients?.[index]?.name}
+                                            helperText={helperTexts.ingredients?.[index]?.name}
                                             onChange={(e) => {
                                                 const updatedIngredients = [...editingIngredients];
-                                                updatedIngredients[index].amount = e.target.value;
+                                                updatedIngredients[index].name = e.target.value;
                                                 setEditingIngredients(updatedIngredients);
 
                                                 // Validate ingredient after change

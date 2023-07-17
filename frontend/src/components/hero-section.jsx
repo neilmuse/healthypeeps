@@ -31,7 +31,7 @@ const HeroSection = () => {
           px: { xs: 2, sm: 0 },
         }}
       >
-        For a healthier you
+        Kalusugan sa Bawat Kutsara
       </Typography>
       <Typography
         variant="h6"
@@ -47,7 +47,7 @@ const HeroSection = () => {
           px: { xs: 2, sm: 0 },
         }}
       >
-        Helping Filipinos one meal at a time
+        Bawat Kain, Para sa Mahusay na Kinabukasan!
       </Typography>
     </Box>
   );

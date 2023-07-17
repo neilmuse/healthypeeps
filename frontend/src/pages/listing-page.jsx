@@ -32,7 +32,7 @@ import CommentCard from '../views/comment-card.jsx';
 import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
 import { AuthContext } from '../context/auth-context';
-import { authEditPost, authDeletePost, authGetSpecificPostById } from '../auth';
+import { authEditPost, authDeletePost, authGetSpecificPostById, authGetUserById } from '../auth';
 
 const ListingPage = () => {
     const { user } = useContext(AuthContext);
@@ -44,6 +44,7 @@ const ListingPage = () => {
     const [currentPostId, setCurrentPostId] = useState(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
+    const [author, setAuthor] = useState(null);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editingTitle, setEditingTitle] = useState('');
@@ -216,6 +217,11 @@ const ListingPage = () => {
           try {
             const fetchedPost = await authGetSpecificPostById(id);
             setPost(fetchedPost);
+
+            if (fetchedPost?.author) {
+                const authorData = await authGetUserById(fetchedPost.author);
+                setAuthor(authorData);
+            }
           } catch (error) {
             console.error('Error fetching post:', error);
           }
@@ -365,11 +371,11 @@ const ListingPage = () => {
                             </>
                         ) : (
                             <>
-                                <Grid container justifyContent="space-between" alignItems="center">
-                                    <Typography variant="hero_title" text={isEditing ? undefined : post?.title ?? "N/A"} />
-
-                                    {isCurrentUserAuthor && (
-                                        <>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                                        {isCurrentUserAuthor && (
+                                        <div>
                                             <IconButton
                                             aria-label="more"
                                             aria-controls="long-menu"
@@ -379,17 +385,20 @@ const ListingPage = () => {
                                             <MoreVertIcon />
                                             </IconButton>
                                             <Menu
-                                                anchorEl={anchorEl}
-                                                open={Boolean(anchorEl)}
-                                                onClose={handleMenuClose}
-                                                >
-                                                <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                                                <MenuItem onClick={() => openDeleteModal(currentPostId)}>Delete</MenuItem>
+                                            anchorEl={anchorEl}
+                                            open={Boolean(anchorEl)}
+                                            onClose={handleMenuClose}
+                                            >
+                                            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                                            <MenuItem onClick={() => openDeleteModal(currentPostId)}>Delete</MenuItem>
                                             </Menu>
+                                        </div>
+                                        )}
+                                    </div>
+                                    <Typography variant="author" text={"by" + " " + author?.firstName + " " + author?.lastName} />
+                                </div>
+                                <Divider />
 
-                                        </>
-                                    )}
-                                </Grid>
 
                                 <div style={imageContainerStyleCard}>
                                     <img src={post.image || 'https://www.verywellfit.com/thmb/5MXTT9v41sRi7c-v82SB2UJ8D_Y=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/VWF-Plant-Based-Eating-V6-edit1-0a05c9c9c14e489b8e981fbb0221d49e.jpg'} alt="Image Description Temp" style={imageStyleCard} />

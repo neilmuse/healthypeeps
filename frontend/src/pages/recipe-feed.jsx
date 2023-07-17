@@ -286,7 +286,7 @@ const RecipeFeed = () => {
 
             <Grid item> 
               {user ? (
-                <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Review </Button>
+                <Button onClick={handleOpenModal} color="primary" variant="contained"> Add Recipe </Button>
               ): null }
             </Grid>
             
@@ -320,33 +320,35 @@ const RecipeFeed = () => {
       
                 {ingredients.map((ingredient, index) => (
                   <MuiBox key={index} display="flex" justifyContent="space-between" alignItems="center" style={{ marginTop: '1rem' }}>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} sm={3}>
-                        <TextField fullWidth label="Value" value={ingredient.value} onChange={(e) => handleIngredientChange(index, 'value', e.target.value)} />
+                      <Grid container spacing={2}>
+                          <Grid item xs={12} sm={3}>
+                            <TextField fullWidth label="Amount" value={ingredient.amount} onChange={(e) => handleIngredientChange(index, 'amount', e.target.value)} />
+                          </Grid>
+
+                          <Grid item xs={12} sm={3}>
+                            <TextField label="Unit" select fullWidth value={ingredient.unit} onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}>
+                                {units.map((unit) => (
+                                    <MenuItem key={unit} value={unit}>
+                                        {unit}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                          </Grid>
+
+                          <Grid item xs={12} sm={3}>
+                            <TextField fullWidth label="Name" value={ingredient.name} onChange={(e) => handleIngredientChange(index, 'name', e.target.value)} />
+                          </Grid>
+
+                          <Grid item xs={12} sm={2} display="flex" justifyContent="center">
+                              <IconButton onClick={() => handleRemoveIngredient(index)}>
+                                  <DeleteIcon />
+                              </IconButton>
+                          </Grid>
                       </Grid>
-                        <Grid item xs={12} sm={3}>
-                          <TextField label="Unit" select fullWidth value={ingredient.unit} onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}>
-                            {units.map((unit) => (
-                              <MenuItem key={unit} value={unit}>
-                                {unit}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                          <TextField fullWidth label="Name" value={ingredient.name} onChange={(e) => handleIngredientChange(index, 'name', e.target.value)} />
-                        </Grid>
-                        <Grid item xs={12} sm={2} display="flex" justifyContent="center">
-                          <IconButton onClick={() => handleRemoveIngredient(index)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    </MuiBox>
-                  ))}
-        
+                  </MuiBox>
+                ))}
+
                 <Button startIcon={<AddIcon />} onClick={handleAddIngredient} style={{ marginTop: '1rem' }}>Add Ingredient</Button>
-      
 
                 <Typography variant="subtitle1" style={{ marginTop: '1rem' }}> Preparation Steps </Typography>
                 {preparationSteps.map((step, index) => (

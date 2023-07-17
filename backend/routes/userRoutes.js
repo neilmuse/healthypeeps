@@ -19,7 +19,7 @@ module.exports = (app) => {
 	app.post("/api/login", userController.login);
 	app.post("/api/refresh_token", authMiddleware, userController.refreshToken);
 
-	app.get("/api/get_user_by_id", userController.getUserById);
+	app.get("/api/get_user_by_id/:userId", userController.getUserById);
 	app.get('/api/get_user_data', authMiddleware, userController.getUserData);
 
 	app.patch('/api/update_user/:id', authMiddleware, userController.updateUserData);

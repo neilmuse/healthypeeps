@@ -36,7 +36,7 @@ import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constant
 
 import { AuthContext } from '../context/auth-context';
 
-import { authEditPost, authDeletePost, authGetSpecificPostById } from '../auth';
+import { authEditPost, authDeletePost, authGetSpecificPostById, authGetUserById } from '../auth';
 
 const ReviewPage = () => {
     const { user } = useContext(AuthContext);
@@ -47,6 +47,7 @@ const ReviewPage = () => {
     const [anchorEls, setAnchorEls] = useState({});
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
+    const [author, setAuthor] = useState(null);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editingTitle, setEditingTitle] = useState(post?.title ?? '');
@@ -147,6 +148,11 @@ const ReviewPage = () => {
           try {
             const fetchedPost = await authGetSpecificPostById(id);
             setPost(fetchedPost);
+
+            if (fetchedPost?.author) {
+              const authorData = await authGetUserById(fetchedPost.author);
+              setAuthor(authorData);
+            }
           } catch (error) {
             console.error('Error fetching post:', error);
           }
@@ -200,31 +206,38 @@ const ReviewPage = () => {
                         />
                     ) : (
                       <>
-                        <Typography variant="hero_title" text={post.title ?? "N/A"} />
-    
-                          {isCurrentUserAuthor && (
-                            <>
-                            <IconButton
-                                aria-label="more"
-                                aria-controls="long-menu"
-                                aria-haspopup="true"
-                                onClick={(event) => handleMenuClick(event, post._id)}
-                            >
-                                <MoreVertIcon />
-                            </IconButton>
-                            <Menu
-                                anchorEl={anchorEls[post._id]}
-                                open={Boolean(anchorEls[post._id])}
-                                onClose={() => handleMenuClose(post._id)}
-                            >
-                                <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                                <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
-                            </Menu>
-                            </>
-                        )}
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                  <Typography variant="hero_title" text={post.title ?? "N/A"} />
+                                  {isCurrentUserAuthor && (
+                                      <div>
+                                          <IconButton
+                                              aria-label="more"
+                                              aria-controls="long-menu"
+                                              aria-haspopup="true"
+                                              onClick={(event) => handleMenuClick(event, post._id)}
+                                          >
+                                              <MoreVertIcon />
+                                          </IconButton>
+
+                                          <Menu
+                                            anchorEl={anchorEls[post._id]}
+                                            open={Boolean(anchorEls[post._id])}
+                                            onClose={() => handleMenuClose(post._id)}
+                                          >
+                                            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                                            <MenuItem onClick={() => openDeleteModal(post._id)}>Delete</MenuItem>
+                                          </Menu>
+                                      </div>
+                                  )}
+                              </div>
+                              <Typography variant="author" text={"by" + " " + author?.firstName + " " + author?.lastName} />
+                          </div>
                       </>
                     )}
                   </Grid>
+
+                  <Divider />
 
                     <div style={imageContainerStyleCard}>
                         <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />

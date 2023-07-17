@@ -21,9 +21,9 @@ export const authLogin = async (formData) => {
     }
 };
 
-export const authGetUserById = async (token) => {
+export const authGetUserById = async (userId) => {
   try {
-    const response = await fetch(`${API_URL}/get_user_by_id`, {
+    const response = await fetch(`${API_URL}/get_user_by_id/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -31,15 +31,13 @@ export const authGetUserById = async (token) => {
     });
 
     if (response.ok) {
-      const name = await response.json();
-      return name;
+      const userData = await response.json();
+      return userData;  // Returns complete user data
     } else {
-      // Handle error response
       console.error('Failed to fetch user data:', response.statusText);
       throw new Error('Failed to fetch user data');
     }
   } catch (error) {
-    // Handle fetch error
     console.error('Failed to fetch user data:', error.message);
     throw error;
   }
