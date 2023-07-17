@@ -237,42 +237,42 @@ const ReviewPage = () => {
                     )}
                   </Grid>
 
+                  {post.image && <Divider />}
+
+                  <div style={imageContainerStyleCard}>
+                      {post.image && <img src={post.image} alt="Image Description Temp" style={imageStyleCard} />}
+                  </div>
+
                   <Divider />
 
-                    <div style={imageContainerStyleCard}>
-                        <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
-                    </div>
-
-                    <Divider />
-
-                    {isEditing ? (
-                        <TextField
-                            label="Content"
-                            placeholder="Enter the content of your post"
-                            error={contentError}
-                            helperText={contentHelperText}
-                            multiline
-                            rows={4}
-                            value={editingContent}
-                            onChange={(e) => {
-                                setContentError(false); // Reset error state on change
-                                setContentHelperText('');
-                                setEditingContent(e.target.value);
-                            }}
-                            variant="outlined"
-                            style={{ width: '100%', marginBottom: '8px' }}
-                        />
+                  {isEditing ? (
+                      <TextField
+                          label="Content"
+                          placeholder="Enter the content of your post"
+                          error={contentError}
+                          helperText={contentHelperText}
+                          multiline
+                          rows={4}
+                          value={editingContent}
+                          onChange={(e) => {
+                              setContentError(false); // Reset error state on change
+                              setContentHelperText('');
+                              setEditingContent(e.target.value);
+                          }}
+                          variant="outlined"
+                          style={{ width: '100%', marginBottom: '8px' }}
+                      />
                     ) : (  
-                        <>
-                            <Typography variant="title" text="Brief Description" />
+                      <>
+                          <Typography variant="title" text="Brief Description" />
 
-                            <MUITypography
-                            variant="body1"
-                            style={{ whiteSpace: 'pre-wrap' }}
-                            >
-                                {post?.content ?? "N/A"}
-                            </MUITypography>
-                        </>
+                          <MUITypography
+                          variant="body1"
+                          style={{ whiteSpace: 'pre-wrap' }}
+                          >
+                              {post?.content ?? "N/A"}
+                          </MUITypography>
+                      </>
                     )}
 
                     {isEditing ? (
@@ -298,7 +298,6 @@ const ReviewPage = () => {
                 </Grid>
                 </Card>
             </Box>
-
         ) : (
             <Typography variant="body1" text={"Loading page..."} />
         )} 

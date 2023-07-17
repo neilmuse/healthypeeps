@@ -12,7 +12,7 @@ import Divider from '../components/divider.jsx';
 import ImageSlider from '../views/image-slider';
 
 import { AuthContext } from '../context/auth-context';
-import { authGetAllPostsByCategoryLimited } from "../auth";
+import { authGetAllPostsByCategoryLimited, authGetUserById } from "../auth";
 
 const Homepage = () => {
   const { user } = useContext(AuthContext);
@@ -33,15 +33,19 @@ const Homepage = () => {
       try {
         for (let category of categories) {
           let posts = await authGetAllPostsByCategoryLimited(category);
-          setState((prevState) => ({ ...prevState, [category]: posts }));
+          let postsWithAuthor = await Promise.all(posts.map(async post => {
+            let author = await authGetUserById(post.author);
+            return { ...post, author: { firstName: author.firstName, lastName: author.lastName }};
+          }));
+          setState((prevState) => ({ ...prevState, [category]: postsWithAuthor }));
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
     };
-
+  
     fetchPosts();
-  }, []);
+  }, []);  
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Grid, Link } from '@mui/material';
 import Typography from '../components/typography.jsx';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
@@ -9,9 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import ConvertTime from '../utils/moment.jsx';
 import { imageStyle, imageContainerStyle } from '../constants/styles';
 
+import { authGetUserById } from '../auth';
+
 const ImageSlider = ({ images, itemsPerSlide }) => {
   const NAVIGATE = useNavigate();
   const [current, setCurrent] = useState(0);
+
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const itemsToShow = isSmallScreen ? 2 : itemsPerSlide; 
@@ -55,24 +58,22 @@ const ImageSlider = ({ images, itemsPerSlide }) => {
             style={{cursor: 'pointer'}}
           >
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px', width: '200px' }}>
-                <img src={image.image || 'https://www.verywellfit.com/thmb/5MXTT9v41sRi7c-v82SB2UJ8D_Y=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/VWF-Plant-Based-Eating-V6-edit1-0a05c9c9c14e489b8e981fbb0221d49e.jpg'} alt="Image Description Temp" style={{ maxHeight: '100%', maxWidth: '100%' }} />
-            </div>
-
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px', width: '200px' }}>
+                <img src={image.image || 'https://img.freepik.com/premium-vector/healthy-food-concept-fresh-vegetables-bowl_24877-66987.jpg'} alt="Image Description Temp" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+              </div>
 
               <CardHeader
-                  avatar={
+                avatar={
                   <Avatar sx={{ bgcolor: COLORS.GREEN}} >
-                      {image.author?.firstName?.substr(0, 1)}
+                    {(image.author.firstName[0] + image.author.lastName[0]).toUpperCase()}
                   </Avatar>
-                  }
-
-                  title={<Typography variant="cardtitle" text={truncateText(image.title, 8)} />}
-                  subheader={<Typography variant="cardsubheader" text={ConvertTime(image.createdAt)} />}
+                }
+                title={<Typography variant="cardtitle" text={truncateText(image.title, 12)} />}
+                subheader={<Typography variant="cardsubheader" text={image.author.firstName + " " + image.author.lastName + " " + "· " + ConvertTime(image.createdAt)} />}
               />
+
               <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="body1" text={truncateText(image.content, 10)} />
+                <Typography variant="body1" text={truncateText(image.content, 18)} />
               </CardContent>
             </Card>
           </Grid>

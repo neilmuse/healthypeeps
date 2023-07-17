@@ -238,10 +238,10 @@ const DiscussionPage = () => {
                 )}
               </Grid>
 
-              <Divider />
+              {post.image && <Divider />}
 
               <div style={imageContainerStyleCard}>
-                <img src={post.image || 'https://picsum.photos/200'} alt="Image Description Temp" style={imageStyleCard} />
+                  {post.image && <img src={post.image} alt="Image Description Temp" style={imageStyleCard} />}
               </div>
 
               <Divider />
