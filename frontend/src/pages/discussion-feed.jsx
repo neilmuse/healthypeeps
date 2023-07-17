@@ -156,7 +156,7 @@ const DiscussionFeed = () => {
 
   return (
       <>
-          <Box>
+          <Box value={1}>
 
             <Container maxWidth="md">
 
@@ -214,11 +214,13 @@ const DiscussionFeed = () => {
                       </DialogActions>
                   </Dialog>
 
-                  <Box value={3}>
+                  <Box>
                     <Typography variant="title" text="Discussions" />
                     {filteredDiscussions.length > 0 ? (
                       filteredDiscussions.map((discussion) => (
-                        <DiscussionCard key={discussion._id} discussionId={discussion._id} title={discussion.title} image={discussion.image} author={discussion.author} createdAt={discussion.createdAt} content={discussion.content} />
+                        <Box key={discussion._id} marginBottom={1} value={3}>
+                          <DiscussionCard key={discussion._id} discussionId={discussion._id} title={discussion.title} image={discussion.image} author={discussion.author} createdAt={discussion.createdAt} content={discussion.content} />
+                        </Box>
                       ))
                     ) : (
                       <Typography variant="body" text="No discussions found." />

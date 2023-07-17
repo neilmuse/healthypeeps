@@ -65,7 +65,7 @@ const CommentBox = ({ postId, authorId, addedComment }) => {
 
   return (
     <form onSubmit={handleSubmit} noValidate autoComplete="off">
-      <Box width="100%">
+      <Box width="100%" marginBottom={3}>
         <Grid container spacing={1} alignItems="center">
           <Grid item xs>
             <TextField

@@ -279,21 +279,23 @@ const ListingFeed = () => {
                       <Typography variant="title" text="Listings" />
                         {filteredListings.length > 0 ? (
                             filteredListings.map((listing) => (
-                                <ListingCard 
-                                    key={listing._id}
-                                    listingId={listing._id}
-                                    title={listing.title} 
-                                    image={listing.image} 
-                                    author={listing.author} 
-                                    createdAt={listing.createdAt} 
-                                    content={listing.content} 
-                                    location={listing.location} 
-                                    email={listing.email} 
-                                    phoneNumber={listing.phoneNumber} 
-                                    price={listing.price}
-                                    authorId={listing.author}
-                                    postId={listing._id}
-                                />
+                                <Box key={listing._id} marginBottom={1} value={3}>
+                                    <ListingCard 
+                                        key={listing._id}
+                                        listingId={listing._id}
+                                        title={listing.title} 
+                                        image={listing.image} 
+                                        author={listing.author} 
+                                        createdAt={listing.createdAt} 
+                                        content={listing.content} 
+                                        location={listing.location} 
+                                        email={listing.email} 
+                                        phoneNumber={listing.phoneNumber} 
+                                        price={listing.price}
+                                        authorId={listing.author}
+                                        postId={listing._id}
+                                    />
+                                </Box>
                         ))) : (
                             <Typography variant="body" text="No listings found." />
                         )}

@@ -111,7 +111,7 @@ const CommentCard = ({ postId, authorId }) => {
       <CommentBox postId={postId} authorId={authorId} addedComment={addNewComment} />
 
       {comments.map((comment) => (
-        <Paper key={comment._id} style={{ padding: "20px 20px", overflow: 'hidden' }}>
+        <Paper key={comment._id} style={{ padding: "15px 15px", overflow: 'hidden', marginBottom: '10px' }}>
           <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
               <Avatar alt="image" src={comment?.image} />

@@ -411,17 +411,19 @@ const RecipeFeed = () => {
               <Typography variant="title" text="Recipes" />
               {sortedRecipes.length > 0 ? (
                 sortedRecipes.map((recipe) => (
-                  <RecipeCard 
-                    key={recipe._id}
-                    recipeId={recipe._id}
-                    title={recipe.title} 
-                    image={recipe.image} 
-                    author={recipe.author} 
-                    createdAt={recipe.createdAt} 
-                    content={recipe.content} 
-                    authorId={recipe.author}
-                    macronutrients={recipe.macros}
-                  />
+                  <Box key={recipe._id} marginBottom={1} value={3}>
+                    <RecipeCard 
+                      key={recipe._id}
+                      recipeId={recipe._id}
+                      title={recipe.title} 
+                      image={recipe.image} 
+                      author={recipe.author} 
+                      createdAt={recipe.createdAt} 
+                      content={recipe.content} 
+                      authorId={recipe.author}
+                      macronutrients={recipe.macros}
+                    />
+                  </Box>
                 ))
               ) : (
                 <Typography variant="body" text="No recipes found." />

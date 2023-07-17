@@ -114,6 +114,7 @@ const Login = () => {
                   autoFocus
                   fullWidth
                   value={email}
+                  sx={{ mt: 1, mb: 1 }}
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={() => handleBlur(email, setEmailError)}
                   error={emailError}
@@ -129,7 +130,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={() => handleBlur(password, setPasswordError)}
                   fullWidth
-                  sx={{ mt: 1 }}
+                  sx={{ mt: 1, mb: 2 }}
                   error={passwordError}
                   helperText={passwordError && 'Password is required.'}
                   InputProps={{

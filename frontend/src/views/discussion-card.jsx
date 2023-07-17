@@ -73,7 +73,6 @@ const DiscussionCard = ({ discussionId, title, image, author, createdAt, content
                     <Typography variant="body1" text={content} />
                 </CardContent>
 
-                <Divider/>
             </div>
         </Card>
     );

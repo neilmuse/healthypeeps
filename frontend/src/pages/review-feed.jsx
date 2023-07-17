@@ -213,7 +213,9 @@ const ReviewFeed = () => {
                       <Typography variant="title" text="Reviews" />
                       {filteredReviews.length > 0 ? (
                         filteredReviews.map((review) => (
-                          <ReviewCard key={review._id} reviewId={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
+                          <Box key={review._id} marginBottom={1} value={3}>
+                            <ReviewCard key={review._id} reviewId={review._id} title={review.title} image={review.image} author={review.author} createdAt={review.createdAt} content={review.content} />
+                          </Box>
                       ))) : (
                         <Typography variant="body" text="No reviews found." />
                       )}

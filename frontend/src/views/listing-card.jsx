@@ -11,6 +11,8 @@ import Typography from '../components/typography.jsx';
 
 import ConvertTime from '../utils/moment.jsx';
 
+import Divider from '../components/divider.jsx';
+
 import { imageStyleCard, imageContainerStyleCard, modalStyle } from '../constants/styles';
 
 import { AuthContext } from '../context/auth-context';
@@ -99,6 +101,7 @@ const ListingCard = ({ listingId, title, image, author, createdAt, content, loca
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
+                    <Divider/>
                     <Typography variant="body1" text={`Location: ${location}`} />
                     <Typography variant="body1" text={`Price: ${price}`} />
                     <Typography variant="body1" text={`Phone Number: ${phoneNumber}`} />

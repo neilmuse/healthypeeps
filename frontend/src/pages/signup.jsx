@@ -109,7 +109,7 @@ const Signup = () => {
       }, 300);
     } catch (error) {
         setIsLoading(false);
-        setAlertMessage('Check your details. Password be eight characters and must contain a number.');
+        setAlertMessage('Check your details. Must be a valid PH number. Password be eight characters and must contain a number.');
         setOpen(true);
     }
   };
@@ -155,6 +155,7 @@ const Signup = () => {
                 required
                 name="first_name"
                 label="First Name"
+                sx={{ mt: 1, mb: 2 }}
                 autoFocus
                 error={fieldErrors.first_name}
                 helperText={errorMessages.first_name}
@@ -189,6 +190,7 @@ const Signup = () => {
                 error={fieldErrors.phone_number}
                 helperText={errorMessages.phone_number}
                 onChange={handleChange}
+                sx={{ mt: 1, mb: 2 }}
                 onBlur={(e) => handleBlur('phone_number', e.target.value)}
               />
 
@@ -200,6 +202,7 @@ const Signup = () => {
                 error={fieldErrors.password}
                 helperText={errorMessages.password}
                 onChange={handleChange}
+                sx={{ mt: 2, mb: 3 }}
                 onBlur={(e) => handleBlur('password', e.target.value)}
                 InputProps={{
                   endAdornment: (
@@ -224,6 +227,7 @@ const Signup = () => {
                 error={fieldErrors.repeat_password}
                 helperText={errorMessages.repeat_password}
                 onChange={handleChange}
+                sx={{ mt: 2, mb: 3 }}
                 onBlur={(e) => handleBlur('repeat_password', e.target.value)}
                 InputProps={{
                   endAdornment: (
