@@ -400,11 +400,18 @@ const ListingPage = () => {
 
                                 {post.image && <Divider />}
 
-                                <div style={imageContainerStyleCard}>
+                                {!isEditing ? (
+                                    <div style={imageContainerStyleCard}>
                                     {post.image && <img src={post.image} alt="Image Description Temp" style={imageStyleCard} />}
-                                </div>
+                                    </div>
 
-                                <Divider />
+                                    ) : null
+                                }    
+
+                                {!isEditing ? (
+                                    <Divider />
+                                    ) : null
+                                }
 
                                 <Typography variant="title" text="Brief Description" />
                                 <Typography variant="body1" text={post.content ?? "N/A"} />
