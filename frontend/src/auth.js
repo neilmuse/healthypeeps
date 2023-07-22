@@ -2,6 +2,28 @@ import API from "./api";
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
+const checkEmailExistsInDatabase = async (email, userId) => {
+  const token = localStorage.getItem('authToken');
+  
+  try {
+    const response = await fetch(`${API_URL}/check_email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ email, userId })
+    });
+
+    const data = await response.json();
+
+    return data.exists;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export const signup = async (formData) => {
     try {
         const response = await API.post(`/signup`, formData);
@@ -70,13 +92,21 @@ export const authGetUserData = async (token, refresh_token) => {
 
 export const authUpdateUserData = async (userData) => {
   const token = localStorage.getItem('authToken');
+
+  const emailExistsInDatabase = await checkEmailExistsInDatabase(userData.email, userData._id);
+  if (emailExistsInDatabase) {
+    return {
+      error: 'Email already taken',
+    };
+  }
+
   const response = await fetch(`${API_URL}/update_user/${userData._id}`, {
-      method: 'PATCH',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(userData)
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(userData)
   });
 
   if (!response.ok) {
@@ -186,7 +216,7 @@ export const authUploadFile = async (file) => {
     }
   }
 
-  // Similarly, check for the expected content type in the successful response
+  // Check for the expected content type in the successful response
   const contentType = response.headers.get('content-type');
   if (contentType && contentType.includes('application/json')) {
     const result = await response.json();

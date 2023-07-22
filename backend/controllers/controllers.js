@@ -120,6 +120,24 @@ module.exports = {
     }
   },
 
+  checkEmailInDatabase: async (req, res) => {
+    const { email, userId } = req.body;
+
+    try {
+      const user = await USER_MODEL.findOne({ email });
+  
+      // If a user with this email was found and their ID is not the same as the provided ID
+      if (user && String(user._id) !== String(userId)) {
+        res.json({ exists: true });
+      } else {
+        res.json({ exists: false });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
   updateUserData: async(req, res) => {
     const { id } = req.params;
     const { firstName, lastName, email, phoneNumber } = req.body;
@@ -140,8 +158,9 @@ module.exports = {
         // Check if the email is already used by another user
         const existingUser = await USER_MODEL.findOne({ email: email });
         if (existingUser && String(existingUser._id) !== String(id)) {
-            return res.status(400).json({ message: 'Email is already in use' });
+          throw new Error('Email is already in use');
         }
+
 
         const user = await USER_MODEL.findById(id);
         if (!user) return res.status(404).json({ message: 'User not found' });

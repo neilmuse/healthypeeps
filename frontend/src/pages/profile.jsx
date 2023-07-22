@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Grid, TextField } from '@mui/material';
+import { Alert, Button, Grid, Snackbar, TextField } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 import icon from '../assets/profile.png';
@@ -20,6 +20,10 @@ const Profile = () => {
   const [errors, setErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [open, setOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = React.useState('');
+
   const [formValues, setFormValues] = useState({
     _id: user?._id ?? null,
     firstName: user?.firstName ?? "",
@@ -80,6 +84,13 @@ const Profile = () => {
       }
 
       const updatedUser = await authUpdateUserData(formValues);
+
+      if (updatedUser.error && updatedUser.error === 'Email already taken') {
+        setAlertMessage('Email is already taken.');
+        setOpen(true);
+        return;
+      }
+
       setUser(updatedUser);
       setIsEditing(false);
     } catch (error) {
@@ -143,6 +154,7 @@ const Profile = () => {
               />
 
               <Divider />
+
               <TextField
                 label="Email"
                 name="email"
@@ -151,6 +163,7 @@ const Profile = () => {
                 error={!!errors.email}
                 helperText={errors.email}
               />
+
               <TextField
                 label="Phone Number"
                 name="phoneNumber"
@@ -159,7 +172,9 @@ const Profile = () => {
                 error={!!errors.phoneNumber}
                 helperText={errors.phoneNumber}
               />
+
               <Divider />
+
               <Button onClick={handleSaveButtonClick}>Save</Button>
               <Button onClick={handleCancelButtonClick}>Cancel</Button>
             </>
@@ -194,6 +209,17 @@ const Profile = () => {
             </>
           )}
         </Card>
+
+        <Snackbar
+          open={open}
+          autoHideDuration={5000}
+          onClose={() => setOpen(false)}
+        >
+          <Alert onClose={() => setOpen(false)} severity="error" sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+        
       </Box>
       <Outlet />
     </>

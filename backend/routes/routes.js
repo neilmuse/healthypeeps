@@ -18,6 +18,7 @@ module.exports = (app) => {
     app.post("/api/signup", controllers.signup);
 	app.post("/api/login", controllers.login);
 	app.post("/api/refresh_token", authMiddleware, controllers.refreshToken);
+	app.post("/api/check_email", authMiddleware, controllers.checkEmailInDatabase);
 
 	app.get("/api/get_user_by_id/:userId", controllers.getUserById);
 	app.get('/api/get_user_data', authMiddleware, controllers.getUserData);
