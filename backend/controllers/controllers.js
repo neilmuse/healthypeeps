@@ -390,105 +390,41 @@ module.exports = {
         return res.status(500).send('Internal Server Error.');
     }
   },
-  
-  getSpecificDiscussion: async (req, res) => {
-    const userID = req.params.id;
-    try {
-      const discussion = await Discussion.findById(userID);
-      if (discussion == null) {
-        // If there's no discussion with that ID, return an error.
-        return res.status(404).json({ message: "Can't find discussion" });
-      }
-      // If the discussion was found, return it.
-      res.json(discussion);
-    } catch (err) {
-      // In case of an error, return an HTTP status 500 and the error message.
-      return res.status(500).json({ message: err.message });
-    }
-  },
-
-  getSpecificReview: async (req, res) => {
-    const userID = req.params.id;
-    try {
-      const review = await Review.findById(userID);
-      if (review == null) {
-        // If there's no review with that ID, return an error.
-        return res.status(404).json({ message: "Can't find review" });
-      }
-      // If the review was found, return it.
-      res.json(review);
-    } catch (err) {
-      // In case of an error, return an HTTP status 500 and the error message.
-      return res.status(500).json({ message: err.message });
-    }
-  },
-
-  getSpecificListing: async (req, res) => {
-    const userID = req.params.id;
-    try {
-      const listing = await Listing.findById(userID);
-      if (listing == null) {
-        // If there's no listing with that ID, return an error.
-        return res.status(404).json({ message: "Can't find listing" });
-      }
-      // If the listing was found, return it.
-      res.json(listing);
-    } catch (err) {
-      // In case of an error, return an HTTP status 500 and the error message.
-      return res.status(500).json({ message: err.message });
-    }
-  },
-
-  getSpecificRecipe: async (req, res) => {
-    const userID = req.params.id;
-    try {
-      const recipe = await Recipe.findById(userID);
-      if (recipe == null) {
-        // If there's no recipe with that ID, return an error.
-        return res.status(404).json({ message: "Can't find recipe" });
-      }
-      // If the recipe was found, return it.
-      res.json(recipe);
-    } catch (err) {
-      // In case of an error, return an HTTP status 500 and the error message.
-      return res.status(500).json({ message: err.message });
-    }
-  },
 
   //COMMENT
   addComment: async (req, res) => {
     try {
-        const { content, postId, authorId } = req.body;
+      const { content, postId, authorId } = req.body;
 
-        if (!content || !postId || !authorId) {
-          return res.status(400).json({ message: "Missing required data" });
-        }
+      if (!content || !postId || !authorId) {
+        return res.status(400).json({ message: "Missing required data" });
+      }
 
-        // Check if the comment already exists
-        const existingComment = await COMMENT_MODEL.findOne({
-            content,
-            post: new mongoose.Types.ObjectId(postId),
-            author: new mongoose.Types.ObjectId(authorId)
-        });
+      // Check if the comment already exists
+      const existingComment = await COMMENT_MODEL.findOne({
+          content,
+          post: new mongoose.Types.ObjectId(postId),
+          author: new mongoose.Types.ObjectId(authorId)
+      });
 
-        if (existingComment) {
-            // Comment already exists, return a message
-            return res.status(409).json({ message: "Comment already exists" });
-        }
+      if (existingComment) {
+          // Comment already exists, return a message
+          return res.status(409).json({ message: "Comment already exists" });
+      }
 
-        // Create new comment
-        const newComment = new COMMENT_MODEL({
-            content,
-            post: new mongoose.Types.ObjectId(postId),
-            author: new mongoose.Types.ObjectId(authorId),
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        });
+      // Create new comment
+      const newComment = new COMMENT_MODEL({
+          content,
+          post: new mongoose.Types.ObjectId(postId),
+          author: new mongoose.Types.ObjectId(authorId),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+      });
 
-        // Save the comment
-        await newComment.save();
+      // Save the comment
+      await newComment.save();
 
-        res.status(201).json({ message: "Comment created successfully", comment: newComment });
+      res.status(201).json({ message: "Comment created successfully", comment: newComment });
     } catch (error) {
         res.status(500).json({ message: "Error adding comment", error: error.message });
     }
